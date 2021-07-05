@@ -1,0 +1,6 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  org.github.axon.tag.common.autoconfig.AxonContinueAutoConfiguration,\
+  org.github.axon.tag.common.autoconfig.IdAutoConfiguration,\
+  org.github.axon.tag.common.autoconfig.KafkaAutoConfiguration,\
+  org.github.axon.tag.common.autoconfig.CommandRouterAutoConfiguration,\
+  org.github.axon.tag.common.autoconfig.RabbitAutoConfiguration

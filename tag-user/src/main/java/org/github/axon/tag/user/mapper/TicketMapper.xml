@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.github.axon.tag.user.mapper.TicketMapper">
+
+    <sql id="BaseColumnList">
+            TT.id,
+            TT.lock_user,
+            TT.name,
+            TT.owner
+    </sql>
+    <select id="selectByRequest" resultType="org.github.axon.tag.base.domain.ticket.dto.TicketDTO"
+            parameterType="org.github.axon.tag.base.domain.ticket.request.TicketSearchRequest">
+        SELECT <include refid="BaseColumnList" /> FROM tb_ticket TT
+        <trim prefix="where" prefixOverrides="and|or">
+        <if test="param.id != null  and param.id != ''">
+            AND TT.id = #{param.id}
+        </if>
+        <if test="param.lockUser != null  and param.lockUser != ''">
+            AND TT.lock_user = #{param.lockUser}
+        </if>
+        <if test="param.name != null  and param.name != ''">
+            AND TT.name = #{param.name}
+        </if>
+        <if test="param.owner != null  and param.owner != ''">
+            AND TT.owner = #{param.owner}
+        </if>
+        ORDER BY TT.updated_time DESC
+        </trim>
+    </select>
+</mapper>

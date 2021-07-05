@@ -1,0 +1,40 @@
+server.port: ${SERVER_PORT:8091}
+spring:
+  profiles:
+    active:
+      - dev
+  application:
+    name: order
+  cloud:
+    nacos:
+      config:
+        name: contract
+        password: nacos
+        username: nacos
+        file-extension: yml
+        enabled: true
+        server-addr: 47.52.30.71:8848
+      discovery:
+        ip: localhost
+        port: ${server.port}
+        password: nacos
+        username: nacos
+        server-addr: 47.52.30.71:8848
+    consul:
+      host: ${DOCKER_HOST:localhost}
+      port: 8500
+      discovery:
+        hostname: ${DISCOVERY_HOST:leechedan.vicp.cc}
+        port: ${SERVER_PORT:8090}
+        service-name: ${DISCOVERY_HOST:localhost}
+        instance-id: ${DISCOVERY_ID:accountservice}
+    zookeeper:
+      connect-string: ${DOCKER_HOST:localhost}:${ZK_PORT12181}
+      discovery:
+        service-name: ${DISCOVERY_SERVICE:accountservice}
+        instance-host: ${DISCOVERY_HOST:localhost}
+        instance-id: ${DISCOVERY_ID:accountservice}
+        instance-port: ${SERVER_PORT:8090}
+#axon:
+#  eventhandling.processors.contract-processor:
+#    source: ${MS_BEAN_NAME:menuMessageSource}
