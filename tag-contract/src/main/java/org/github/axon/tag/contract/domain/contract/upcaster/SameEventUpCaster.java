@@ -1,10 +1,7 @@
 package org.github.axon.tag.contract.domain.contract.upcaster;
 
 
-import cn.hutool.json.JSONObject;
-import cn.hutool.json.JSONUtil;
 import com.fasterxml.jackson.databind.JsonNode;
-import io.micrometer.core.instrument.util.JsonUtils;
 import org.axonframework.messaging.MetaData;
 import org.axonframework.serialization.SerializedType;
 import org.axonframework.serialization.SimpleSerializedType;
@@ -15,15 +12,15 @@ public abstract class SameEventUpCaster extends SingleEventUpcaster {
 
     protected boolean canUpcast(IntermediateEventRepresentation intermediateRepresentation) {
 
-        return outputType(intermediateRepresentation.getType()) != null;
+        return eventTypeName().equals(intermediateRepresentation.getType().getName());
     }
 
     @Override
     protected IntermediateEventRepresentation doUpcast(IntermediateEventRepresentation intermediateRepresentation) {
         return intermediateRepresentation.upcast(
             outputType(intermediateRepresentation.getType()),
-            String.class,
-            d -> this.doUpCastPayload(JSONUtil.parseObj(d), intermediateRepresentation),
+            JsonNode.class,
+            d -> this.doUpCastPayload(d, intermediateRepresentation),
             metaData -> this.doUpCastMetaData(metaData, intermediateRepresentation)
         );
     }
@@ -36,7 +33,7 @@ public abstract class SameEventUpCaster extends SingleEventUpcaster {
 
     public abstract String outputRevision(String originRevision);
 
-    public abstract String doUpCastPayload(JSONObject document, IntermediateEventRepresentation intermediateEventRepresentation);
+    public abstract JsonNode doUpCastPayload(JsonNode document, IntermediateEventRepresentation intermediateEventRepresentation);
 
     public abstract MetaData doUpCastMetaData(MetaData document, IntermediateEventRepresentation intermediateEventRepresentation);
 

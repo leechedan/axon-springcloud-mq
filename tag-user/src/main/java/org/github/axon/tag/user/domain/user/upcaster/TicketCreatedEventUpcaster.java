@@ -1,6 +1,8 @@
 package org.github.axon.tag.user.domain.user.upcaster;
 
 import cn.hutool.json.JSONObject;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.util.JSONPObject;
 import org.github.axon.tag.api.domain.ticket.event.TicketCreatedEvent;
 import org.github.axon.tag.common.continuance.common.SameEventUpcaster;
 
@@ -31,13 +33,13 @@ public class TicketCreatedEventUpcaster extends SameEventUpcaster {
     }
 
     @Override
-    public String doUpCastPayload(JSONObject document, IntermediateEventRepresentation intermediateEventRepresentation) {
+    public JsonNode doUpCastPayload(JsonNode document, IntermediateEventRepresentation intermediateEventRepresentation) {
 
         if (intermediateEventRepresentation.getType().getRevision() == null) {
-            (document).put("industryName", "互联网");
+            ((ObjectNode)document).put("industryName", "互联网");
         }
 
-        return document.toString();
+        return document;
     }
 
     @Override

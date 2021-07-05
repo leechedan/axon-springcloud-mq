@@ -1,5 +1,6 @@
 package org.github.axon.tag.user.domain.user.saga;
 
+import lombok.Setter;
 import org.github.axon.tag.api.domain.account.event.*;
 import org.github.axon.tag.api.domain.account.command.*;
 import org.github.axon.tag.api.domain.transfer.event.saga.TransferRequestedEvent;
@@ -7,9 +8,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
-import org.axonframework.commandhandling.CommandMessage;
-import org.axonframework.commandhandling.CommandResultMessage;
-import org.axonframework.commandhandling.callbacks.FutureCallback;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.axonframework.deadline.DeadlineManager;
 import org.axonframework.deadline.annotation.DeadlineHandler;
@@ -36,9 +34,17 @@ public class BankTransferSaga {
     @Autowired
     private transient DeadlineManager deadlineManager;
 
+    @Getter
+    @Setter
     private Long sourceAccountId;
+    @Getter
+    @Setter
     private Long targetAccountId;
+    @Getter
+    @Setter
     private Long transactionId;
+    @Getter
+    @Setter
     private String deadlineId;
 
     @StartSaga

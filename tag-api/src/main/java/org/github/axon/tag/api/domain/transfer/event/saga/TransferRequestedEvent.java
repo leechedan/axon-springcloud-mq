@@ -12,6 +12,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @Builder
 @Getter
+@Setter
 public class TransferRequestedEvent {
 
     private Long transactionId;

@@ -1,6 +1,7 @@
 package org.github.axon.tag.contract.domain.contract.upcaster;
 
 import cn.hutool.json.JSONObject;
+import com.fasterxml.jackson.databind.JsonNode;
 import org.github.axon.tag.api.domain.contract.event.ContractCreatedEvent;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -26,13 +27,13 @@ public class ContractCreatedEventUpCaster extends SameEventUpCaster {
     }
 
     @Override
-    public String doUpCastPayload(JSONObject document, IntermediateEventRepresentation intermediateEventRepresentation) {
+    public JsonNode doUpCastPayload(JsonNode document, IntermediateEventRepresentation intermediateEventRepresentation) {
 
         if (intermediateEventRepresentation.getType().getRevision() == null) {
-            document.put("industryName", "互联网");
+            ((ObjectNode)document).put("industryName", "互联网");
         }
 
-        return document.toString();
+        return document;
     }
 
     @Override

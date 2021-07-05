@@ -1,6 +1,7 @@
 package org.github.axon.tag.user.domain.user.upcaster;
 
 import cn.hutool.json.JSONObject;
+import com.fasterxml.jackson.databind.JsonNode;
 import org.github.axon.tag.api.domain.ticket.event.TicketUpdatedEvent;
 import org.github.axon.tag.common.continuance.common.SameEventUpcaster;
 
@@ -27,14 +28,14 @@ public class TicketUpdatedEventUpcaster extends SameEventUpcaster {
     }
 
     @Override
-    public String doUpCastPayload(JSONObject document, IntermediateEventRepresentation intermediateEventRepresentation) {
+    public JsonNode doUpCastPayload(JsonNode document, IntermediateEventRepresentation intermediateEventRepresentation) {
 
         // 每个版本只有一种升级方案，然后链式一步一步升级
         if (intermediateEventRepresentation.getType().getRevision() == null) {
-            (document).put("industryName", "互联网");
+            ((ObjectNode)document).put("industryName", "互联网");
         }
 
-        return document.toString();
+        return document;
     }
 
     @Override
