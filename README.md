@@ -22,18 +22,27 @@
 ### jpa/jdbc
 两者一定不能混用，后者还未集成，不知是否能集成mybatis
 
-### 需求
+### 调优
+在框架使用过程中，调优的方向有缓存和快照
+缓存：相关event进行内存型缓存处理，加快load和存储速度
+快照：使用最近快照进行rebuild
+
+### 特性
 在具体的项目开发中，由于axon的异步特性，我们需要提供的功能有
-
-admin端：
-1. replay
-2. 事件的历史，以及事件的处理状态(目前使用了sent字段来标注，可能还需要更多信息)
-
-用户端：
-1. 查询用户command历史
-2. 查询用户事件历史
-
-组件端：
-1. 使用cache类组件，加快相关event/replay的速度
-2. codeGenerator组件
-3. ideaPlugin(官方插件已经长久失修，无法使用)
+1. - [x] springcloud分布式命令总线集成
+2. - [x] mq-amqp集成
+3. - [x] mq-kafka集成(streamingMessageSource未验证)
+4. - [x] saga集成(带deadline的向前重试和向后回滚)
+5. - [x] listener集成
+6. - [x] 命令拦截器
+7. - [x] admin端-replay
+8. - [x] upcaster特性，用户可以针对任何命令的版本升级进行链式处理
+9. - [x] 事件的历史，以及事件的处理状态(目前使用了sent字段来标注，可能还需要更多信息)
+10. - [x]  查询用户事件历史
+11. - [ ]  单服务多实例运行时，processor的调优处理[tuning-event-processing](https://docs.axoniq.io/reference-guide/v/4.2/operations-guide/runtime-tuning/tuning-event-processing)
+12. - [ ] 用户端：查询command的简单处理
+13. - [ ] 用户端：stream聚合类复杂查询command处理
+14. - [ ] 组件端：使用cache类组件，加快相关event/replay的速度
+15. - [ ] codeGenerator组件
+16. - [ ] metrics处理
+17. - [ ] ideaPlugin(官方插件已经长久失修，无法使用)
