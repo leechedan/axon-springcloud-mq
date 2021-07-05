@@ -2,6 +2,7 @@
 
 ### 关于序列化
 建议使用xstream，否则很容易出问题，不会对aggregate和saga中的bean进行序列化，但是在upcaster中会比较难处理
+
 如果使用jackson，该序列化方式依赖于entry的get/set函数，那么在saga、aggregate、event中引入的相关bean 不能设置get和set函数，否则会报序列化失败。该序列化方便的地方在于upcaster过程中，可以使用jsonNode的数据结构直接修改event的数据
 
 ### mq特性
@@ -9,6 +10,7 @@
 
 ### springcloud
 建议使用nacos，将readme.md中的配置上传，并适当修改nacos中的name配置
+
 建议discovert的ip/port一定要配置正确，这代表了server互相调用时的地址，否则会报no handler found
 
 ### messageConverter
@@ -22,12 +24,14 @@
 
 ### 需求
 在具体的项目开发中，由于axon的异步特性，我们需要提供的功能有
+
 admin端：
 1. replay
 2. 事件的历史，以及事件的处理状态(目前使用了sent字段来标注，可能还需要更多信息)
+
 用户端：
-1.查询用户command历史
-2.查询用户事件历史
+1. 查询用户command历史
+2. 查询用户事件历史
 
 组件端：
 1. 使用cache类组件，加快相关event/replay的速度
