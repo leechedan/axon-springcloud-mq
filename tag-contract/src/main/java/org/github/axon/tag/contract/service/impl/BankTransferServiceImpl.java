@@ -44,7 +44,7 @@ public class BankTransferServiceImpl implements BankTransferService {
     public void replay() {
 
         Optional<TrackingEventProcessor> ret =
-                epc.eventProcessor("BankTransferMongoListener", TrackingEventProcessor.class);
+                epc.eventProcessor("org.github.axon.tag.contract.domain.contract.handler", TrackingEventProcessor.class);
 
         if (ret.isPresent()) {
 

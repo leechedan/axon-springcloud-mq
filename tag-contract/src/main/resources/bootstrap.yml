@@ -35,6 +35,8 @@ spring:
         instance-host: ${DISCOVERY_HOST:localhost}
         instance-id: ${DISCOVERY_ID:accountservice}
         instance-port: ${SERVER_PORT:8090}
-#axon:
-#  eventhandling.processors.contract-processor:
-#    source: ${MS_BEAN_NAME:menuMessageSource}
+axon:
+  eventhandling.processors.contract-processor:
+#    source: subscribingKafkaMessageSource
+    source: ${MS_BEAN_NAME:streamableKafkaMessageSource}
+#    mode: tracking

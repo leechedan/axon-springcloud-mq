@@ -1,5 +1,6 @@
 package org.github.axon.tag.contract.domain.contract.handler;
 
+import org.github.axon.tag.api.domain.account.event.AccountCreatedEvent;
 import org.github.axon.tag.common.continuance.common.CustomEventSourcingRepository;
 import org.github.axon.tag.contract.entity.ContractView;
 import org.github.axon.tag.contract.entity.ContractViewRepository;
@@ -56,5 +57,10 @@ public class ContractViewHandler {
         contractView.setPartyB(aggregate.getPartyB());
         contractView.setIndustryName(aggregate.getIndustryName());
         contractViewRepository.save(contractView);
+    }
+
+    @EventHandler
+    public void on(AccountCreatedEvent event){
+        log.info("----");
     }
 }

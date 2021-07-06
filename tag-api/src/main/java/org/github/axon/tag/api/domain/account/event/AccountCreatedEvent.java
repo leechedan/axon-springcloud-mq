@@ -1,11 +1,11 @@
 package org.github.axon.tag.api.domain.account.event;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.math.BigDecimal;
 
+@Getter
+@Setter
 @Data
 @NoArgsConstructor
 public class AccountCreatedEvent {

@@ -26,20 +26,6 @@ import org.springframework.context.annotation.Configuration;
 public class RabbitAutoConfiguration {
 
     @Bean
-    @ConditionalOnProperty(prefix = "axon.amqp.source", name = "enable", havingValue = "true", matchIfMissing = false)
-    public SpringAMQPMessageSource menuMessageSource(Serializer messageConverter) {
-        log.info("init menuMessageSource");
-        return new SpringAMQPMessageSource(messageConverter) {
-            @Override
-            @RabbitListener(queues = "${axon.queue}")
-            public void onMessage(Message message, Channel channel) {
-                log.info("{}", message);
-                super.onMessage(message, channel);
-            }
-        };
-    }
-
-    @Bean
     public FanoutExchange exchange(@Value("${axon.amqp.exchange}") String name) {
         log.info("init exchange {}", name);
         return new FanoutExchange(name);

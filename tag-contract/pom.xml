@@ -54,7 +54,7 @@
 			<version>27.1-jre</version>
 		</dependency>
 
-		 <!--amqp component-->
+		 <!--amqp component
 		<dependency>
 			<groupId>org.axonframework.extensions.amqp</groupId>
 			<artifactId>axon-amqp-spring-boot-starter</artifactId>
@@ -62,8 +62,8 @@
 		<dependency>
 			<groupId>org.springframework.amqp</groupId>
 			<artifactId>spring-rabbit</artifactId>
-		</dependency>
-		<!-- kafka component
+		</dependency>-->
+		<!-- kafka component-->
 
 		<dependency>
 			<groupId>org.springframework.kafka</groupId>
@@ -76,7 +76,7 @@
 		<dependency>
 			<groupId>org.apache.kafka</groupId>
 			<artifactId>kafka-clients</artifactId>
-		</dependency>-->
+		</dependency>
 
 		<dependency>
 			<groupId>mysql</groupId>

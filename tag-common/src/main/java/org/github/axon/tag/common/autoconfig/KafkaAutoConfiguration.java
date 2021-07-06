@@ -100,64 +100,6 @@ public class KafkaAutoConfiguration {
         return factory;
     }
 
-    /**
-     * spring config
-     * axon:
-     *   eventhandling.processors:
-     *     BankAccountQueryListener:
-     *       source: menuMessageSource
-     *       mode: tracking
-     *   BankTransferProcessListener:
-     *     mode: tracking
-     *     source: menuMessageSource
-     * 以下是event handling config**/
-    /**
-     * group-id和application-name相关
-     * @param kafkaProperties
-     * @param consumerAxonFactory
-     * @param fetcher
-     * @param kafkaMessageConverter
-     * @param kafkaMessageSourceConfigurer
-     * @param configurer
-     * @param connectionProvider
-     * @param eventSchema
-     * @param itemEventGateway
-     * @return
-     */
-    @Bean
-    public SubscribableKafkaMessageSource<String, byte[]> menuMessageSource(
-            KafkaProperties kafkaProperties,
-            org.axonframework.extensions.kafka.eventhandling.consumer.ConsumerFactory<String, byte[]> consumerAxonFactory,
-            Fetcher<String, byte[], EventMessage<?>> fetcher,
-            KafkaMessageConverter<String, byte[]> kafkaMessageConverter,
-            KafkaMessageSourceConfigurer kafkaMessageSourceConfigurer,
-            Configurer configurer,
-            ConnectionProvider connectionProvider,
-            EventSchema eventSchema,
-            EventGateway itemEventGateway) {
-        log.info("init menuMessageSource");
-        SubscribableKafkaMessageSource<String, byte[]> subscribableKafkaMessageSource = SubscribableKafkaMessageSource.<String, byte[]>builder()
-                .topics(Arrays.asList(kafkaProperties.getDefaultTopic()))
-                .groupId("contract")
-                .consumerFactory(consumerAxonFactory)
-                .fetcher(fetcher)
-                .messageConverter(kafkaMessageConverter)
-                .consumerCount(1)
-                .autoStart()
-                .build();
-
-        SubscribingKafkaEventProcessor processor = SubscribingKafkaEventProcessor.Builder()
-//                .setAppendEventsFunction(JdbcEventStorageEngineStatements::appendEvents)
-                .setConnectionProvider(connectionProvider)
-                .setEventSchema(eventSchema)
-                .build();
-
-        subscribableKafkaMessageSource.subscribe(processor.buildKafkaProcessingFunction());
-
-        kafkaMessageSourceConfigurer.registerSubscribableSource(configuration -> subscribableKafkaMessageSource);
-        configurer.registerModule(kafkaMessageSourceConfigurer);
-        return subscribableKafkaMessageSource;
-    }
 
     @Bean
     public KafkaMessageSourceConfigurer kafkaMessageSourceConfigurer() {
