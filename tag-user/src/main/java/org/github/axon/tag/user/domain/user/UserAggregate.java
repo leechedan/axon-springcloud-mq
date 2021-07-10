@@ -12,11 +12,15 @@ import org.axonframework.eventhandling.ReplayStatus;
 import org.axonframework.eventsourcing.EventSourcingHandler;
 import org.axonframework.modelling.command.AggregateIdentifier;
 import org.axonframework.spring.stereotype.Aggregate;
+import org.github.axon.tag.user.entity.BankTransferEntry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static org.axonframework.modelling.command.AggregateLifecycle.apply;
 
@@ -34,6 +38,8 @@ public class UserAggregate implements IUserEvent {
     private BigDecimal balance;
     private String accountHolderName;
     private Boolean deleted;
+    private Map<Long, BankTransferEntry> incompleteFrom = new HashMap<>();
+    private Map<Long, BankTransferEntry> incompleteTo = new HashMap<>();
 
     @CommandHandler
     public UserAggregate(CreateAccountCommand cmd) {
@@ -90,6 +96,11 @@ public class UserAggregate implements IUserEvent {
     @Override
     @EventSourcingHandler
     public void on(MoneyDepositedEvent event){
+        log.info("{}", event);
+        BankTransferEntry bankTransferEntry = new BankTransferEntry();
+        bankTransferEntry.setTransactionId(event.getTransactionId());
+        bankTransferEntry.setAmount(event.getAmount());
+        incompleteTo.put(bankTransferEntry.getTransactionId(), bankTransferEntry);
         this.balance = this.balance.add(event.getAmount());
     }
 
@@ -97,8 +108,18 @@ public class UserAggregate implements IUserEvent {
     @EventSourcingHandler
     public void on(MoneyWithdrawnEvent event) {
         log.info("{}", event);
-        this.balance = this.balance.add(event.getAmount());
+        BankTransferEntry bankTransferEntry = new BankTransferEntry();
+        bankTransferEntry.setTransactionId(event.getTransactionId());
+        bankTransferEntry.setAmount(event.getAmount());
+        incompleteFrom.put(bankTransferEntry.getTransactionId(), bankTransferEntry);
+        this.balance = this.balance.add(event.getAmount().negate());
+    }
 
+    @EventSourcingHandler
+    public void on(TransactionCompletedEvent event){
+        log.info("{}", event);
+        incompleteFrom.remove(event.getTransactionId());
+        incompleteTo.remove(event.getTransactionId());
     }
 }
 

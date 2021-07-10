@@ -51,7 +51,7 @@ public class BankTransferSaga {
     @SagaEventHandler(associationProperty = "transactionId")
     public void on(TransferRequestedEvent event) {
 
-        log.debug("In TransactionInitiatedEvent 启动转账");
+        log.info("In TransactionInitiatedEvent 启动转账 {}", event);
         assertNonNull(event.getSourceId(), "source not null in saga");
         assertNonNull(event.getDestinationId(), "target not null in saga");
         this.sourceAccountId = event.getSourceId();
@@ -63,49 +63,32 @@ public class BankTransferSaga {
 
         SagaLifecycle.associateWith("transactionId", transactionId);
 
-        commandGateway.send(new WithdrawMoneyCommand(event.getSourceId(), transactionId, event.getAmount())
-                /*,new FutureCallback<WithdrawMoneyCommand, Object>() {
-                    @Override
-                    public void onResult(CommandMessage<? extends WithdrawMoneyCommand> commandMessage, CommandResultMessage<?> commandResultMessage) {
-                        if (commandResultMessage.isExceptional()) {
-                            log.info("{}", commandResultMessage);
-                            commandGateway.send(new CancelMoneyTransactionCommand(event.getDestinationId(), event.getAmount(), "E1"));
-                        }
-                    }
-                }*/);
+        commandGateway.send(new WithdrawMoneyCommand(event.getSourceId(), transactionId, event.getAmount()));
     }
 
     @SagaEventHandler(associationProperty = "transactionId")
     public void on(MoneyWithdrawnEvent event) {
-        log.debug("In MoneyWithdrawnEvent  扣款 {} {}", this.targetAccountId, this.sourceAccountId);
-        commandGateway.send(new DepositMoneyCommand(targetAccountId, event.getTransactionId(), event.getAmount())
-                /*,new FutureCallback<DepositMoneyCommand, Object>() {
-                    @Override
-                    public void onResult(CommandMessage<? extends DepositMoneyCommand> commandMessage, CommandResultMessage<?> commandResultMessage) {
-                        if (commandResultMessage.isExceptional()) {
-                            commandGateway.send(new CancelMoneyTransactionCommand(event.getTransactionId(), event.getAmount(), "E2"));
-                        }
-                    }
-                }*/);
+        log.info("In MoneyWithdrawnEvent  扣款 {} {}", this.targetAccountId, this.sourceAccountId);
+        commandGateway.send(new DepositMoneyCommand(targetAccountId, event.getTransactionId(), event.getAmount()));
     }
 
 
 
     @SagaEventHandler(associationProperty = "transactionId")
     public void on(MoneyDepositedEvent event) {
-        log.debug("In MoneyDepositedEvent 充值");
+        log.info("In MoneyDepositedEvent 充值");
         commandGateway.send(new CompleteMoneyTransactionCommand(transactionId));
     }
 
     @EndSaga
     @SagaEventHandler(associationProperty = "transactionId")
     public void on(TransactionCompletedEvent event) {
-        log.debug("In TransactionCompletedEvent");
+        log.info("In TransactionCompletedEvent");
     }
 
     @SagaEventHandler(associationProperty = "transactionId")
     public void on(TransactionCancelledEvent event) {
-        log.debug("In TransactionCancelledEvent  转账失败");
+        log.info("In TransactionCancelledEvent  转账失败");
         if(event.getErrorCode().equals("E2")) {
             // Generate Compensatory action
             commandGateway.send(new BalanceCorrectionCommand(sourceAccountId, event.getTransactionId(), event.getAmount()));
@@ -116,6 +99,6 @@ public class BankTransferSaga {
     @DeadlineHandler(deadlineName = "transferDeadline")
     public void on() {
         // handle the Deadline
-        log.debug("In the deadline - deadlineId [{}] ", deadlineId);
+        log.info("In the deadline - deadlineId [{}] ", deadlineId);
     }
 }

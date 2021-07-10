@@ -39,7 +39,7 @@ public class UserCreatedEventUpCaster extends SameEventUpcaster {
         if (intermediateEventRepresentation.getType().getRevision() == null) {
 //            ((ObjectNode) document).put("industryName", "互联网");
         }
-        if (document.get("accountHolderName")==null){
+        if (document.get("accountHolderName").isNull()){
             ((ObjectNode)document).put("accountHolderName", "互联网");
         }
 

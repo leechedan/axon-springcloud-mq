@@ -68,7 +68,7 @@ public class ContractController {
         return bankTransferService.findAll();
     }
 
-    @GetMapping("tran/{id}")
+    @GetMapping("tranid/{id}")
     public BankTransferEntry tran(@PathVariable Long id){
         return bankTransferService.findById(id);
     }

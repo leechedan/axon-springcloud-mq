@@ -37,7 +37,7 @@ public class MoneyWithdrawnEventUpcaster extends SameEventUpcaster {
         if (intermediateEventRepresentation.getType().getRevision() == null) {
 //            (document).put("industryName", "互联网");
         }
-
+        log.info("{}", document);
         return document;
     }
 

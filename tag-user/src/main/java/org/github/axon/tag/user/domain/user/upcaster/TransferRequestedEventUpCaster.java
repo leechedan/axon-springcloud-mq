@@ -2,6 +2,7 @@ package org.github.axon.tag.user.domain.user.upcaster;
 
 import cn.hutool.json.JSONObject;
 import com.fasterxml.jackson.databind.JsonNode;
+import lombok.extern.slf4j.Slf4j;
 import org.github.axon.tag.api.domain.account.event.BalanceUpdatedEvent;
 import org.github.axon.tag.api.domain.transfer.event.saga.TransferRequestedEvent;
 import org.github.axon.tag.common.continuance.common.SameEventUpcaster;
@@ -11,8 +12,8 @@ import org.axonframework.serialization.upcasting.event.IntermediateEventRepresen
 
 import java.util.HashMap;
 
+@Slf4j
 public class TransferRequestedEventUpCaster extends SameEventUpcaster {
-
 
     @Override
     public String eventTypeName() {
@@ -35,6 +36,7 @@ public class TransferRequestedEventUpCaster extends SameEventUpcaster {
 //            ((ObjectNode) document).put("industryName", "互联网");
         }
 
+        log.info("{}", document);
         return document;
     }
 

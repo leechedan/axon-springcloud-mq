@@ -2,6 +2,7 @@ package org.github.axon.tag.api.domain.account.event;
 
 import lombok.*;
 
+import javax.validation.constraints.NotBlank;
 import java.math.BigDecimal;
 
 @Getter
@@ -12,6 +13,7 @@ public class AccountCreatedEvent {
 
     Long accountId;
 
+    @NotBlank
     String accountHolderName;
 
     BigDecimal amount;
