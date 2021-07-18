@@ -13,9 +13,8 @@ import java.util.function.Function;
 @Slf4j
 public class KafkaMessageSourceConfigurer implements ModuleConfiguration {
 
-    private Configuration configuration;
-
     private final List<Component<SubscribableKafkaMessageSource<?, ?>>> subscribableKafkaMessageSources = new ArrayList<>();
+    private Configuration configuration;
 
     @Override
     public void initialize(Configuration config) {

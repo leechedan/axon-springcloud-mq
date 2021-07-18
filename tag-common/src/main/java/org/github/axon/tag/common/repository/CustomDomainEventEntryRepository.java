@@ -13,7 +13,6 @@ public interface CustomDomainEventEntryRepository extends JpaRepository<CustomDo
      * 查找事件
      *
      * @param identifier
-     *
      * @return
      */
     CustomDomainEventEntry findByEventIdentifier(String identifier);

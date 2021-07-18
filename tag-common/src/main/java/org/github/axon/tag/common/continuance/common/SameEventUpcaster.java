@@ -1,8 +1,6 @@
 package org.github.axon.tag.common.continuance.common;
 
 
-import cn.hutool.json.JSONObject;
-import cn.hutool.json.JSONUtil;
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.extern.slf4j.Slf4j;
 import org.axonframework.messaging.MetaData;
@@ -26,10 +24,10 @@ public abstract class SameEventUpcaster extends SingleEventUpcaster {
     @Override
     public IntermediateEventRepresentation doUpcast(IntermediateEventRepresentation intermediateRepresentation) {
         return intermediateRepresentation.upcast(
-            outputType(intermediateRepresentation.getType()), JsonNode.class,
-            d -> this.doUpCastPayload(d, intermediateRepresentation),
+                outputType(intermediateRepresentation.getType()), JsonNode.class,
+                d -> this.doUpCastPayload(d, intermediateRepresentation),
 //                d->d,
-            metaData -> this.doUpCastMetaData(metaData, intermediateRepresentation)
+                metaData -> this.doUpCastMetaData(metaData, intermediateRepresentation)
         );
     }
 
@@ -41,8 +39,9 @@ public abstract class SameEventUpcaster extends SingleEventUpcaster {
 
     public abstract String outputRevision(String originRevision);
 
-    public abstract JsonNode doUpCastPayload(JsonNode document, IntermediateEventRepresentation intermediateEventRepresentation);
+    public abstract JsonNode doUpCastPayload(JsonNode document,
+                                             IntermediateEventRepresentation intermediateEventRepresentation);
 
-    public abstract MetaData doUpCastMetaData(MetaData document, IntermediateEventRepresentation intermediateEventRepresentation);
-
+    public abstract MetaData doUpCastMetaData(MetaData document,
+                                              IntermediateEventRepresentation intermediateEventRepresentation);
 }

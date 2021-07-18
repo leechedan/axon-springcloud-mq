@@ -6,8 +6,11 @@ import org.axonframework.eventhandling.AbstractSequencedDomainEventEntry;
 import org.axonframework.eventhandling.DomainEventMessage;
 import org.axonframework.serialization.Serializer;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
+import javax.persistence.Index;
+import javax.persistence.Table;
 
 @Entity(name = "DomainEventEntry")
 @Getter
@@ -16,7 +19,6 @@ import javax.validation.constraints.NotNull;
 @EntityListeners(CustomDomainEventEntryListener.class)
 public class CustomDomainEventEntry extends AbstractSequencedDomainEventEntry<byte[]> {
 
-    @NotNull
     @Column(columnDefinition = "tinyint(1) default 0")
     private boolean sent = false;
 

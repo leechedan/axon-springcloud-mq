@@ -8,6 +8,7 @@ import java.util.UUID;
 @Data
 @Builder
 public class GenericDomainEvent {
+
     private UUID uuid;
     private String type;
     private Object event;

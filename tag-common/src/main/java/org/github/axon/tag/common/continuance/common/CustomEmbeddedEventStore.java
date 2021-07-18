@@ -34,7 +34,9 @@ public class CustomEmbeddedEventStore extends EmbeddedEventStore {
         try {
             optionalSnapshot = storageEngine().readSnapshot(aggregateIdentifier);
         } catch (Exception | LinkageError e) {
-            log.warn("Error reading snapshot. Reconstructing aggregate from entire event org.github.axon.tag.user.stream.", e);
+            log.warn(
+                    "Error reading snapshot. Reconstructing aggregate from entire event org.github.axon.tag.user.stream.",
+                    e);
             optionalSnapshot = Optional.empty();
         }
         DomainEventStream eventStream;
@@ -42,13 +44,15 @@ public class CustomEmbeddedEventStore extends EmbeddedEventStore {
         if (optionalSnapshot.isPresent() && optionalSnapshot.get().getTimestamp().compareTo(timestamp) <= 0) {
             DomainEventMessage<?> snapshot = optionalSnapshot.get();
             eventStream = DomainEventStream.concat(DomainEventStream.of(snapshot),
-                storageEngine().readEvents(aggregateIdentifier,
-                    snapshot.getSequenceNumber() + 1));
+                                                   storageEngine().readEvents(aggregateIdentifier,
+                                                                              snapshot.getSequenceNumber() + 1));
         } else {
             eventStream = storageEngine().readEvents(aggregateIdentifier);
         }
 
-        eventStream = new IteratorBackedDomainEventStream(eventStream.asStream().filter(m -> m.getTimestamp().compareTo(timestamp) <= 0).iterator());
+        eventStream = new IteratorBackedDomainEventStream(eventStream.asStream()
+                                                                     .filter(m -> m.getTimestamp().compareTo(timestamp)
+                                                                             <= 0).iterator());
 
         Stream<? extends DomainEventMessage<?>> domainEventMessages = stagedDomainEventMessages(aggregateIdentifier);
         return DomainEventStream.concat(eventStream, DomainEventStream.of(domainEventMessages));
@@ -75,7 +79,6 @@ public class CustomEmbeddedEventStore extends EmbeddedEventStore {
          *
          * @param cachedEvents an {@code int} specifying the maximum number of events in the cache that is shared
          *                     between the streams of tracking event processors
-         *
          * @return the current Builder instance, for fluent interfacing
          */
         public CustomEmbeddedEventStore.Builder cachedEvents(int cachedEvents) {
@@ -85,15 +88,16 @@ public class CustomEmbeddedEventStore extends EmbeddedEventStore {
 
         /**
          * Sets the time to wait before fetching new events from the backing storage engine while tracking after a
-         * previous org.github.axon.tag.user.stream was fetched and read. Note that this only applies to situations in which no events from the
-         * current application have meanwhile been committed. If the current application commits events then those
-         * events are fetched without delay.
+         * previous org.github.axon.tag.user.stream was fetched and read. Note that this only applies to situations in
+         * which no events from the current application have meanwhile been committed. If the current application
+         * commits events then those events are fetched without delay.
          * <p>
-         * Defaults to {@code 1000}. Together with the {@link EmbeddedEventStore.Builder#timeUnit}, this will define the exact fetch delay.
+         * Defaults to {@code 1000}. Together with the {@link EmbeddedEventStore.Builder#timeUnit}, this will define the
+         * exact fetch delay.
          *
          * @param fetchDelay a {@code long} specifying the time to wait before fetching new events from the backing
-         *                   storage engine while tracking after a previous org.github.axon.tag.user.stream was fetched and read
-         *
+         *                   storage engine while tracking after a previous org.github.axon.tag.user.stream was fetched
+         *                   and read
          * @return the current Builder instance, for fluent interfacing
          */
         public CustomEmbeddedEventStore.Builder fetchDelay(long fetchDelay) {
@@ -106,13 +110,13 @@ public class CustomEmbeddedEventStore extends EmbeddedEventStore {
          * removed from the set of processors that track cached events if the oldest event in the cache is newer than
          * the last processed event of the event processor. Once removed the processor will be independently fetching
          * directly from the event storage engine until it has caught up again. Event processors will not notice this
-         * change during tracking (i.e. the org.github.axon.tag.user.stream is not closed when an event processor falls behind and is removed).
+         * change during tracking (i.e. the org.github.axon.tag.user.stream is not closed when an event processor falls
+         * behind and is removed).
          * <p>
-         * Defaults to {@code 1000}. Together with the {@link EmbeddedEventStore.Builder#timeUnit}, this will define the exact clean up
-         * delay.
+         * Defaults to {@code 1000}. Together with the {@link EmbeddedEventStore.Builder#timeUnit}, this will define the
+         * exact clean up delay.
          *
          * @param cleanupDelay a {@code long} specifying the delay between two clean ups of lagging event processors
-         *
          * @return the current Builder instance, for fluent interfacing
          */
         public CustomEmbeddedEventStore.Builder cleanupDelay(long cleanupDelay) {
@@ -121,11 +125,11 @@ public class CustomEmbeddedEventStore extends EmbeddedEventStore {
         }
 
         /**
-         * Sets the {@link TimeUnit} for the {@link EmbeddedEventStore.Builder#fetchDelay} and {@link EmbeddedEventStore.Builder#cleanupDelay}. Defaults to
-         * {@link TimeUnit#MILLISECONDS}.
+         * Sets the {@link TimeUnit} for the {@link EmbeddedEventStore.Builder#fetchDelay} and {@link
+         * EmbeddedEventStore.Builder#cleanupDelay}. Defaults to {@link TimeUnit#MILLISECONDS}.
          *
-         * @param timeUnit the {@link TimeUnit} for the {@link EmbeddedEventStore.Builder#fetchDelay} and {@link EmbeddedEventStore.Builder#cleanupDelay}
-         *
+         * @param timeUnit the {@link TimeUnit} for the {@link EmbeddedEventStore.Builder#fetchDelay} and {@link
+         *                 EmbeddedEventStore.Builder#cleanupDelay}
          * @return the current Builder instance, for fluent interfacing
          */
         public CustomEmbeddedEventStore.Builder timeUnit(TimeUnit timeUnit) {
@@ -134,11 +138,10 @@ public class CustomEmbeddedEventStore extends EmbeddedEventStore {
         }
 
         /**
-         * Sets the {@link ThreadFactory} used to create threads for consuming, producing and cleaning up. Defaults to
-         * a {@link AxonThreadFactory} with {@link ThreadGroup} {@link EmbeddedEventStore#THREAD_GROUP}.
+         * Sets the {@link ThreadFactory} used to create threads for consuming, producing and cleaning up. Defaults to a
+         * {@link AxonThreadFactory} with {@link ThreadGroup} {@link EmbeddedEventStore#THREAD_GROUP}.
          *
          * @param threadFactory a {@link ThreadFactory} used to create threads for consuming, producing and cleaning up
-         *
          * @return the current Builder instance, for fluent interfacing
          */
         public CustomEmbeddedEventStore.Builder threadFactory(ThreadFactory threadFactory) {
@@ -148,16 +151,16 @@ public class CustomEmbeddedEventStore extends EmbeddedEventStore {
 
         /**
          * Sets whether event consumption should be optimized between Event Stream. If set to {@code true}, distinct
-         * Event Consumers will read events from the same org.github.axon.tag.user.stream as soon as they reach the head of the org.github.axon.tag.user.stream. If
-         * {@code false}, they will stay on a private org.github.axon.tag.user.stream. The latter means more database resources will be used, but
-         * no side threads are created to fill the consumer cache nor locking is done on consumer threads. This field
-         * can also be configured by providing a system property with key {@code optimize-event-consumption}. Defaults
-         * to {@code true}.
+         * Event Consumers will read events from the same org.github.axon.tag.user.stream as soon as they reach the head
+         * of the org.github.axon.tag.user.stream. If {@code false}, they will stay on a private
+         * org.github.axon.tag.user.stream. The latter means more database resources will be used, but no side threads
+         * are created to fill the consumer cache nor locking is done on consumer threads. This field can also be
+         * configured by providing a system property with key {@code optimize-event-consumption}. Defaults to {@code
+         * true}.
          *
          * @param optimizeEventConsumption a {@code boolean} defining whether to optimize event consumption of threads
-         *                                 by introducing a Event Cache Production thread tailing the head of the org.github.axon.tag.user.stream
-         *                                 for the consumers
-         *
+         *                                 by introducing a Event Cache Production thread tailing the head of the
+         *                                 org.github.axon.tag.user.stream for the consumers
          * @return the current Builder instance, for fluent interfacing
          */
         public CustomEmbeddedEventStore.Builder optimizeEventConsumption(boolean optimizeEventConsumption) {
@@ -184,6 +187,5 @@ public class CustomEmbeddedEventStore extends EmbeddedEventStore {
         protected void validate() throws AxonConfigurationException {
             super.validate();
         }
-
     }
 }

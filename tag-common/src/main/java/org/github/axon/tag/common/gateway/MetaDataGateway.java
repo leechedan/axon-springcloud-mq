@@ -20,7 +20,8 @@ public interface MetaDataGateway extends CommandGateway {
 
     <R> R sendAndWait(Object command, MetaData metaData) throws InterruptedException;
 
-    <R> R sendAndWait(Object command, MetaData metaData, long timeout, TimeUnit unit) throws InterruptedException, TimeoutException;
+    <R> R sendAndWait(Object command, MetaData metaData, long timeout, TimeUnit unit)
+            throws InterruptedException, TimeoutException;
 
     <R> CompletableFuture<R> send(Object command, MetaData metaData);
 }

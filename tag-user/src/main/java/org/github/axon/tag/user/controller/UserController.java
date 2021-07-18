@@ -1,5 +1,8 @@
 package org.github.axon.tag.user.controller;
 
+import lombok.AllArgsConstructor;
+import org.axonframework.commandhandling.gateway.CommandGateway;
+import org.axonframework.queryhandling.QueryGateway;
 import org.github.axon.tag.api.domain.account.command.BalanceCorrectionCommand;
 import org.github.axon.tag.api.domain.account.command.CreateAccountCommand;
 import org.github.axon.tag.api.domain.account.command.WithdrawMoneyCommand;
@@ -9,16 +12,19 @@ import org.github.axon.tag.common.helper.UIDGenerator;
 import org.github.axon.tag.common.repository.CustomDomainEventEntryRepository;
 import org.github.axon.tag.user.domain.user.UserAggregate;
 import org.github.axon.tag.user.domain.user.listener.UserListener;
-import lombok.AllArgsConstructor;
-import org.axonframework.commandhandling.gateway.CommandGateway;
-import org.axonframework.queryhandling.QueryGateway;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.List;
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/users")
@@ -49,7 +55,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}/{amount}")
-    public void updateUser(@PathVariable("amount")BigDecimal amount, @PathVariable("id")Long id) {
+    public void updateUser(@PathVariable("amount") BigDecimal amount, @PathVariable("id") Long id) {
         WithdrawMoneyCommand cmd = new WithdrawMoneyCommand(id, uidGenerator.getId(), amount);
         userCommandGateway.sendAndWait(cmd);
     }
@@ -69,8 +75,7 @@ public class UserController {
     }
 
     @GetMapping("/replay")
-    public void replay(){
+    public void replay() {
         userListener.on();
     }
-
 }

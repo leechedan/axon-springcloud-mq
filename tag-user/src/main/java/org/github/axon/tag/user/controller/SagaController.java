@@ -1,6 +1,9 @@
 package org.github.axon.tag.user.controller;
 
-import org.github.axon.tag.api.domain.account.command.InitiateMoneyTransactionCommand;
+import lombok.AllArgsConstructor;
+import org.axonframework.commandhandling.gateway.CommandGateway;
+import org.axonframework.modelling.saga.repository.jpa.SagaEntry;
+import org.axonframework.queryhandling.QueryGateway;
 import org.github.axon.tag.api.domain.account.query.QueryUserCommand;
 import org.github.axon.tag.api.domain.contract.command.CreateContractCommand;
 import org.github.axon.tag.api.domain.transfer.command.RequestTransferCommand;
@@ -8,13 +11,15 @@ import org.github.axon.tag.common.helper.UIDGenerator;
 import org.github.axon.tag.common.repository.CustomSagaRepository;
 import org.github.axon.tag.user.domain.user.UserAggregate;
 import org.github.axon.tag.user.service.BankTransferService;
-import lombok.AllArgsConstructor;
-import org.axonframework.commandhandling.gateway.CommandGateway;
-import org.axonframework.modelling.saga.repository.jpa.SagaEntry;
-import org.axonframework.queryhandling.QueryGateway;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.time.Instant;
 import java.util.Comparator;
@@ -65,27 +70,25 @@ public class SagaController {
 
 
     @PostMapping("contract")
-    public Object test(@RequestBody CreateContractCommand cmd){
+    public Object test(@RequestBody CreateContractCommand cmd) {
         cmd.setIdentifier(uidGenerator.getId());
         return userCommandGateway.sendAndWait(cmd);
     }
 
 
-
-
     @RequestMapping("/hello")
-    public  List<String> hello(@RequestParam(value="key", required=false) String name) {
+    public List<String> hello(@RequestParam(value = "key", required = false) String name) {
         String[] beanDefinitionNames = applicationContext.getBeanDefinitionNames();
         Map<String, String> map = new HashMap<>();
-        for(String beanName:beanDefinitionNames){
+        for (String beanName : beanDefinitionNames) {
             Object bean = applicationContext.getBean(beanName);
             String className = bean.getClass().getName();
-            if(className.indexOf("org.github.axon")!= -1 || className.indexOf("org.axonframework")!=-1){
+            if (className.indexOf("org.github.axon") != -1 || className.indexOf("org.axonframework") != -1) {
                 map.put(beanName, className);
             }
         }
         List<String> collect = map.entrySet().stream().map(i -> i.getValue()).sorted(Comparator.naturalOrder())
-                .collect(Collectors.toList());
+                                  .collect(Collectors.toList());
         return collect;
     }
 }

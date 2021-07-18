@@ -5,7 +5,15 @@ import org.axonframework.common.caching.Cache;
 import org.axonframework.common.lock.Lock;
 import org.axonframework.common.lock.LockFactory;
 import org.axonframework.common.lock.PessimisticLockFactory;
-import org.axonframework.eventsourcing.*;
+import org.axonframework.eventsourcing.AggregateDeletedException;
+import org.axonframework.eventsourcing.AggregateFactory;
+import org.axonframework.eventsourcing.CachingEventSourcingRepository;
+import org.axonframework.eventsourcing.EventSourcedAggregate;
+import org.axonframework.eventsourcing.EventSourcingRepository;
+import org.axonframework.eventsourcing.GenericAggregateFactory;
+import org.axonframework.eventsourcing.NoSnapshotTriggerDefinition;
+import org.axonframework.eventsourcing.SnapshotTrigger;
+import org.axonframework.eventsourcing.SnapshotTriggerDefinition;
 import org.axonframework.eventsourcing.eventstore.DomainEventStream;
 import org.axonframework.eventsourcing.eventstore.EmbeddedEventStore;
 import org.axonframework.eventsourcing.eventstore.EventStore;
@@ -32,16 +40,16 @@ public class CustomEventSourcingRepository<T> extends EventSourcingRepository<T>
     private final AggregateFactory<T> aggregateFactory;
     private final LockFactory lockFactory;
 
-    public static <T> Builder<T> builder(Class<T> aggregateType) {
-        return new Builder<>(aggregateType);
-    }
-
     protected CustomEventSourcingRepository(Builder<T> builder) {
         super(builder);
         this.eventStore = builder.eventStore;
         this.aggregateFactory = builder.buildAggregateFactory();
         this.snapshotTriggerDefinition = builder.snapshotTriggerDefinition;
         this.lockFactory = builder.lockFactory;
+    }
+
+    public static <T> Builder<T> builder(Class<T> aggregateType) {
+        return new Builder<>(aggregateType);
     }
 
     protected EventSourcedAggregate<T> doLoadWithLock(String aggregateIdentifier, Instant timestamp) {
@@ -52,8 +60,8 @@ public class CustomEventSourcingRepository<T> extends EventSourcingRepository<T>
             throw new AggregateNotFoundException(aggregateIdentifier, "The aggregate was not found in the event store");
         }
         EventSourcedAggregate<T> aggregate = EventSourcedAggregate
-            .initialize(aggregateFactory.createAggregateRoot(aggregateIdentifier, eventStream.peek()),
-                aggregateModel(), eventStore, trigger);
+                .initialize(aggregateFactory.createAggregateRoot(aggregateIdentifier, eventStream.peek()),
+                            aggregateModel(), eventStore, trigger);
         aggregate.initializeState(eventStream);
         if (aggregate.isDeleted()) {
             throw new AggregateDeletedException(aggregateIdentifier);
@@ -83,7 +91,9 @@ public class CustomEventSourcingRepository<T> extends EventSourcingRepository<T>
         UnitOfWork<?> uow = CurrentUnitOfWork.get();
         Map<String, LockAwareAggregate<T, EventSourcedAggregate<T>>> aggregates = managedAggregates(uow);
         LockAwareAggregate<T, EventSourcedAggregate<T>> aggregate = aggregates.computeIfAbsent(aggregateIdentifier,
-            s -> doLoad(aggregateIdentifier, timestamp));
+                                                                                               s -> doLoad(
+                                                                                                       aggregateIdentifier,
+                                                                                                       timestamp));
         uow.onRollback(u -> aggregates.remove(aggregateIdentifier));
         prepareForCommit(aggregate);
 
@@ -108,7 +118,8 @@ public class CustomEventSourcingRepository<T> extends EventSourcingRepository<T>
         }
 
         @Override
-        public CustomEventSourcingRepository.Builder<T> parameterResolverFactory(ParameterResolverFactory parameterResolverFactory) {
+        public CustomEventSourcingRepository.Builder<T> parameterResolverFactory(
+                ParameterResolverFactory parameterResolverFactory) {
             super.parameterResolverFactory(parameterResolverFactory);
             return this;
         }
@@ -126,9 +137,8 @@ public class CustomEventSourcingRepository<T> extends EventSourcingRepository<T>
         }
 
         /**
-         * {@inheritDoc}
-         * If this Builder is used to instantiate a {@link CachingEventSourcingRepository}, do note that an optimistic
-         * locking strategy is not compatible with a caching approach.
+         * {@inheritDoc} If this Builder is used to instantiate a {@link CachingEventSourcingRepository}, do note that
+         * an optimistic locking strategy is not compatible with a caching approach.
          */
         @Override
         public CustomEventSourcingRepository.Builder<T> lockFactory(LockFactory lockFactory) {
@@ -138,10 +148,11 @@ public class CustomEventSourcingRepository<T> extends EventSourcingRepository<T>
         }
 
         /**
-         * Sets the {@link EventStore} that holds the event org.github.axon.tag.user.stream this repository needs to event source an Aggregate.
+         * Sets the {@link EventStore} that holds the event org.github.axon.tag.user.stream this repository needs to
+         * event source an Aggregate.
          *
-         * @param eventStore an {@link EventStore} that holds the event org.github.axon.tag.user.stream this repository needs to event source
-         *                   an Aggregate
+         * @param eventStore an {@link EventStore} that holds the event org.github.axon.tag.user.stream this repository
+         *                   needs to event source an Aggregate
          * @return the current Builder instance, for fluent interfacing
          */
         public CustomEventSourcingRepository.Builder<T> eventStore(EmbeddedEventStore eventStore) {
@@ -159,7 +170,8 @@ public class CustomEventSourcingRepository<T> extends EventSourcingRepository<T>
          *                                  for an Aggregate contained in this repository
          * @return the current Builder instance, for fluent interfacing
          */
-        public CustomEventSourcingRepository.Builder<T> snapshotTriggerDefinition(SnapshotTriggerDefinition snapshotTriggerDefinition) {
+        public CustomEventSourcingRepository.Builder<T> snapshotTriggerDefinition(
+                SnapshotTriggerDefinition snapshotTriggerDefinition) {
             assertNonNull(snapshotTriggerDefinition, "SnapshotTriggerDefinition may not be null");
             super.snapshotTriggerDefinition(snapshotTriggerDefinition);
             this.snapshotTriggerDefinition = snapshotTriggerDefinition;
@@ -221,11 +233,11 @@ public class CustomEventSourcingRepository<T> extends EventSourcingRepository<T>
         }
 
         /**
-         * Instantiate the {@link AggregateFactory} of generic type {@code T} for the Aggregate this
-         * {@link EventSourcingRepository} will instantiate based on an event org.github.axon.tag.user.stream.
+         * Instantiate the {@link AggregateFactory} of generic type {@code T} for the Aggregate this {@link
+         * EventSourcingRepository} will instantiate based on an event org.github.axon.tag.user.stream.
          *
-         * @return a {@link AggregateFactory} of generic type {@code T} for the Aggregate this
-         * {@link EventSourcingRepository} will instantiate based on an event org.github.axon.tag.user.stream
+         * @return a {@link AggregateFactory} of generic type {@code T} for the Aggregate this {@link
+         * EventSourcingRepository} will instantiate based on an event org.github.axon.tag.user.stream
          */
         private AggregateFactory<T> buildAggregateFactory() {
             if (aggregateFactory == null) {
@@ -241,14 +253,14 @@ public class CustomEventSourcingRepository<T> extends EventSourcingRepository<T>
             assertNonNull(eventStore, "The EventStore is a hard requirement and should be provided");
             if (aggregateFactory == null) {
                 assertNonNull(
-                    aggregateType,
-                    "No AggregateFactory is set, whilst either it or the aggregateType is a hard requirement"
+                        aggregateType,
+                        "No AggregateFactory is set, whilst either it or the aggregateType is a hard requirement"
                 );
                 return;
             }
             assertNonNull(
-                aggregateFactory,
-                "No aggregateType is set, whilst either it or the AggregateFactory is a hard requirement"
+                    aggregateFactory,
+                    "No aggregateType is set, whilst either it or the AggregateFactory is a hard requirement"
             );
         }
     }

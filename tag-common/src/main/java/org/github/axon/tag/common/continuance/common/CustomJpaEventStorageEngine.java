@@ -11,9 +11,9 @@ import org.axonframework.eventsourcing.eventstore.jpa.SQLErrorCodesResolver;
 import org.axonframework.serialization.Serializer;
 import org.axonframework.serialization.upcasting.event.EventUpcaster;
 
-import javax.sql.DataSource;
 import java.sql.SQLException;
 import java.util.function.Predicate;
+import javax.sql.DataSource;
 
 import static org.axonframework.eventhandling.EventUtils.asDomainEventMessage;
 
@@ -47,7 +47,8 @@ public class CustomJpaEventStorageEngine extends JpaEventStorageEngine {
         }
 
         @Override
-        public JpaEventStorageEngine.Builder persistenceExceptionResolver(PersistenceExceptionResolver persistenceExceptionResolver) {
+        public JpaEventStorageEngine.Builder persistenceExceptionResolver(
+                PersistenceExceptionResolver persistenceExceptionResolver) {
             super.persistenceExceptionResolver(persistenceExceptionResolver);
             return this;
         }
@@ -71,15 +72,13 @@ public class CustomJpaEventStorageEngine extends JpaEventStorageEngine {
         }
 
         /**
-         * Sets the {@link PersistenceExceptionResolver} as a {@link SQLErrorCodesResolver}, using the provided
-         * {@link DataSource} to resolve the error codes. <b>Note</b> that the provided DataSource sole purpose in this
-         * {@link org.axonframework.eventsourcing.eventstore.EventStorageEngine} implementation is to be used for
-         * instantiating the PersistenceExceptionResolver.
+         * Sets the {@link PersistenceExceptionResolver} as a {@link SQLErrorCodesResolver}, using the provided {@link
+         * DataSource} to resolve the error codes. <b>Note</b> that the provided DataSource sole purpose in this {@link
+         * org.axonframework.eventsourcing.eventstore.EventStorageEngine} implementation is to be used for instantiating
+         * the PersistenceExceptionResolver.
          *
-         * @param dataSource the {@link DataSource} used to instantiate a
-         *                   {@link SQLErrorCodesResolver#SQLErrorCodesResolver(DataSource)} as the
-         *                   {@link PersistenceExceptionResolver}
-         *
+         * @param dataSource the {@link DataSource} used to instantiate a {@link SQLErrorCodesResolver#SQLErrorCodesResolver(DataSource)}
+         *                   as the {@link PersistenceExceptionResolver}
          * @return the current Builder instance, for fluent interfacing
          * @throws SQLException if creation of the {@link SQLErrorCodesResolver} fails
          */
@@ -89,13 +88,11 @@ public class CustomJpaEventStorageEngine extends JpaEventStorageEngine {
         }
 
         /**
-         * Sets the {@link EntityManagerProvider} which provides the {@link EntityManager} used to access the
-         * underlying database for this {@link org.axonframework.eventsourcing.eventstore.EventStorageEngine}
-         * implementation.
+         * Sets the {@link EntityManagerProvider} which provides the {@link EntityManager} used to access the underlying
+         * database for this {@link org.axonframework.eventsourcing.eventstore.EventStorageEngine} implementation.
          *
          * @param entityManagerProvider a {@link EntityManagerProvider} which provides the {@link EntityManager} used to
          *                              access the underlying database
-         *
          * @return the current Builder instance, for fluent interfacing
          */
         public JpaEventStorageEngine.Builder entityManagerProvider(EntityManagerProvider entityManagerProvider) {
@@ -108,7 +105,6 @@ public class CustomJpaEventStorageEngine extends JpaEventStorageEngine {
          * certain databases for reading blob data.
          *
          * @param transactionManager a {@link TransactionManager} used to manage transaction around fetching event data
-         *
          * @return the current Builder instance, for fluent interfacing
          */
         public JpaEventStorageEngine.Builder transactionManager(TransactionManager transactionManager) {
@@ -118,14 +114,13 @@ public class CustomJpaEventStorageEngine extends JpaEventStorageEngine {
 
         /**
          * Sets the {@code explicitFlush} field specifying whether to explicitly call {@link EntityManager#flush()}
-         * after inserting the Events published in this Unit of Work. If {@code false}, this instance relies
-         * on the TransactionManager to flush data. Note that the {@code persistenceExceptionResolver} may not be able
-         * to translate exceptions anymore. {@code false} should only be used to optimize performance for batch
-         * operations. In other cases, {@code true} is recommended, which is also the default.
+         * after inserting the Events published in this Unit of Work. If {@code false}, this instance relies on the
+         * TransactionManager to flush data. Note that the {@code persistenceExceptionResolver} may not be able to
+         * translate exceptions anymore. {@code false} should only be used to optimize performance for batch operations.
+         * In other cases, {@code true} is recommended, which is also the default.
          *
          * @param explicitFlush a {@code boolean} specifying whether to explicitly call {@link EntityManager#flush()}
          *                      after inserting the Events published in this Unit of Work
-         *
          * @return the current Builder instance, for fluent interfacing
          */
         public JpaEventStorageEngine.Builder explicitFlush(boolean explicitFlush) {
@@ -137,12 +132,10 @@ public class CustomJpaEventStorageEngine extends JpaEventStorageEngine {
          * Sets the {@code maxGapOffset} specifying the maximum distance in sequence numbers between a missing event and
          * the event with the highest known index. If the gap is bigger it is assumed that the missing event will not be
          * committed to the store anymore. This event storage engine will no longer look for those events the next time
-         * a batch is fetched. Defaults to an integer of {@code 10000}
-         * ({@link JpaEventStorageEngine#DEFAULT_MAX_GAP_OFFSET}.
+         * a batch is fetched. Defaults to an integer of {@code 10000} ({@link JpaEventStorageEngine#DEFAULT_MAX_GAP_OFFSET}.
          *
          * @param maxGapOffset an {@code int} specifying the maximum distance in sequence numbers between a missing
          *                     event and the event with the highest known index
-         *
          * @return the current Builder instance, for fluent interfacing
          */
         public JpaEventStorageEngine.Builder maxGapOffset(int maxGapOffset) {
@@ -156,7 +149,6 @@ public class CustomJpaEventStorageEngine extends JpaEventStorageEngine {
          * ({@link JpaEventStorageEngine#DEFAULT_LOWEST_GLOBAL_SEQUENCE}).
          *
          * @param lowestGlobalSequence a {@code long} specifying the first expected auto generated sequence number
-         *
          * @return the current Builder instance, for fluent interfacing
          */
         public JpaEventStorageEngine.Builder lowestGlobalSequence(long lowestGlobalSequence) {
@@ -167,12 +159,11 @@ public class CustomJpaEventStorageEngine extends JpaEventStorageEngine {
         /**
          * Sets the amount of time until a 'gap' in a TrackingToken may be considered timed out. This setting will
          * affect the cleaning process of gaps. Gaps that have timed out will be removed from Tracking Tokens to improve
-         * performance of reading events. Defaults to an  integer of {@code 60000}
-         * ({@link JpaEventStorageEngine#DEFAULT_GAP_TIMEOUT}), thus 1 minute.
+         * performance of reading events. Defaults to an  integer of {@code 60000} ({@link
+         * JpaEventStorageEngine#DEFAULT_GAP_TIMEOUT}), thus 1 minute.
          *
          * @param gapTimeout an {@code int} specifying the amount of time in milliseconds until a 'gap' in a
          *                   TrackingToken may be considered timed out
-         *
          * @return the current Builder instance, for fluent interfacing
          */
         public JpaEventStorageEngine.Builder gapTimeout(int gapTimeout) {
@@ -186,7 +177,6 @@ public class CustomJpaEventStorageEngine extends JpaEventStorageEngine {
          *
          * @param gapCleaningThreshold an {@code int} specifying the threshold of number of gaps in a token before an
          *                             attempt to clean gaps up is taken
-         *
          * @return the current Builder instance, for fluent interfacing
          */
         public JpaEventStorageEngine.Builder gapCleaningThreshold(int gapCleaningThreshold) {

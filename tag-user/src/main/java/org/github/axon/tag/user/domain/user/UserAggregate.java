@@ -1,25 +1,32 @@
 package org.github.axon.tag.user.domain.user;
 
-import org.github.axon.tag.api.domain.account.command.*;
-import org.github.axon.tag.api.domain.account.event.*;
-import org.github.axon.tag.api.domain.account.exception.DepositNotPermittedException;
-import org.github.axon.tag.api.domain.account.exception.InsufficientBalanceException;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 import org.axonframework.commandhandling.CommandHandler;
 import org.axonframework.eventhandling.AllowReplay;
-import org.axonframework.eventhandling.ReplayStatus;
 import org.axonframework.eventsourcing.EventSourcingHandler;
 import org.axonframework.modelling.command.AggregateIdentifier;
 import org.axonframework.spring.stereotype.Aggregate;
+import org.github.axon.tag.api.domain.account.command.BalanceCorrectionCommand;
+import org.github.axon.tag.api.domain.account.command.CreateAccountCommand;
+import org.github.axon.tag.api.domain.account.command.DepositMoneyCommand;
+import org.github.axon.tag.api.domain.account.command.WithdrawMoneyCommand;
+import org.github.axon.tag.api.domain.account.event.AccountCreatedEvent;
+import org.github.axon.tag.api.domain.account.event.BalanceUpdatedEvent;
+import org.github.axon.tag.api.domain.account.event.IUserEvent;
+import org.github.axon.tag.api.domain.account.event.MoneyDepositedEvent;
+import org.github.axon.tag.api.domain.account.event.MoneyWithdrawnEvent;
+import org.github.axon.tag.api.domain.account.event.TransactionCancelledEvent;
+import org.github.axon.tag.api.domain.account.event.TransactionCompletedEvent;
 import org.github.axon.tag.user.entity.BankTransferEntry;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import static org.axonframework.modelling.command.AggregateLifecycle.apply;
@@ -55,7 +62,10 @@ public class UserAggregate implements IUserEvent {
             apply(new TransactionCancelledEvent(cmd.getTransactionId(), BigDecimal.ZERO, "E4"));
 //            throw new InsufficientBalanceException("Insufficient Amount");
         }
-        apply(new MoneyWithdrawnEvent(accountId, cmd.getTransactionId(), cmd.getAmount(), balance.subtract(cmd.getAmount())));
+        apply(new MoneyWithdrawnEvent(accountId,
+                                      cmd.getTransactionId(),
+                                      cmd.getAmount(),
+                                      balance.subtract(cmd.getAmount())));
     }
 
     @CommandHandler
@@ -63,16 +73,22 @@ public class UserAggregate implements IUserEvent {
         log.debug("In DepositMoneyCommand 聚合体{}充值", accountId);
         // Following is just a hypothetical business rule for demo purpose
 //        if ((balance.intValue() + cmd.getAmount().intValue()) > 100) {
-            //禁止异常，应该发出事件通知
+        //禁止异常，应该发出事件通知
 //            throw new DepositNotPermittedException("Too much balance 转入后总金额超过100");
 //        }
-        apply(new MoneyDepositedEvent(cmd.getAccountId(), cmd.getTransactionId(), cmd.getAmount(), balance.add(cmd.getAmount())));
+        apply(new MoneyDepositedEvent(cmd.getAccountId(),
+                                      cmd.getTransactionId(),
+                                      cmd.getAmount(),
+                                      balance.add(cmd.getAmount())));
     }
 
     @CommandHandler
     public void handle(BalanceCorrectionCommand cmd) {
         log.debug("In BalanceCorrectionCommand");
-        apply(new MoneyDepositedEvent(cmd.getAccountId(), cmd.getTransactionId(), cmd.getAmount(), balance .add(cmd.getAmount())));
+        apply(new MoneyDepositedEvent(cmd.getAccountId(),
+                                      cmd.getTransactionId(),
+                                      cmd.getAmount(),
+                                      balance.add(cmd.getAmount())));
     }
 
     @Override
@@ -95,7 +111,7 @@ public class UserAggregate implements IUserEvent {
 
     @Override
     @EventSourcingHandler
-    public void on(MoneyDepositedEvent event){
+    public void on(MoneyDepositedEvent event) {
         log.info("{}", event);
         BankTransferEntry bankTransferEntry = new BankTransferEntry();
         bankTransferEntry.setTransactionId(event.getTransactionId());
@@ -116,7 +132,7 @@ public class UserAggregate implements IUserEvent {
     }
 
     @EventSourcingHandler
-    public void on(TransactionCompletedEvent event){
+    public void on(TransactionCompletedEvent event) {
         log.info("{}", event);
         incompleteFrom.remove(event.getTransactionId());
         incompleteTo.remove(event.getTransactionId());

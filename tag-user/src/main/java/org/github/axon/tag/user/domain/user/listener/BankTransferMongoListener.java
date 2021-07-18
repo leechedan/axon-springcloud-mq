@@ -1,15 +1,15 @@
 package org.github.axon.tag.user.domain.user.listener;
 
 
+import lombok.extern.slf4j.Slf4j;
+import org.axonframework.config.ProcessingGroup;
+import org.axonframework.eventhandling.EventHandler;
 import org.github.axon.tag.api.domain.common.enums.BankTransferStatus;
 import org.github.axon.tag.api.domain.transfer.event.TransferCompletedEvent;
 import org.github.axon.tag.api.domain.transfer.event.TransferFailedEvent;
 import org.github.axon.tag.api.domain.transfer.event.saga.TransferRequestedEvent;
 import org.github.axon.tag.user.entity.BankTransferEntry;
 import org.github.axon.tag.user.service.BankTransferService;
-import lombok.extern.slf4j.Slf4j;
-import org.axonframework.config.ProcessingGroup;
-import org.axonframework.eventhandling.EventHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -27,14 +27,13 @@ public class BankTransferMongoListener {
 
 
         service.save(BankTransferEntry.builder()
-                .transactionId(ev.getTransactionId())
-                .amount(ev.getAmount())
-                .sourceId(ev.getSourceId())
-                .destinationId(ev.getDestinationId())
-                .status(BankTransferStatus.STARTED)
-                .build()
+                                      .transactionId(ev.getTransactionId())
+                                      .amount(ev.getAmount())
+                                      .sourceId(ev.getSourceId())
+                                      .destinationId(ev.getDestinationId())
+                                      .status(BankTransferStatus.STARTED)
+                                      .build()
         );
-
     }
 
     @EventHandler
@@ -49,8 +48,6 @@ public class BankTransferMongoListener {
         } else {
             log.warn("Bank Transfer not found {}", event.getIdentifier());
         }
-
-
     }
 
     @EventHandler
@@ -66,8 +63,6 @@ public class BankTransferMongoListener {
 
             log.warn("Bank Transfer not found {}", event.getTransactionId());
         }
-
-
     }
 
    /* @EventHandler

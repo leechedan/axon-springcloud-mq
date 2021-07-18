@@ -1,7 +1,6 @@
 package org.github.axon.tag.common.repository;
 
 import org.axonframework.modelling.saga.repository.jpa.AssociationValueEntry;
-import org.axonframework.modelling.saga.repository.jpa.SagaEntry;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -13,5 +12,4 @@ public interface CustomAssociationValueEntryRepository extends JpaRepository<Ass
     List<AssociationValueEntry> findBySagaId(String id);
 
     List<AssociationValueEntry> findBySagaType(String type);
-
 }

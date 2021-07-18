@@ -51,7 +51,7 @@ public class GenericDomainEventGateway extends DefaultEventGateway implements Ev
                                                 event.getEventType(),
                                                 event.getEvent(), null),
                                         () -> Clock.systemUTC().instant()
-                                        ))
+                                ))
                 });
     }
 
@@ -59,8 +59,9 @@ public class GenericDomainEventGateway extends DefaultEventGateway implements Ev
         EventMessage<? extends E> message = eventMessage;
 
         MessageDispatchInterceptor dispatchInterceptor;
-        for(Iterator var3 = this.dispatchInterceptors.iterator(); var3.hasNext(); message = (EventMessage)dispatchInterceptor.handle(message)) {
-            dispatchInterceptor = (MessageDispatchInterceptor)var3.next();
+        for (Iterator var3 = this.dispatchInterceptors.iterator(); var3
+                .hasNext(); message = (EventMessage) dispatchInterceptor.handle(message)) {
+            dispatchInterceptor = (MessageDispatchInterceptor) var3.next();
         }
 
         return message;
@@ -74,6 +75,7 @@ public class GenericDomainEventGateway extends DefaultEventGateway implements Ev
     }
 
     public static class Builder extends DefaultEventGateway.Builder {
+
         private EventBus eventBus;
         private List<MessageDispatchInterceptor<? super EventMessage<?>>> dispatchInterceptors = new CopyOnWriteArrayList();
 
@@ -87,7 +89,8 @@ public class GenericDomainEventGateway extends DefaultEventGateway implements Ev
             return this;
         }
 
-        public GenericDomainEventGateway.Builder dispatchInterceptors(MessageDispatchInterceptor<? super EventMessage<?>>... dispatchInterceptors) {
+        public GenericDomainEventGateway.Builder dispatchInterceptors(
+                MessageDispatchInterceptor<? super EventMessage<?>>... dispatchInterceptors) {
             this.dispatchInterceptors(Arrays.asList(dispatchInterceptors));
 
             super.dispatchInterceptors(Arrays.asList(dispatchInterceptors));

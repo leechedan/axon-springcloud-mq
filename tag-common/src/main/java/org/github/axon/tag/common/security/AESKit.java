@@ -1,8 +1,8 @@
 package org.github.axon.tag.common.security;
 
+import lombok.extern.slf4j.Slf4j;
 import org.github.axon.tag.common.exception.BusinessError;
 import org.github.axon.tag.common.exception.BusinessException;
-import lombok.extern.slf4j.Slf4j;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
@@ -41,6 +41,4 @@ public enum AESKit {
             throw new BusinessException(BusinessError.BU_5000);
         }
     }
-
-
 }

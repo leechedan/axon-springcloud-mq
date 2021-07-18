@@ -5,11 +5,12 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldNameConstants;
-import javax.persistence.Id;
+import org.github.axon.tag.base.domain.common.BaseEntry;
+
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.Table;
 
-import org.github.axon.tag.base.domain.common.BaseEntry;
 /**
  * @author lijc
  * @date 2021-06-30
@@ -26,12 +27,12 @@ public class TicketEntry extends BaseEntry {
     @Id
     private String id;
     @ApiModelProperty(name = "lockUser", value = "")
-    
+
     private String lockUser;
     @ApiModelProperty(name = "name", value = "")
-    
+
     private String name;
     @ApiModelProperty(name = "owner", value = "")
-    
+
     private String owner;
 }

@@ -15,6 +15,9 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
  * @interface: TicketMapper
  * @date: 2021-06-30
  * @author: lijc
+ * @explain: 查询TicketDTO对象
+ * @param: SearchRequest  对象参数
+ * @return: TicketDTO
  *//*
 
 public interface TicketMapper extends BaseMapper<TicketEntry> {
@@ -22,10 +25,10 @@ public interface TicketMapper extends BaseMapper<TicketEntry> {
 
     */
 /**
-     * @explain: 查询TicketDTO对象
-     * @param:   SearchRequest  对象参数
-     * @return:  TicketDTO
-     *//*
+ * @explain: 查询TicketDTO对象
+ * @param: SearchRequest  对象参数
+ * @return: TicketDTO
+ *//*
 
     List<TicketDTO> selectByRequest(@Param("page")Page<TicketDTO> page,
           @Param("param")TicketSearchRequest ticketSearchRequest);

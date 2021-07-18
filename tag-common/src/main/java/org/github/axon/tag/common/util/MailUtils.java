@@ -1,15 +1,21 @@
 package org.github.axon.tag.common.util;
 
+import lombok.extern.slf4j.Slf4j;
 import org.github.axon.tag.common.exception.BusinessError;
 import org.github.axon.tag.common.exception.BusinessException;
-import lombok.extern.slf4j.Slf4j;
 
-import javax.mail.*;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+import javax.mail.Address;
+import javax.mail.Authenticator;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 
 /**
  * @author lee
@@ -54,5 +60,4 @@ public enum MailUtils {
             throw new BusinessException(BusinessError.BU_9200, e.getMessage());
         }
     }
-
 }

@@ -1,21 +1,15 @@
 package org.github.axon.tag.user.service.impl;
 
-import org.github.axon.tag.user.entity.BankTransferEntry;
-import org.github.axon.tag.user.entity.BankTransferRepository;
-import org.github.axon.tag.user.entity.UserView;
-import org.github.axon.tag.user.entity.UserViewRepository;
-import org.github.axon.tag.user.service.BankTransferService;
-import org.github.axon.tag.user.service.UserViewService;
 import lombok.extern.slf4j.Slf4j;
 import org.axonframework.config.EventProcessingConfiguration;
-import org.axonframework.eventhandling.TrackingEventProcessor;
+import org.github.axon.tag.user.entity.UserView;
+import org.github.axon.tag.user.entity.UserViewRepository;
+import org.github.axon.tag.user.service.UserViewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityNotFoundException;
-import javax.validation.ValidationException;
 import java.util.List;
-import java.util.Optional;
+import javax.persistence.EntityNotFoundException;
 
 @Service
 @Slf4j

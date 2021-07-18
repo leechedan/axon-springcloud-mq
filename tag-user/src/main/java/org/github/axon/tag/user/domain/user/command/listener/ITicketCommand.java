@@ -1,9 +1,8 @@
 package org.github.axon.tag.user.domain.user.command.listener;
 
-import org.github.axon.tag.api.domain.ticket.command.TicketCreateCommand;
+import org.axonframework.messaging.MetaData;
 import org.github.axon.tag.api.domain.ticket.command.TicketRemoveCommand;
 import org.github.axon.tag.api.domain.ticket.command.TicketUpdateCommand;
-import org.axonframework.messaging.MetaData;
 
 /**
  * @author lijc

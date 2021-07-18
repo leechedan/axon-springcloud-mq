@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class BusinessErrorCode {
+
     private static final long serialVersionUID = 1L;
     private String status;
     private String msg;

@@ -1,9 +1,5 @@
 package org.github.axon.tag.user.domain.user.command.config;
 
-import org.github.axon.tag.common.continuance.common.*;
-import org.github.axon.tag.user.domain.user.command.aggregate.TicketAggregate;
-import org.github.axon.tag.user.domain.user.command.TicketCommandGateway;
-import org.github.axon.tag.user.domain.user.upcaster.TicketEventUpcaster;
 import lombok.extern.slf4j.Slf4j;
 import org.axonframework.commandhandling.SimpleCommandBus;
 import org.axonframework.commandhandling.gateway.CommandGatewayFactory;
@@ -13,6 +9,12 @@ import org.axonframework.eventsourcing.SnapshotTriggerDefinition;
 import org.axonframework.eventsourcing.eventstore.EmbeddedEventStore;
 import org.axonframework.messaging.annotation.ParameterResolverFactory;
 import org.axonframework.serialization.upcasting.event.EventUpcaster;
+import org.github.axon.tag.common.continuance.common.CommandInterceptor;
+import org.github.axon.tag.common.continuance.common.CommandRetryScheduler;
+import org.github.axon.tag.common.continuance.common.CustomEventSourcingRepository;
+import org.github.axon.tag.user.domain.user.command.TicketCommandGateway;
+import org.github.axon.tag.user.domain.user.command.aggregate.TicketAggregate;
+import org.github.axon.tag.user.domain.user.upcaster.TicketEventUpcaster;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -24,25 +26,25 @@ public class TicketAxonConfig {
 
     @Bean
     public CustomEventSourcingRepository<TicketAggregate> ticketAggregateRepository(
-        EmbeddedEventStore eventStore,
-        SnapshotTriggerDefinition snapshotTriggerDefinition,
-        ParameterResolverFactory parameterResolverFactory) {
+            EmbeddedEventStore eventStore,
+            SnapshotTriggerDefinition snapshotTriggerDefinition,
+            ParameterResolverFactory parameterResolverFactory) {
         return CustomEventSourcingRepository.builder(TicketAggregate.class)
-        .eventStore(eventStore)
-        .snapshotTriggerDefinition(snapshotTriggerDefinition)
-        .parameterResolverFactory(parameterResolverFactory)
-        .build();
+                                            .eventStore(eventStore)
+                                            .snapshotTriggerDefinition(snapshotTriggerDefinition)
+                                            .parameterResolverFactory(parameterResolverFactory)
+                                            .build();
     }
 
     @Bean
     public AggregateSnapshotter ticketSnapshotter(EmbeddedEventStore eventStore,
-    ParameterResolverFactory parameterResolverFactory) {
+                                                  ParameterResolverFactory parameterResolverFactory) {
         return AggregateSnapshotter.builder()
-        .eventStore(eventStore)
-        .parameterResolverFactory(parameterResolverFactory)
-        .aggregateFactories(Collections.singletonList(
-        new GenericAggregateFactory<>(TicketAggregate.class)))
-        .build();
+                                   .eventStore(eventStore)
+                                   .parameterResolverFactory(parameterResolverFactory)
+                                   .aggregateFactories(Collections.singletonList(
+                                           new GenericAggregateFactory<>(TicketAggregate.class)))
+                                   .build();
     }
 
     @Bean
@@ -52,12 +54,12 @@ public class TicketAxonConfig {
 
     @Bean
     public TicketCommandGateway ticketCommandGateway(SimpleCommandBus simpleCommandBus,
-    CommandInterceptor commandInterceptor) {
+                                                     CommandInterceptor commandInterceptor) {
         return CommandGatewayFactory.builder()
-        .commandBus(simpleCommandBus)
-        .retryScheduler(new CommandRetryScheduler())
-        .dispatchInterceptors(commandInterceptor)
-        .build()
-        .createGateway(TicketCommandGateway.class);
+                                    .commandBus(simpleCommandBus)
+                                    .retryScheduler(new CommandRetryScheduler())
+                                    .dispatchInterceptors(commandInterceptor)
+                                    .build()
+                                    .createGateway(TicketCommandGateway.class);
     }
 }

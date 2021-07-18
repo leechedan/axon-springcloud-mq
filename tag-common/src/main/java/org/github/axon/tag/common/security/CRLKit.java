@@ -1,10 +1,7 @@
 package org.github.axon.tag.common.security;
 
-import org.github.axon.tag.common.exception.BusinessError;
-import org.github.axon.tag.common.exception.BusinessException;
 import lombok.extern.slf4j.Slf4j;
 import org.bouncycastle.asn1.x500.X500Name;
-import org.bouncycastle.asn1.x509.CRLReason;
 import org.bouncycastle.asn1.x509.CertificateList;
 import org.bouncycastle.cert.X509CRLHolder;
 import org.bouncycastle.cert.X509v2CRLBuilder;
@@ -15,6 +12,8 @@ import org.bouncycastle.operator.ContentSigner;
 import org.bouncycastle.operator.DefaultDigestAlgorithmIdentifierFinder;
 import org.bouncycastle.operator.DefaultSignatureAlgorithmIdentifierFinder;
 import org.bouncycastle.operator.bc.BcRSAContentSignerBuilder;
+import org.github.axon.tag.common.exception.BusinessError;
+import org.github.axon.tag.common.exception.BusinessException;
 
 import java.io.FileOutputStream;
 import java.math.BigInteger;
@@ -50,7 +49,6 @@ public enum CRLKit {
 
         for (int i = 0; i < revokedCerts.length; i++) {
             builder.addCRLEntry(revokedCerts[i], revokedDates[i], crlReasons[i]);
-
         }
         BcRSAContentSignerBuilder bcRSAContentSignerBuilder = new BcRSAContentSignerBuilder(
                 new DefaultSignatureAlgorithmIdentifierFinder().find(SecurityConsts.SHA256_WITH_RSA),

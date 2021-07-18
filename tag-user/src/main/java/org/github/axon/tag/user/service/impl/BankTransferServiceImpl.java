@@ -1,17 +1,17 @@
 package org.github.axon.tag.user.service.impl;
 
-import org.github.axon.tag.user.entity.BankTransferEntry;
-import org.github.axon.tag.user.entity.BankTransferRepository;
-import org.github.axon.tag.user.service.BankTransferService;
 import lombok.extern.slf4j.Slf4j;
 import org.axonframework.config.EventProcessingConfiguration;
 import org.axonframework.eventhandling.TrackingEventProcessor;
+import org.github.axon.tag.user.entity.BankTransferEntry;
+import org.github.axon.tag.user.entity.BankTransferRepository;
+import org.github.axon.tag.user.service.BankTransferService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.validation.ValidationException;
 import java.util.List;
 import java.util.Optional;
+import javax.validation.ValidationException;
 
 @Service
 @Slf4j
@@ -63,11 +63,8 @@ public class BankTransferServiceImpl implements BankTransferService {
             proc.shutDown();
             proc.resetTokens();
             proc.start();
-
         } else {
             throw new ValidationException("Process not found.");
         }
-
-
     }
 }

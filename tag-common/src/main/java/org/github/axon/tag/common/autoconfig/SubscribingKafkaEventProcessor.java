@@ -1,21 +1,18 @@
 package org.github.axon.tag.common.autoconfig;
 
 import lombok.extern.slf4j.Slf4j;
-import org.axonframework.common.DateTimeUtils;
 import org.axonframework.common.jdbc.ConnectionProvider;
-import org.axonframework.common.jdbc.JdbcUtils;
 import org.axonframework.eventhandling.EventMessage;
 import org.axonframework.eventsourcing.eventstore.jdbc.EventSchema;
 import org.axonframework.serialization.Serializer;
 import org.axonframework.serialization.json.JacksonSerializer;
-import org.axonframework.serialization.xml.XStreamSerializer;
 
-import java.sql.SQLException;
 import java.util.List;
 import java.util.function.Consumer;
 
 @Slf4j
 public class SubscribingKafkaEventProcessor {
+
     private Consumer<List<? extends EventMessage<?>>> kafkaEventProcessor;
     private EventSchema eventSchema;
     private ConnectionProvider connectionProvider;
@@ -43,7 +40,7 @@ public class SubscribingKafkaEventProcessor {
         return eventMessages -> {
 //            try {
 
-                log.info("{}", eventMessages);
+            log.info("{}", eventMessages);
                 /*JdbcUtils.executeBatch(connectionProvider.getConnection(), connection -> {
                     return appendEvents.build(connection,
                             eventSchema,
@@ -52,7 +49,7 @@ public class SubscribingKafkaEventProcessor {
                             serializer,
                             (preparedStatement, i, instant) -> { preparedStatement.setString(i, DateTimeUtils.formatInstant(instant)); });*/
 //                }, (e) -> {
-                    //Consumer function that processes the error;
+            //Consumer function that processes the error;
 //                }
 //            );
 //            } catch{
@@ -67,6 +64,7 @@ public class SubscribingKafkaEventProcessor {
     }
 
     public static class Builder {
+
         private Consumer<List<? extends EventMessage<?>>> processor = (eventMessages) -> { /*NO OP*/ };
         private EventSchema eventSchema = null;
         private ConnectionProvider connectionProvider = null;
@@ -101,11 +99,11 @@ public class SubscribingKafkaEventProcessor {
         }
 
         private void afterPropertiesSet() {
-            if ( eventSchema == null ) {
+            if (eventSchema == null) {
                 throw new RuntimeException("SubscribingKafkaEventProcessor Builder needs an EventSchema set!");
             }
 
-            if ( connectionProvider == null ) {
+            if (connectionProvider == null) {
                 throw new RuntimeException("SubscribingKafkaEventProcessor Builder needs a Connection Provider set!");
             }
         }

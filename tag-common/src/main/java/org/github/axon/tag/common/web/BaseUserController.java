@@ -1,10 +1,10 @@
 package org.github.axon.tag.common.web;
 
-import org.github.axon.tag.common.exception.BusinessError;
-import org.github.axon.tag.common.exception.BusinessException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.axonframework.messaging.MetaData;
+import org.github.axon.tag.common.exception.BusinessError;
+import org.github.axon.tag.common.exception.BusinessException;
 
 /**
  * @author lee
@@ -42,5 +42,4 @@ public class BaseUserController extends BaseController {
             throw new BusinessException(BusinessError.BU_5001);
         }
     }
-
 }

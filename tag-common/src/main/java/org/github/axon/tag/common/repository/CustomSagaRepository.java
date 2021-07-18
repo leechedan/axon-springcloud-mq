@@ -12,5 +12,4 @@ public interface CustomSagaRepository extends JpaRepository<SagaEntry, String> {
     List<SagaEntry> findBySagaId(String id);
 
     List<SagaEntry> findByRevisionAndSagaType(String revision, String type);
-
 }

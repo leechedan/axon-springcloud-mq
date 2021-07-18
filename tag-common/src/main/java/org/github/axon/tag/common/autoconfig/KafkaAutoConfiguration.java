@@ -1,31 +1,25 @@
 package org.github.axon.tag.common.autoconfig;
 
-import org.github.axon.tag.common.continuance.common.GenericDomainEventGateway;
-import org.github.axon.tag.common.continuance.common.KafkaMessageSourceConfigurer;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.ser.std.StringSerializer;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
-import org.axonframework.common.jdbc.ConnectionProvider;
-import org.axonframework.config.Configurer;
 import org.axonframework.eventhandling.EventBus;
-import org.axonframework.eventhandling.EventMessage;
 import org.axonframework.eventhandling.gateway.EventGateway;
 import org.axonframework.eventsourcing.eventstore.jdbc.EventSchema;
-import org.axonframework.extensions.kafka.KafkaProperties;
 import org.axonframework.extensions.kafka.eventhandling.DefaultKafkaMessageConverter;
 import org.axonframework.extensions.kafka.eventhandling.KafkaMessageConverter;
-import org.axonframework.extensions.kafka.eventhandling.consumer.Fetcher;
-import org.axonframework.extensions.kafka.eventhandling.consumer.subscribable.SubscribableKafkaMessageSource;
 import org.axonframework.serialization.Serializer;
 import org.axonframework.springboot.autoconfig.AxonAutoConfiguration;
+import org.github.axon.tag.common.continuance.common.GenericDomainEventGateway;
+import org.github.axon.tag.common.continuance.common.KafkaMessageSourceConfigurer;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
@@ -35,14 +29,14 @@ import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 @Slf4j
 @Configuration
 @AutoConfigureAfter(AxonAutoConfiguration.class)
-@ConditionalOnProperty(prefix = "axon.kafka", name = "enable", havingValue = "true", matchIfMissing = true)
+//@ConditionalOnProperty(prefix = "axon.kafka", name = "enable", havingValue = "true", matchIfMissing = false)
+@ConditionalOnClass(name = "org.axonframework.extensions.kafka.eventhandling.KafkaMessageConverter")
 public class KafkaAutoConfiguration {
 
     @Value("${axon.kafka.bootstrap-servers}")
@@ -74,6 +68,7 @@ public class KafkaAutoConfiguration {
 
     /**
      * 每个领域上下文需要监听一个队列
+     *
      * @return
      */
     public ConsumerFactory<String, byte[]> greetingConsumerFactory(String topic) {
@@ -110,9 +105,9 @@ public class KafkaAutoConfiguration {
     @Bean
     public EventSchema eventSchema() {
         return EventSchema.builder()
-                .eventTable("DOMAIN_EVENT_ENTRY")
-                .snapshotTable("SNAPSHOT_EVENT_ENTRY")
-                .build();
+                          .eventTable("DOMAIN_EVENT_ENTRY")
+                          .snapshotTable("SNAPSHOT_EVENT_ENTRY")
+                          .build();
     }
 
 

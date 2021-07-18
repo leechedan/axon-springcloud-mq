@@ -1,12 +1,11 @@
 package org.github.axon.tag.common.security;
 
-import org.github.axon.tag.common.exception.BusinessError;
-import org.github.axon.tag.common.exception.BusinessException;
 import lombok.extern.slf4j.Slf4j;
 import org.bouncycastle.crypto.Digest;
 import org.bouncycastle.crypto.digests.SHA3Digest;
 import org.bouncycastle.crypto.digests.SM3Digest;
-import org.bouncycastle.util.encoders.Hex;
+import org.github.axon.tag.common.exception.BusinessError;
+import org.github.axon.tag.common.exception.BusinessException;
 
 import java.security.MessageDigest;
 

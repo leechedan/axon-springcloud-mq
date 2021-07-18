@@ -1,19 +1,14 @@
 package org.github.axon.tag.common.autoconfig;
 
-import com.rabbitmq.client.Channel;
 import lombok.extern.slf4j.Slf4j;
-import org.axonframework.extensions.amqp.eventhandling.AMQPMessageConverter;
-import org.axonframework.extensions.amqp.eventhandling.spring.SpringAMQPMessageSource;
-import org.axonframework.serialization.Serializer;
 import org.axonframework.springboot.autoconfig.AxonAutoConfiguration;
-import org.axonframework.springboot.autoconfig.AxonServerAutoConfiguration;
-import org.springframework.amqp.core.*;
+import org.springframework.amqp.core.Binding;
+import org.springframework.amqp.core.BindingBuilder;
+import org.springframework.amqp.core.FanoutExchange;
+import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.annotation.EnableRabbit;
-import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,7 +17,7 @@ import org.springframework.context.annotation.Configuration;
 @Slf4j
 @EnableRabbit
 @AutoConfigureAfter(AxonAutoConfiguration.class)
-@ConditionalOnProperty(prefix = "axon.amqp", name = "enable", havingValue = "true", matchIfMissing = false)
+@ConditionalOnProperty(prefix = "axon.amqp", name = "enable", havingValue = "true", matchIfMissing = true)
 public class RabbitAutoConfiguration {
 
     @Bean

@@ -1,20 +1,20 @@
 package org.github.axon.tag.user.domain.user.handler;
 
-import org.github.axon.tag.common.continuance.common.CustomEventSourcingRepository;
-import org.github.axon.tag.user.entity.UserView;
-import org.github.axon.tag.user.domain.user.UserAggregate;
-import org.github.axon.tag.base.domain.common.AbstractEvent;
-import org.github.axon.tag.user.entity.UserViewRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.axonframework.eventhandling.DomainEventMessage;
 import org.axonframework.eventhandling.EventHandler;
 import org.axonframework.eventsourcing.EventSourcedAggregate;
 import org.axonframework.modelling.command.LockAwareAggregate;
+import org.github.axon.tag.base.domain.common.AbstractEvent;
+import org.github.axon.tag.common.continuance.common.CustomEventSourcingRepository;
+import org.github.axon.tag.user.domain.user.UserAggregate;
+import org.github.axon.tag.user.entity.UserView;
+import org.github.axon.tag.user.entity.UserViewRepository;
 import org.springframework.stereotype.Component;
 
-import javax.transaction.Transactional;
 import java.text.MessageFormat;
+import javax.transaction.Transactional;
 
 @Component
 @Slf4j
@@ -37,14 +37,19 @@ public class UserViewHandler {
     public void on(AbstractEvent event, DomainEventMessage<AbstractEvent> message) {
 
 
-        log.info(MessageFormat.format("{0}: {1} , seq: {2}, payload: {3}", message.getType(), message.getAggregateIdentifier(), message.getSequenceNumber(), message.getPayload()));
+        log.info(MessageFormat.format("{0}: {1} , seq: {2}, payload: {3}",
+                                      message.getType(),
+                                      message.getAggregateIdentifier(),
+                                      message.getSequenceNumber(),
+                                      message.getPayload()));
 
         updateUserView(message.getAggregateIdentifier());
     }
 
     @Transactional
     public void updateUserView(String id) {
-        LockAwareAggregate<UserAggregate, EventSourcedAggregate<UserAggregate>> lockAwareAggregate = customEventSourcingRepository.load(id);
+        LockAwareAggregate<UserAggregate, EventSourcedAggregate<UserAggregate>> lockAwareAggregate = customEventSourcingRepository
+                .load(id);
         UserAggregate aggregate = lockAwareAggregate.getWrappedAggregate().getAggregateRoot();
 
 

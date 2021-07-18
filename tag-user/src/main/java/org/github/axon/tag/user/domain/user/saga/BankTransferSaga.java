@@ -1,11 +1,8 @@
 package org.github.axon.tag.user.domain.user.saga;
 
-import lombok.Setter;
-import org.github.axon.tag.api.domain.account.event.*;
-import org.github.axon.tag.api.domain.account.command.*;
-import org.github.axon.tag.api.domain.transfer.event.saga.TransferRequestedEvent;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 import org.axonframework.commandhandling.gateway.CommandGateway;
@@ -16,6 +13,15 @@ import org.axonframework.modelling.saga.SagaEventHandler;
 import org.axonframework.modelling.saga.SagaLifecycle;
 import org.axonframework.modelling.saga.StartSaga;
 import org.axonframework.spring.stereotype.Saga;
+import org.github.axon.tag.api.domain.account.command.BalanceCorrectionCommand;
+import org.github.axon.tag.api.domain.account.command.CompleteMoneyTransactionCommand;
+import org.github.axon.tag.api.domain.account.command.DepositMoneyCommand;
+import org.github.axon.tag.api.domain.account.command.WithdrawMoneyCommand;
+import org.github.axon.tag.api.domain.account.event.MoneyDepositedEvent;
+import org.github.axon.tag.api.domain.account.event.MoneyWithdrawnEvent;
+import org.github.axon.tag.api.domain.account.event.TransactionCancelledEvent;
+import org.github.axon.tag.api.domain.account.event.TransactionCompletedEvent;
+import org.github.axon.tag.api.domain.transfer.event.saga.TransferRequestedEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.Duration;
@@ -73,7 +79,6 @@ public class BankTransferSaga {
     }
 
 
-
     @SagaEventHandler(associationProperty = "transactionId")
     public void on(MoneyDepositedEvent event) {
         log.info("In MoneyDepositedEvent 充值");
@@ -89,9 +94,11 @@ public class BankTransferSaga {
     @SagaEventHandler(associationProperty = "transactionId")
     public void on(TransactionCancelledEvent event) {
         log.info("In TransactionCancelledEvent  转账失败");
-        if(event.getErrorCode().equals("E2")) {
+        if (event.getErrorCode().equals("E2")) {
             // Generate Compensatory action
-            commandGateway.send(new BalanceCorrectionCommand(sourceAccountId, event.getTransactionId(), event.getAmount()));
+            commandGateway.send(new BalanceCorrectionCommand(sourceAccountId,
+                                                             event.getTransactionId(),
+                                                             event.getAmount()));
         }
         end();
     }

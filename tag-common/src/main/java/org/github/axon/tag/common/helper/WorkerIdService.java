@@ -1,9 +1,9 @@
 package org.github.axon.tag.common.helper;
 
-import org.github.axon.tag.common.repository.WorkerIdRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.github.axon.tag.common.repository.WorkerIdRepository;
 import org.springframework.cloud.client.serviceregistry.Registration;
 
 import java.net.Inet4Address;
@@ -38,8 +38,9 @@ public class WorkerIdService {
     }
 
     /**
-     * 由于 Spring Cloud Discovery 的 ServiceInstance 接口没有一个获取 instance id 的方法，所以只能想办法自己标记
-     * Spring Cloud Discovery 在 2.1.0 之后的版本在接口中提供了 getInstanceId 这一方法，但是可以为空，所以需要各个实现，我看了 K8S 和 consul 都提供了该方法的实现
+     * 由于 Spring Cloud Discovery 的 ServiceInstance 接口没有一个获取 instance id 的方法，所以只能想办法自己标记 Spring Cloud Discovery 在 2.1.0
+     * 之后的版本在接口中提供了 getInstanceId 这一方法，但是可以为空，所以需要各个实现，我看了 K8S 和 consul 都提供了该方法的实现
+     *
      * @return ip:mac_address 形式的字符串
      */
     public String getServiceKey() {
@@ -54,7 +55,9 @@ public class WorkerIdService {
 
                 while (addresses.hasMoreElements()) {
                     InetAddress addr = addresses.nextElement();
-                    if (addr instanceof Inet4Address && !addr.isLoopbackAddress() && (networkInterface.getDisplayName().equals("en0") || networkInterface.getDisplayName().equals("eth0"))) {
+                    if (addr instanceof Inet4Address && !addr.isLoopbackAddress() && (
+                            networkInterface.getDisplayName().equals("en0") || networkInterface.getDisplayName().equals(
+                                    "eth0"))) {
                         hostAddress = addr.getHostAddress();
                         mac = networkInterface.getHardwareAddress();
                         break;

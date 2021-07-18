@@ -1,13 +1,11 @@
 package org.github.axon.tag.common.continuance.common;
 
-import org.github.axon.tag.base.domain.common.AbstractCommand;
-import org.github.axon.tag.common.continuance.common.MetaDataUser;
-import org.github.axon.tag.common.continuance.common.MetaDataUserInterface;
-import org.github.axon.tag.common.helper.UIDGenerator;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.axonframework.commandhandling.GenericCommandMessage;
 import org.axonframework.messaging.MessageDispatchInterceptor;
+import org.github.axon.tag.base.domain.common.AbstractCommand;
+import org.github.axon.tag.common.helper.UIDGenerator;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.HashMap;
@@ -23,13 +21,14 @@ public class CommandInterceptor implements MessageDispatchInterceptor {
     private final UIDGenerator uidGenerator;
 
     @Override
-    public BiFunction<Integer, GenericCommandMessage<AbstractCommand>, GenericCommandMessage<AbstractCommand>> handle(List messages) {
+    public BiFunction<Integer, GenericCommandMessage<AbstractCommand>, GenericCommandMessage<AbstractCommand>> handle(
+            List messages) {
         return (index, message) -> {
             log.info("command interceptor {} {}", index, message);
             // create command 自动生成 ID
             if (message.getPayload() instanceof AbstractCommand) {
                 AbstractCommand payload = (AbstractCommand) message.getPayload();
-                if (payload.getIdentifier() == null){
+                if (payload.getIdentifier() == null) {
                     payload.setIdentifier(uidGenerator.getId());
                 }
             }

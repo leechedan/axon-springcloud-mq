@@ -1,11 +1,15 @@
 package org.github.axon.tag.common.security;
 
-import org.github.axon.tag.common.exception.BusinessError;
-import org.github.axon.tag.common.exception.BusinessException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
+import org.github.axon.tag.common.exception.BusinessError;
+import org.github.axon.tag.common.exception.BusinessException;
 
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.PrintStream;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.PrivateKey;
@@ -73,7 +77,8 @@ public enum CertificateKit {
      * @param filepath   输出文件
      * @throws Exception
      */
-    static void saveKeyStore(String type, String alias, PrivateKey privateKey, String certPass, String storePwd, X509Certificate[] certChain, String filepath) {
+    static void saveKeyStore(String type, String alias, PrivateKey privateKey, String certPass, String storePwd,
+                             X509Certificate[] certChain, String filepath) {
         if (storePwd == null) {
             storePwd = "";
         }
@@ -176,7 +181,5 @@ public enum CertificateKit {
             log.error(BusinessError.BU_9203 + "_" + e.getMessage(), e);
             throw new BusinessException(BusinessError.BU_9203);
         }
-
     }
-
 }

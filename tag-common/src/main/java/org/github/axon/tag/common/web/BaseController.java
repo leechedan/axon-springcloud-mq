@@ -1,14 +1,15 @@
 package org.github.axon.tag.common.web;
 
-import org.github.axon.tag.common.exception.BusinessError;
-import org.github.axon.tag.common.exception.BusinessException;
 import lombok.extern.slf4j.Slf4j;
 import org.axonframework.messaging.MetaData;
+import org.github.axon.tag.common.exception.BusinessError;
+import org.github.axon.tag.common.exception.BusinessException;
 import org.github.axon.tag.common.gateway.MetaDataGateway;
 import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.data.redis.core.StringRedisTemplate;
 
 import javax.servlet.http.HttpServletRequest;
+
+//import org.springframework.data.redis.core.StringRedisTemplate;
 
 /**
  * @author lee

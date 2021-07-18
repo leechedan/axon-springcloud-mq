@@ -7,6 +7,7 @@ import java.io.Serializable;
  * @date 2018/7/25 15:59
  */
 public class BusinessException extends RuntimeException implements Serializable {
+
     private static final long serialVersionUID = 1L;
 
     public BusinessException(BusinessErrorCode businessErrorCode) {

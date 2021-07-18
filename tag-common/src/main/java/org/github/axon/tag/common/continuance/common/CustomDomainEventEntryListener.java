@@ -1,19 +1,19 @@
 package org.github.axon.tag.common.continuance.common;
 
-import org.github.axon.tag.common.config.UserPublisher;
-import org.github.axon.tag.common.repository.CustomDomainEventEntryRepository;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import org.github.axon.tag.common.config.UserPublisher;
+import org.github.axon.tag.common.repository.CustomDomainEventEntryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.support.TransactionSynchronization;
 import org.springframework.transaction.support.TransactionSynchronizationAdapter;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
+import java.util.concurrent.CompletableFuture;
 import javax.persistence.PostPersist;
 import javax.transaction.Transactional;
-import java.util.concurrent.CompletableFuture;
 
 @AllArgsConstructor
 @NoArgsConstructor

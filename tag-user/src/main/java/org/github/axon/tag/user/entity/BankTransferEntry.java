@@ -1,22 +1,21 @@
 package org.github.axon.tag.user.entity;
 
-import org.github.axon.tag.api.domain.common.enums.BankTransferStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.axonframework.serialization.Revision;
+import org.github.axon.tag.api.domain.common.enums.BankTransferStatus;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.Id;
 import javax.persistence.Version;
-import java.io.Serializable;
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor

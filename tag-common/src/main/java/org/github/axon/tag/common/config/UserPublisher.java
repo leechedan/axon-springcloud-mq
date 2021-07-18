@@ -1,10 +1,10 @@
 package org.github.axon.tag.common.config;
 
-import org.github.axon.tag.common.continuance.common.DomainEvent;
-import org.github.axon.tag.common.continuance.common.CustomDomainEventEntry;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.github.axon.tag.common.continuance.common.CustomDomainEventEntry;
+import org.github.axon.tag.common.continuance.common.DomainEvent;
 
 import java.text.MessageFormat;
 import java.util.HashMap;
@@ -38,17 +38,16 @@ public class UserPublisher {
         }
 
         DomainEvent<HashMap, HashMap> domainEvent = new DomainEvent<>(
-            event.getType(),
-            event.getAggregateIdentifier(),
-            event.getPayload().getType().getName(),
-            event.getPayload().getType().getRevision(),
-            event.getSequenceNumber(),
-            event.getEventIdentifier(),
-            event.getTimestamp(),
-            payload,
-            metaData);
+                event.getType(),
+                event.getAggregateIdentifier(),
+                event.getPayload().getType().getName(),
+                event.getPayload().getType().getRevision(),
+                event.getSequenceNumber(),
+                event.getEventIdentifier(),
+                event.getTimestamp(),
+                payload,
+                metaData);
 
         this.sendEvent(domainEvent);
     }
-
 }
