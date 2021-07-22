@@ -9,7 +9,7 @@ import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.annotation.EnableRabbit;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -17,7 +17,7 @@ import org.springframework.context.annotation.Configuration;
 @Slf4j
 @EnableRabbit
 @AutoConfigureAfter(AxonAutoConfiguration.class)
-@ConditionalOnProperty(prefix = "axon.amqp", name = "enable", havingValue = "true", matchIfMissing = true)
+@ConditionalOnClass(name = {"org.springframework.amqp.core.Queue"})
 public class RabbitAutoConfiguration {
 
     @Bean

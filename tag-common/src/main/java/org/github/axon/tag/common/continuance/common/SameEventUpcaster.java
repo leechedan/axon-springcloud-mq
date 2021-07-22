@@ -17,7 +17,6 @@ public abstract class SameEventUpcaster extends SingleEventUpcaster {
 
     public boolean canUpcast(IntermediateEventRepresentation intermediateRepresentation) {
 
-//        return outputType(intermediateRepresentation.getType()) != null;
         return eventTypeName().equals(intermediateRepresentation.getType().getName());
     }
 
@@ -26,7 +25,6 @@ public abstract class SameEventUpcaster extends SingleEventUpcaster {
         return intermediateRepresentation.upcast(
                 outputType(intermediateRepresentation.getType()), JsonNode.class,
                 d -> this.doUpCastPayload(d, intermediateRepresentation),
-//                d->d,
                 metaData -> this.doUpCastMetaData(metaData, intermediateRepresentation)
         );
     }

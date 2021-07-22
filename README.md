@@ -1,5 +1,9 @@
 ## axonframework可能的最佳实现
 
+### 版本介绍
+axon 4.5.2
+jdk 1.8
+
 ### 关于序列化
 建议使用xstream，否则很容易出问题，不会对aggregate和saga中的bean进行序列化，但是在upcaster中会比较难处理
 
@@ -40,9 +44,9 @@
 9. - [x] 事件的历史，以及事件的处理状态(目前使用了sent字段来标注，可能还需要更多信息)
 10. - [x]  查询用户事件历史
 11. - [ ]  单服务多实例运行时，processor的调优处理[tuning-event-processing](https://docs.axoniq.io/reference-guide/v/4.2/operations-guide/runtime-tuning/tuning-event-processing)
-12. - [ ] 用户端：查询command的简单处理
+12. - [x] 用户端：查询command的简单处理
 13. - [ ] 用户端：stream聚合类复杂查询command处理
 14. - [ ] 组件端：使用cache类组件，加快相关event/replay的速度
-15. - [ ] codeGenerator组件
+15. - [x] codeGenerator组件
 16. - [ ] metrics处理
 17. - [ ] ideaPlugin(官方插件已经长久失修，无法使用)

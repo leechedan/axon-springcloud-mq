@@ -48,7 +48,7 @@ public class AppAxonConfig {
         return new ContractEventUpCaster();
     }
 
-//    @Bean
+    @Bean
     public ContractCommandGateway getCommandGateway(SimpleCommandBus simpleCommandBus, CommandInterceptor commandInterceptor) {
         return CommandGatewayFactory.builder()
                 .commandBus(simpleCommandBus)

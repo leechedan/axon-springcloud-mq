@@ -35,7 +35,6 @@ import java.util.Map;
 @Slf4j
 @Configuration
 @AutoConfigureAfter(AxonAutoConfiguration.class)
-//@ConditionalOnProperty(prefix = "axon.kafka", name = "enable", havingValue = "true", matchIfMissing = false)
 @ConditionalOnClass(name = "org.axonframework.extensions.kafka.eventhandling.KafkaMessageConverter")
 public class KafkaAutoConfiguration {
 
@@ -80,27 +79,18 @@ public class KafkaAutoConfiguration {
         return new DefaultKafkaConsumerFactory<String, byte[]>(props, new StringDeserializer(), customDeserializer);
     }
 
-    @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, byte[]> paymentKafkaListenerContainerFactory() {
-        ConcurrentKafkaListenerContainerFactory<String, byte[]> factory = new ConcurrentKafkaListenerContainerFactory<>();
-        factory.setConsumerFactory(greetingConsumerFactory("invoiceTopic"));
-        return factory;
-    }
-
-    @Bean
-    @Qualifier("saga")
+//    @Bean
+//    @Qualifier("saga")
     public ConcurrentKafkaListenerContainerFactory<String, byte[]> sagaKafkaListenerContainerFactory() {
         ConcurrentKafkaListenerContainerFactory<String, byte[]> factory = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(greetingConsumerFactory("saga"));
         return factory;
     }
 
-
     @Bean
     public KafkaMessageSourceConfigurer kafkaMessageSourceConfigurer() {
         return new KafkaMessageSourceConfigurer();
     }
-
 
     @Bean
     public EventSchema eventSchema() {
@@ -109,7 +99,6 @@ public class KafkaAutoConfiguration {
                           .snapshotTable("SNAPSHOT_EVENT_ENTRY")
                           .build();
     }
-
 
     @Bean
     public EventGateway itemEventGateway(EventBus itemEventStore) {

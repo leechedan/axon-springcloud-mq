@@ -97,7 +97,7 @@
         <profile>
             <id>dev</id>
             <activation>
-                <activeByDefault>true</activeByDefault>
+                <activeByDefault>false</activeByDefault>
             </activation>
 
             <dependencies>
@@ -118,9 +118,9 @@
         <profile>
             <id>kafka</id>
             <activation>
-                <activeByDefault>false</activeByDefault>
+                <activeByDefault>true</activeByDefault>
             </activation>
-            <!--<dependencies>
+            <dependencies>
                 <dependency>
                     <groupId>org.springframework.kafka</groupId>
                     <artifactId>spring-kafka</artifactId>
@@ -133,7 +133,7 @@
                     <groupId>org.apache.kafka</groupId>
                     <artifactId>kafka-clients</artifactId>
                 </dependency>
-            </dependencies>-->
+            </dependencies>
         </profile>
     </profiles>
 

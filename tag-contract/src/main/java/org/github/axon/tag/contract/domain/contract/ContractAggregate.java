@@ -42,11 +42,8 @@ public class ContractAggregate implements ContractInterface {
     private boolean deleted = false;
 
     @CommandHandler
-    public ContractAggregate(CreateContractCommand command, MetaData metaData, UIDGenerator generator) {
+    public ContractAggregate(CreateContractCommand command, MetaData metaData) {
         log.info("command {}", command);
-        if (null == command.getIdentifier()) {
-            command.setIdentifier(generator.getId());
-        }
         AggregateLifecycle.apply(new ContractCreatedEvent(command.getIdentifier(),
             command.getName(),
             command.getPartyA(),

@@ -13,18 +13,18 @@ spring:
         username: nacos
         file-extension: yml
         enabled: true
-        server-addr: 47.52.30.71:8848
+        server-addr: localhost:8848
       discovery:
         ip: localhost
         port: ${server.port}
         password: nacos
         username: nacos
-        server-addr: 47.52.30.71:8848
+        server-addr: localhost:8848
     consul:
       host: ${DOCKER_HOST:localhost}
       port: 8500
       discovery:
-        hostname: ${DISCOVERY_HOST:leechedan.vicp.cc}
+        hostname: ${DISCOVERY_HOST:localhost}
         port: ${SERVER_PORT:8090}
         service-name: ${DISCOVERY_HOST:localhost}
         instance-id: ${DISCOVERY_ID:accountservice}
@@ -35,8 +35,4 @@ spring:
         instance-host: ${DISCOVERY_HOST:localhost}
         instance-id: ${DISCOVERY_ID:accountservice}
         instance-port: ${SERVER_PORT:8090}
-axon:
-  eventhandling.processors.contract-processor:
-#    source: subscribingKafkaMessageSource
-    source: ${MS_BEAN_NAME:streamableKafkaMessageSource}
-#    mode: tracking
+

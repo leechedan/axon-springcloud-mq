@@ -20,17 +20,6 @@ import org.springframework.context.annotation.Configuration;
 
 import java.util.Collections;
 
-//import com.rabbitmq.client.Channel;
-//import org.springframework.amqp.core.*;
-//import org.springframework.amqp.rabbit.annotation.RabbitListener;
-//import org.axonframework.extensions.amqp.eventhandling.AMQPMessageConverter;
-//import org.axonframework.extensions.amqp.eventhandling.spring.SpringAMQPMessageSource;
-//import org.axonframework.extensions.kafka.KafkaProperties;
-//import org.axonframework.extensions.kafka.eventhandling.KafkaMessageConverter;
-//import org.axonframework.extensions.kafka.eventhandling.consumer.ConsumerFactory;
-//import org.axonframework.extensions.kafka.eventhandling.consumer.Fetcher;
-//import org.axonframework.extensions.kafka.eventhandling.consumer.subscribable.SubscribableKafkaMessageSource;
-
 @Slf4j
 @Configuration
 public class UserAxonConfig {

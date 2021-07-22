@@ -1,10 +1,8 @@
 package org.github.axon.tag.common.autoconfig;
 
 import lombok.extern.slf4j.Slf4j;
-import org.axonframework.serialization.upcasting.event.SingleEventUpcaster;
 import org.github.axon.tag.common.config.UserPublisher;
 import org.github.axon.tag.common.continuance.common.CustomDomainEventEntryListener;
-import org.github.axon.tag.common.continuance.common.CustomerEventUpCaster;
 import org.github.axon.tag.common.helper.UIDGenerator;
 import org.github.axon.tag.common.helper.WorkerIdService;
 import org.github.axon.tag.common.repository.CustomDomainEventEntryRepository;
@@ -47,9 +45,4 @@ public class IdAutoConfiguration {
         return new CustomDomainEventEntryListener(repository, userPublisher);
     }
 
-    @Bean
-    @ConditionalOnMissingBean
-    public SingleEventUpcaster singleEventUpcaster() {
-        return new CustomerEventUpCaster();
-    }
 }
