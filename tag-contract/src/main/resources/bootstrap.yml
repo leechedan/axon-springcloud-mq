@@ -13,13 +13,13 @@ spring:
         username: nacos
         file-extension: yml
         enabled: true
-        server-addr: localhost:8848
+        server-addr: 10.201.12.13:30059
       discovery:
         ip: localhost
         port: ${server.port}
         password: nacos
         username: nacos
-        server-addr: localhost:8848
+        server-addr: 10.201.12.13:30059
     consul:
       host: ${DOCKER_HOST:localhost}
       port: 8500

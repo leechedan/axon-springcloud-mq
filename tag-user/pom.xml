@@ -94,7 +94,7 @@
     </dependencies>
 
     <profiles>
-        <profile>
+        <!--<profile>
             <id>dev</id>
             <activation>
                 <activeByDefault>false</activeByDefault>
@@ -114,7 +114,7 @@
                     <artifactId>spring-rabbit</artifactId>
                 </dependency>
             </dependencies>
-        </profile>
+        </profile>-->
         <profile>
             <id>kafka</id>
             <activation>
