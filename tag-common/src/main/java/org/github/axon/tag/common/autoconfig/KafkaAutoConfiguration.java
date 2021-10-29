@@ -14,7 +14,7 @@ import org.axonframework.extensions.kafka.eventhandling.KafkaMessageConverter;
 import org.axonframework.serialization.Serializer;
 import org.axonframework.springboot.autoconfig.AxonAutoConfiguration;
 import org.github.axon.tag.common.continuance.common.GenericDomainEventGateway;
-import org.github.axon.tag.common.continuance.common.KafkaMessageSourceConfigurer;
+//import org.github.axon.tag.common.continuance.common.KafkaMessageSourceConfigurer;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
@@ -87,10 +87,10 @@ public class KafkaAutoConfiguration {
         return factory;
     }
 
-    @Bean
+    /*@Bean
     public KafkaMessageSourceConfigurer kafkaMessageSourceConfigurer() {
         return new KafkaMessageSourceConfigurer();
-    }
+    }*/
 
     @Bean
     public EventSchema eventSchema() {

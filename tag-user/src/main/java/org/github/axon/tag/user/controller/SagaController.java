@@ -4,12 +4,12 @@ import lombok.AllArgsConstructor;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.axonframework.modelling.saga.repository.jpa.SagaEntry;
 import org.axonframework.queryhandling.QueryGateway;
-import org.github.axon.tag.api.domain.account.query.QueryUserCommand;
 import org.github.axon.tag.api.domain.contract.command.CreateContractCommand;
 import org.github.axon.tag.api.domain.transfer.command.RequestTransferCommand;
+import org.github.axon.tag.api.domain.transfer.query.QueryTransferCommand;
 import org.github.axon.tag.common.helper.UIDGenerator;
 import org.github.axon.tag.common.repository.CustomSagaRepository;
-import org.github.axon.tag.user.domain.user.UserAggregate;
+import org.github.axon.tag.user.domain.user.BankTransferAggregate;
 import org.github.axon.tag.user.service.BankTransferService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -54,11 +54,11 @@ public class SagaController {
         return userCommandGateway.sendAndWait(cmd);
     }
 
-    @GetMapping("/{id}")
-    public UserAggregate getUser(@PathVariable("id") String id) {
-        QueryUserCommand command = new QueryUserCommand(id, Instant.now());
+    @GetMapping("/tran/{id}")
+    public BankTransferAggregate getUser(@PathVariable("id") String id) {
+        QueryTransferCommand command = new QueryTransferCommand(id, Instant.now());
 
-        return queryGateway.query(command, UserAggregate.class).join();
+        return queryGateway.query(command, BankTransferAggregate.class).join();
     }
 
     @GetMapping("/sagaEntry/{id}")

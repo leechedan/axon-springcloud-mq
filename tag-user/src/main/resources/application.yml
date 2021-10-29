@@ -1,0 +1,137 @@
+spring:
+  datasource:
+    url: jdbc:mysql://${JDBC_HOST:localhost}:${JDBC_PORT:3306}/ds?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&serverTimezone=UTC
+    username: ${JDBC_USER:root}
+    password: ${JDBC_PWD:123456}
+    driver-class-name: com.mysql.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        show_sql: false
+        use_sql-comment: false
+        format_sql: false
+        dialect: org.hibernate.dialect.MySQL57Dialect
+  mvc:
+    throw-exception-if-no-handler-found: true
+  resources:
+    add-mappings: false
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+    serialization:
+      write-dates-as-timestamps: true
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/axonframework
+      auto-index-creation: true
+      min-connections-per-host: 100
+      max-connections-per-host: 10000
+      threads-allowed-to-block-for-connection-multiplier: 5
+      server-selection-timeout: 30000
+      max-wait-time: 9600
+      max-connection-idel-time: 1000
+      max-connection-life-time: 0
+      connect-timeout: 10000
+      socket-timeout: 1000
+      socket-keep-alive: false
+      always-use-m-beans: false
+      heartbeat-socket-timeout: 20000
+      heartbeat-connect-timeout: 20000
+      min-heartbeat-frequency: 500
+      heartbeat-frequency: 10000
+      local-threshold: 15
+      authentication-database: admin
+
+logging:
+  level:
+    - org:
+        github: warn
+        apache: warn
+        axonframework:
+          eventhandling: INFO
+        springframework:
+          web: INFO
+          cloud.sleuth: INFO
+        apache.ibatis: INFO
+        java.sql: INFO
+        hibernate:
+          SQL: INFO
+          #type.descriptor.sql: TRACE
+
+axon:
+  eventhandling:
+    processors:
+      user-processor:
+        initialSegmentCount: 128
+        threadCount: 128
+        batchSize: 512
+  metrics:
+    auto-configuration:
+      enabled: true
+  queue: user
+  amqp.exchange: belle
+  serializer:
+    general: jackson
+  distributed:
+    enabled: true
+    spring-cloud:
+      fallback-to-http-get: true
+      fallback-url: /axon-routing
+  kafka:
+    bootstrap-servers: ${DOCKER_HOST:kafka}:9092
+    client-id: ${spring.application.name}
+    default-topic: localevent
+    properties:
+      security.protocol: PLAINTEXT
+
+    publisher:
+      confirmation-mode: transactional
+
+    producer:
+      transaction-id-prefix: kafka-sample
+      retries: 1
+      event-processor-mode: tracking
+      # For additional unnamed properties, add them to the `properties` map like so
+      properties:
+        some-key: [some-value]
+
+    fetcher:
+      poll-timeout: 3000
+    consumer:
+      enable-auto-commit: true
+      auto-commit-interval: 3000
+      event-processor-mode: tracking
+      # For additional unnamed properties, add them to the `properties` map like so
+      properties:
+        some-key: [some-value]
+server:
+  tomcat:
+    uri-encoding: UTF-8
+    #最大工作线程数，默认200, 4核8g内存，线程数经验值800
+    #操作系统做线程之间的切换调度是有系统开销的，所以不是越多越好。
+    max-threads: 2000
+    # 等待队列长度，默认100
+    accept-count: 500
+    max-connections: 2000
+    # 最小工作空闲线程数，默认10, 适当增大一些，以便应对突然增长的访问量
+    min-spare-threads: 200
+
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+          - metrics
+          - prometheus
+  endpoint:
+    metrics:
+      enabled: true
+    prometheus:
+      enabled: true
+  metrics:
+    export:
+      prometheus:
+        enabled: true

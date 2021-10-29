@@ -12,6 +12,7 @@ import org.axonframework.serialization.upcasting.event.EventUpcaster;
 import org.github.axon.tag.common.continuance.common.CommandInterceptor;
 import org.github.axon.tag.common.continuance.common.CommandRetryScheduler;
 import org.github.axon.tag.common.continuance.common.CustomEventSourcingRepository;
+import org.github.axon.tag.user.domain.user.BankTransferAggregate;
 import org.github.axon.tag.user.domain.user.UserAggregate;
 import org.github.axon.tag.user.domain.user.UserCommandGateway;
 import org.github.axon.tag.user.domain.user.upcaster.UserEventUpCaster;
@@ -23,6 +24,18 @@ import java.util.Collections;
 @Slf4j
 @Configuration
 public class UserAxonConfig {
+
+    @Bean
+    public CustomEventSourcingRepository<BankTransferAggregate> bankTransferAggregateRepository(
+            EmbeddedEventStore eventStore,
+            SnapshotTriggerDefinition snapshotTriggerDefinition,
+            ParameterResolverFactory parameterResolverFactory) {
+        return CustomEventSourcingRepository.builder(BankTransferAggregate.class)
+                                            .eventStore(eventStore)
+                                            .snapshotTriggerDefinition(snapshotTriggerDefinition)
+                                            .parameterResolverFactory(parameterResolverFactory)
+                                            .build();
+    }
 
     @Bean
     public CustomEventSourcingRepository<UserAggregate> userAggregateRepository(

@@ -2,7 +2,7 @@ server.port: ${SERVER_PORT:8091}
 spring:
   profiles:
     active:
-      - dev
+      - local
   application:
     name: USER
   cloud:
@@ -13,28 +13,13 @@ spring:
         username: nacos
         file-extension: yaml
         enabled: true
-        server-addr: 10.201.12.13:30059
+        server-addr: localhost:8848
       discovery:
         ip: localhost
         port: ${server.port}
         password: nacos
         username: nacos
-        server-addr: 10.201.12.13:30059
-    consul:
-      host: ${DOCKER_HOST:localhost}
-      port: 8500
-      discovery:
-        hostname: ${DISCOVERY_HOST:xxxxx}
-        port: ${SERVER_PORT:8090}
-        service-name: ${DISCOVERY_HOST:localhost}
-        instance-id: ${DISCOVERY_ID:accountservice}
-    zookeeper:
-      connect-string: ${DOCKER_HOST:localhost}:${ZK_PORT12181}
-      discovery:
-        service-name: ${DISCOVERY_SERVICE:accountservice}
-        instance-host: ${DISCOVERY_HOST:localhost}
-        instance-id: ${DISCOVERY_ID:accountservice}
-        instance-port: ${SERVER_PORT:8090}
+        server-addr: localhost:8848
 logging:
   level:
     com.alibaba: WARN

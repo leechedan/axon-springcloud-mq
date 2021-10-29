@@ -90,12 +90,6 @@
             <version>${kafka.version}</version>
             <scope>provided</scope>
         </dependency>
-        <!--<dependency>
-            <groupId>org.github.axon</groupId>
-            <artifactId>unified-dispose-springboot-starter</artifactId>
-            <version>0.1.0.RELEASE</version>
-        </dependency>-->
-
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
@@ -115,6 +109,11 @@
             <groupId>org.axonframework.extensions.amqp</groupId>
             <artifactId>axon-amqp-spring-boot-starter</artifactId>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.swagger</groupId>
+            <artifactId>swagger-annotations</artifactId>
+            <version>1.5.18</version>
         </dependency>
 
         <dependency>
@@ -136,7 +135,7 @@
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-              <version>5.1.39</version>
+            <version>5.1.39</version>
 <!--            <version>8.0.20</version>-->
         </dependency>
 

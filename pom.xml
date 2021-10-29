@@ -123,6 +123,21 @@
                 <version>${spring.rabbit.version}</version>
             </dependency>
             <dependency>
+                <groupId>org.axonframework.extensions.amqp</groupId>
+                <artifactId>axon-amqp-spring-boot-starter</artifactId>
+                <version>${axon.extension.amqp.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.axonframework.extensions.kafka</groupId>
+                <artifactId>axon-kafka-spring-boot-starter</artifactId>
+                <version>${axon.extension.amqp.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.axonframework.extensions.springcloud</groupId>
+                <artifactId>axon-springcloud-spring-boot-starter</artifactId>
+                <version>${axon.extension.springcloud.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>com.baomidou</groupId>
                 <artifactId>mybatis-plus-boot-starter</artifactId>
                 <version>${baomidou.version}</version>
@@ -150,11 +165,6 @@
             </dependency>
 
             <dependency>
-                <groupId>org.axonframework.extensions.kafka</groupId>
-                <artifactId>axon-kafka-spring-boot-starter</artifactId>
-                <version>${axon.extension-kafka.version}</version>
-            </dependency>
-            <dependency>
                 <groupId>org.axonframework</groupId>
                 <artifactId>axon-messaging</artifactId>
                 <version>${axon.version}</version>
@@ -175,18 +185,6 @@
                 <groupId>io.micrometer</groupId>
                 <artifactId>micrometer-registry-prometheus</artifactId>
                 <version>${micrometer.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.axonframework.extensions.springcloud</groupId>
-                <artifactId>axon-springcloud-spring-boot-starter</artifactId>
-                <version>${axon.extension.springcloud.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.axonframework.extensions.amqp</groupId>
-                <artifactId>axon-amqp-spring-boot-starter</artifactId>
-                <version>${axon.extension.amqp.version}</version>
             </dependency>
 
             <dependency>

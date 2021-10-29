@@ -1,6 +1,5 @@
 package org.github.axon.tag.contract;
 
-//import org.github.axon.dispose.starter.annotation.EnableGlobalDispose;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
@@ -9,7 +8,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @EnableDiscoveryClient
 @SpringBootApplication
-//@EnableGlobalDispose
 @EntityScan("org.github.axon")
 @EnableJpaRepositories("org.github.axon.tag.contract.entity")
 public class ContractApplication {

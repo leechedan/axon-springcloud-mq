@@ -114,11 +114,11 @@
                     <artifactId>spring-rabbit</artifactId>
                 </dependency>
             </dependencies>
-        </profile>-->
+        </profile>
         <profile>
             <id>kafka</id>
             <activation>
-                <activeByDefault>true</activeByDefault>
+                <activeByDefault>false</activeByDefault>
             </activation>
             <dependencies>
                 <dependency>
@@ -134,7 +134,7 @@
                     <artifactId>kafka-clients</artifactId>
                 </dependency>
             </dependencies>
-        </profile>
+        </profile>-->
     </profiles>
 
     <dependencyManagement>
