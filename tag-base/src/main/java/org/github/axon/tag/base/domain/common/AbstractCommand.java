@@ -17,5 +17,5 @@ public class AbstractCommand {
     @TargetAggregateIdentifier
     @RoutingKey
     @ApiModelProperty(name = "id", value = "")
-    private Long identifier;
+    private Long id;
 }

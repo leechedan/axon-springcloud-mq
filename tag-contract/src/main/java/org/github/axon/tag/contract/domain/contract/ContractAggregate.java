@@ -44,7 +44,7 @@ public class ContractAggregate implements ContractInterface {
     @CommandHandler
     public ContractAggregate(CreateContractCommand command, MetaData metaData) {
         log.info("command {}", command);
-        AggregateLifecycle.apply(new ContractCreatedEvent(command.getIdentifier(),
+        AggregateLifecycle.apply(new ContractCreatedEvent(command.getId(),
             command.getName(),
             command.getPartyA(),
             command.getPartyB(),
@@ -54,7 +54,7 @@ public class ContractAggregate implements ContractInterface {
     @CommandHandler
     private void on(UpdateContractCommand command, MetaData metaData) {
         log.info("command {}", command);
-        AggregateLifecycle.apply(new ContractUpdatedEvent(command.getIdentifier(),
+        AggregateLifecycle.apply(new ContractUpdatedEvent(command.getId(),
                 command.getName(),
                 command.getPartyA(),
                 command.getPartyB(),
@@ -65,14 +65,14 @@ public class ContractAggregate implements ContractInterface {
     @CommandHandler
     private void on(DeleteContractCommand command, MetaData metaData) {
         log.info("command {}", command);
-        AggregateLifecycle.apply(new ContractDeletedEvent(command.getIdentifier()), metaData);
+        AggregateLifecycle.apply(new ContractDeletedEvent(command.getId()), metaData);
     }
 
     @EventSourcingHandler
     @AllowReplay(false)
     private void on(ContractCreatedEvent event) {
         log.info("event {}", event);
-        this.setIdentifier(event.getIdentifier());
+        this.setIdentifier(event.getId());
         this.onUpdate(event);
     }
 

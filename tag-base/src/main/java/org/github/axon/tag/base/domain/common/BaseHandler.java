@@ -10,6 +10,6 @@ import org.axonframework.messaging.MetaData;
 @Slf4j
 public class BaseHandler {
     protected void checkAuthorization(Object o, MetaData metaData) {
-        log.info("检查权限", o, metaData);
+        log.debug("检查权限", o, metaData);
     }
 }

@@ -35,7 +35,7 @@ public class SagaController {
 
     @PostMapping("/tran")
     public Object tran(@RequestBody RequestTransferCommand cmd) {
-        cmd.setIdentifier(uidGenerator.getId());
+        cmd.setId(uidGenerator.getId());
         return userCommandGateway.sendAndWait(cmd);
     }
 
@@ -48,8 +48,8 @@ public class SagaController {
 
     @PostMapping("contract")
     public Object test(@RequestBody CreateContractCommand cmd){
-        if (null == cmd.getIdentifier()) {
-            cmd.setIdentifier(uidGenerator.getId());
+        if (null == cmd.getId()) {
+            cmd.setId(uidGenerator.getId());
         }
         return userCommandGateway.sendAndWait(cmd);
     }

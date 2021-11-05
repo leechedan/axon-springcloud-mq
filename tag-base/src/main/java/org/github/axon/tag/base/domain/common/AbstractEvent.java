@@ -15,5 +15,5 @@ import org.axonframework.serialization.Revision;
 public class AbstractEvent {
 
     @TargetAggregateIdentifier
-    private Long identifier;
+    private Long id;
 }

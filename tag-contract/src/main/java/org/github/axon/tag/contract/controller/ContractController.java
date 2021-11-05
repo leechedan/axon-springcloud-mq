@@ -37,7 +37,7 @@ public class ContractController {
 
     @PutMapping("/{id}")
     public void updateContract(@PathVariable("id") Long id, @RequestBody @Valid UpdateContractCommand command) {
-        command.setIdentifier(id);
+        command.setId(id);
         commandGateway.sendAndWait(command);
     }
 

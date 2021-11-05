@@ -28,8 +28,8 @@ public class CommandInterceptor implements MessageDispatchInterceptor {
             // create command 自动生成 ID
             if (message.getPayload() instanceof AbstractCommand) {
                 AbstractCommand payload = (AbstractCommand) message.getPayload();
-                if (payload.getIdentifier() == null) {
-                    payload.setIdentifier(uidGenerator.getId());
+                if (payload.getId() == null) {
+                    payload.setId(uidGenerator.getId());
                 }
             }
 
