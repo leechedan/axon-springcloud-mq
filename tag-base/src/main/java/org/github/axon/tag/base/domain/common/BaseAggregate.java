@@ -2,7 +2,9 @@ package org.github.axon.tag.base.domain.common;
 
 import lombok.Data;
 import lombok.experimental.FieldNameConstants;
+import org.axonframework.commandhandling.RoutingKey;
 import org.axonframework.messaging.MetaData;
+import org.axonframework.modelling.command.AggregateIdentifier;
 
 import java.io.Serializable;
 
@@ -14,13 +16,12 @@ import java.io.Serializable;
 @FieldNameConstants
 public class BaseAggregate implements Serializable {
 
-//    public final static String FIELD_ADMIN_ID = "admin_id";
-//    public final static String FIELD_USER_ID = "user_id";
+    @AggregateIdentifier
+    @RoutingKey
+    Long id;
     private String adminId;
     private String userId;
 
     protected void applyMetaData(MetaData metaData) {
-//        adminId = String.valueOf(metaData.get(BaseAggregate.FIELD_ADMIN_ID));
-//        userId = String.valueOf(metaData.get(BaseAggregate.FIELD_USER_ID));
     }
 }

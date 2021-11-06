@@ -43,12 +43,14 @@ public class AxonContinueAutoConfiguration {
 
     @Primary
     @Bean
+    @ConditionalOnMissingBean
     public SpringAggregateSnapshotterFactoryBean springAggregateSnapshotterFactoryBean() {
         log.info("1 springAggregateSnapshotterFactoryBean");
         return new SpringAggregateSnapshotterFactoryBean();
     }
 
     @Bean
+    @ConditionalOnMissingBean
     public SnapshotTriggerDefinition snapshotTriggerDefinition(Snapshotter snapshotter) {
         log.info("1 snapshotTriggerDefinition");
         return new EventCountSnapshotTriggerDefinition(snapshotter, 5);
@@ -56,6 +58,7 @@ public class AxonContinueAutoConfiguration {
 
     @Primary
     @Bean
+    @ConditionalOnMissingBean
     public EventProcessingConfigurer eventProcessingConfigurer(EventProcessingConfigurer eventProcessingConfigurer) {
         eventProcessingConfigurer.usingTrackingEventProcessors();
         return eventProcessingConfigurer;
@@ -63,6 +66,7 @@ public class AxonContinueAutoConfiguration {
 
 
     @Bean
+    @ConditionalOnMissingBean
     public DeadlineManager deadlineManager(AxonConfiguration configuration, TransactionManager transactionManager,
                                            Scheduler scheduler) {
         return QuartzDeadlineManager.builder().scheduler(scheduler)
@@ -71,6 +75,7 @@ public class AxonContinueAutoConfiguration {
     }
 
     @Bean
+    @ConditionalOnMissingBean
     public ListenerInvocationErrorHandler listenerInvocationErrorHandler() {
         return PropagatingErrorHandler.INSTANCE;
     }
