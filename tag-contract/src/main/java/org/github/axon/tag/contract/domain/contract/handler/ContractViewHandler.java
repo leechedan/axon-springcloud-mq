@@ -50,7 +50,7 @@ public class ContractViewHandler {
 
 
         ContractView contractView = contractViewRepository.findById(Long.valueOf(id)).orElse(new ContractView());
-        contractView.setId(aggregate.getIdentifier());
+        contractView.setId(aggregate.getId());
         contractView.setDeleted(aggregate.isDeleted());
         contractView.setName(aggregate.getName());
         contractView.setPartyA(aggregate.getPartyA());

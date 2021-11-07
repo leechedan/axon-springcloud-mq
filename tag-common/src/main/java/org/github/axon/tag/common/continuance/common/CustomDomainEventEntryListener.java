@@ -1,3 +1,4 @@
+/*
 package org.github.axon.tag.common.continuance.common;
 
 import lombok.AllArgsConstructor;
@@ -22,7 +23,7 @@ import javax.transaction.Transactional;
 public class CustomDomainEventEntryListener {
 
     private CustomDomainEventEntryRepository customDomainEventEntryRepository;
-
+    PostPersist
     private UserPublisher userPublisher;
 
     @Autowired
@@ -45,16 +46,16 @@ public class CustomDomainEventEntryListener {
         });
     }
 
-    @Transactional
     public void sendEvent(String identifier) {
         CustomDomainEventEntry eventEntry = customDomainEventEntryRepository.findByEventIdentifier(
                 identifier);
 
         if (!eventEntry.isSent()) {
-            log.info("send identifier:{} success");
+            log.debug("send identifier:{} success");
             userPublisher.sendEvent(eventEntry);
             eventEntry.setSent(true);
             customDomainEventEntryRepository.save(eventEntry);
         }
     }
 }
+*/

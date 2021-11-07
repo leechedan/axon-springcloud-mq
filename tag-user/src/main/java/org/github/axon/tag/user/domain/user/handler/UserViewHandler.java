@@ -14,12 +14,12 @@ import org.github.axon.tag.user.entity.UserViewRepository;
 import org.springframework.stereotype.Component;
 
 import java.text.MessageFormat;
-import javax.transaction.Transactional;
 
-@Component
+/**
+ * 对于抽象事件进行监听
+ */
 @Slf4j
 @AllArgsConstructor
-@Transactional
 public class UserViewHandler {
 
     private final CustomEventSourcingRepository<UserAggregate> customEventSourcingRepository;
@@ -46,7 +46,6 @@ public class UserViewHandler {
         updateUserView(message.getAggregateIdentifier());
     }
 
-    @Transactional
     public void updateUserView(String id) {
         LockAwareAggregate<UserAggregate, EventSourcedAggregate<UserAggregate>> lockAwareAggregate = customEventSourcingRepository
                 .load(id);

@@ -6,21 +6,19 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldNameConstants;
 import org.github.axon.tag.base.domain.common.BaseEntry;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
 
 /**
  * @author lijc
  * @date 2021-06-30
  */
 @Data
-@Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldNameConstants
-@Table(name = "tb_ticket")
+@Document(collation = "tb_ticket")
 public class TicketEntry extends BaseEntry {
 
     @ApiModelProperty(name = "id", value = "")

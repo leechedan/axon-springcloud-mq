@@ -2,20 +2,16 @@ package org.github.axon.tag.common.autoconfig;
 
 import lombok.extern.slf4j.Slf4j;
 import org.github.axon.tag.common.config.UserPublisher;
-import org.github.axon.tag.common.continuance.common.CustomDomainEventEntryListener;
 import org.github.axon.tag.common.helper.UIDGenerator;
 import org.github.axon.tag.common.helper.WorkerIdService;
-import org.github.axon.tag.common.repository.CustomDomainEventEntryRepository;
 import org.github.axon.tag.common.repository.WorkerIdRepository;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.cloud.client.serviceregistry.Registration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Slf4j
 @Configuration
-@EntityScan(basePackages = {"org.github.axon.tag.common.helper"})
 public class IdAutoConfiguration {
 
     @Bean
@@ -36,12 +32,12 @@ public class IdAutoConfiguration {
         return new UserPublisher();
     }
 
-    @Bean
+    /*@Bean
     @ConditionalOnMissingBean
     public CustomDomainEventEntryListener customDomainEventEntryListener(
             CustomDomainEventEntryRepository repository, UserPublisher userPublisher) {
-        log.info("1 customDomainEventEntryListener");
+        log.debug("1 customDomainEventEntryListener");
         return new CustomDomainEventEntryListener(repository, userPublisher);
-    }
+    }*/
 
 }

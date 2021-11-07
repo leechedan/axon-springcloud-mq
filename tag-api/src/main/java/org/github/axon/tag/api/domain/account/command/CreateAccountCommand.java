@@ -4,14 +4,12 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.axonframework.modelling.command.TargetAggregateIdentifier;
+import org.github.axon.tag.base.domain.common.AbstractCommand;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CreateAccountCommand {
+public class CreateAccountCommand extends AbstractCommand {
 
-    @TargetAggregateIdentifier
-    Long accountId;
-
-    String accountHolderName;
+    private String accountHolderName;
 }

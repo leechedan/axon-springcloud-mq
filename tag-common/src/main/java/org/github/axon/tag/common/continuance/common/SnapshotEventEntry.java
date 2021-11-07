@@ -1,3 +1,4 @@
+/*
 package org.github.axon.tag.common.continuance.common;
 
 import lombok.Getter;
@@ -10,9 +11,11 @@ import javax.persistence.Entity;
 import javax.persistence.Index;
 import javax.persistence.Table;
 
+*/
 /**
  * 与domainEventEntry处于同一包，需要一同注册
- */
+ *//*
+
 @Entity(name = "SnapshotEventEntry")
 @Getter
 @Setter
@@ -26,3 +29,4 @@ public class SnapshotEventEntry extends AbstractSnapshotEventEntry<byte[]> {
     protected SnapshotEventEntry() {
     }
 }
+*/

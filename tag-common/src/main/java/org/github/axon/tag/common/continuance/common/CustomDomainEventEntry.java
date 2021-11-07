@@ -5,21 +5,19 @@ import lombok.Setter;
 import org.axonframework.eventhandling.AbstractSequencedDomainEventEntry;
 import org.axonframework.eventhandling.DomainEventMessage;
 import org.axonframework.serialization.Serializer;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
-import javax.persistence.Index;
-import javax.persistence.Table;
 
-@Entity(name = "DomainEventEntry")
+@Document(collation = "DomainEventEntry")
 @Getter
 @Setter
-@Table(indexes = @Index(columnList = "aggregateIdentifier,sequenceNumber", unique = true))
-@EntityListeners(CustomDomainEventEntryListener.class)
+//@Table(indexes = @Index(columnList = "aggregateIdentifier,sequenceNumber", unique = true))
+//@EntityListeners(CustomDomainEventEntryListener.class)
 public class CustomDomainEventEntry extends AbstractSequencedDomainEventEntry<byte[]> {
 
-    @Column(columnDefinition = "tinyint(1) default 0")
+//    @Column(columnDefinition = "tinyint(1) default 0")
+    @Field("sent")
     private boolean sent = false;
 
     public CustomDomainEventEntry(DomainEventMessage<?> eventMessage, Serializer serializer) {

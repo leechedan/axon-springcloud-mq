@@ -49,7 +49,7 @@ public class BankTransferAggregate {
     @CommandHandler
     public BankTransferAggregate(RequestTransferCommand cmd) {
 
-        Assert.notNull(cmd.getIdentifier(), "Transaction Id should not be empty or null.");
+        Assert.notNull(cmd.getId(), "Transaction Id should not be empty or null.");
         Assert.notNull(cmd.getSourceId(), "Source Id should not be empty or null.");
         Assert.notNull(cmd.getDestinationId(), "Destination Id should not be empty or null.");
         Assert.isTrue(cmd.getAmount().doubleValue() > 0d, "Amount must be greater than zero.");
@@ -58,24 +58,22 @@ public class BankTransferAggregate {
                                     .amount(cmd.getAmount())
                                     .destinationId(cmd.getDestinationId())
                                     .sourceId(cmd.getSourceId())
-                                    .transactionId(cmd.getIdentifier())
+                                    .transactionId(cmd.getId())
                                     .build());
     }
 
     @CommandHandler
     public void handle(CompleteTransferCommand cmd) {
         log.info("{}", cmd);
-        Assert.notNull(cmd.getIdentifier(), "Transaction Id should not be empty or null.");
-        apply(TransferCompletedEvent.builder()
-                                    .identifier(cmd.getIdentifier())
-                                    .build());
+        Assert.notNull(cmd.getId(), "Transaction Id should not be empty or null.");
+        apply(new TransferCompletedEvent(cmd.getId()));
     }
 
     @CommandHandler
     public void handle(FailTransferCommand cmd) {
         log.info("{}", cmd);
-        Assert.notNull(cmd.getIdentifier(), "Transaction Id should not be empty or null.");
-        apply(new TransactionCancelledEvent(cmd.getIdentifier(), cmd.getAmount(), "fail"));
+        Assert.notNull(cmd.getId(), "Transaction Id should not be empty or null.");
+        apply(new TransactionCancelledEvent(cmd.getId(), cmd.getAmount(), "fail"));
     }
 
     @CommandHandler

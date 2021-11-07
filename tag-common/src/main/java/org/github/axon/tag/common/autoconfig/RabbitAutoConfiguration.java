@@ -22,20 +22,20 @@ public class RabbitAutoConfiguration {
 
     @Bean
     public FanoutExchange exchange(@Value("${axon.amqp.exchange}") String name) {
-        log.info("init exchange {}", name);
+        log.debug("init exchange {}", name);
         return new FanoutExchange(name);
     }
 
     @Bean
     public Queue queue(@Value("${axon.queue}") String name) {
-        log.info("init queue {}", name);
+        log.debug("init queue {}", name);
         Queue queue = new Queue(name);
         return queue;
     }
 
     @Bean
     public Binding binding(FanoutExchange exchange, Queue queue) {
-        log.info("init binding exchange:{} queue:{}", exchange.getName(), queue.getName());
+        log.debug("init binding exchange:{} queue:{}", exchange.getName(), queue.getName());
         return BindingBuilder.bind(queue).to(exchange);
     }
 }

@@ -4,13 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.github.axon.tag.base.domain.common.AbstractEvent;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-@Builder
-public class TransferCompletedEvent {
+public class TransferCompletedEvent extends AbstractEvent {
 
-    private Long  identifier;
-
+    public TransferCompletedEvent(Long id) {
+        super(id);
+    }
 }

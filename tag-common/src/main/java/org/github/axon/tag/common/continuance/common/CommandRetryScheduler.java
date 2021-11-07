@@ -15,7 +15,7 @@ public class CommandRetryScheduler implements RetryScheduler {
                                  RuntimeException lastFailure,
                                  List<Class<? extends Throwable>[]> failures,
                                  Runnable commandDispatch) {
-        log.info(MessageFormat.format("aggregate [{0}] execute [{1}] retry [{2}] time",
+        log.debug(MessageFormat.format("aggregate [{0}] execute [{1}] retry [{2}] time",
                                       commandMessage.getIdentifier(),
                                       commandMessage.getCommandName(),
                                       failures.size()));

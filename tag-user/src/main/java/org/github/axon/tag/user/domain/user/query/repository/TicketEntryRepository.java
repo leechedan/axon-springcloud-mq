@@ -1,7 +1,7 @@
 package org.github.axon.tag.user.domain.user.query.repository;
 
 import org.github.axon.tag.user.domain.user.query.entry.TicketEntry;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface TicketEntryRepository extends
-        JpaRepository<TicketEntry, String>
+        MongoRepository<TicketEntry, String>
         /**QuerydslPredicateExecutor<TicketEntry>*/
 {
 

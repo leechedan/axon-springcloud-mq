@@ -51,8 +51,8 @@ public class UserAggregate implements IUserEvent {
     @CommandHandler
     public UserAggregate(CreateAccountCommand cmd) {
         log.debug("In CreateAccountCommand 创建聚合体");
-        this.accountId = cmd.getAccountId();
-        apply(new AccountCreatedEvent(cmd.getAccountId(), cmd.getAccountHolderName(), BigDecimal.TEN));
+        this.accountId = cmd.getId();
+        apply(new AccountCreatedEvent(cmd.getId(), cmd.getAccountHolderName(), BigDecimal.TEN));
     }
 
     @CommandHandler

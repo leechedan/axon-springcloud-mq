@@ -58,14 +58,14 @@ public class BankTransferEntryMongoListener {
     public void on(TransferCompletedEvent event) {
 
         log.info("View Handling {} event: {}", event.getClass().getSimpleName(), event);
-        BankTransferEntry bankTransfer = service.findById(event.getIdentifier());
+        BankTransferEntry bankTransfer = service.findById(event.getId());
 
         if (bankTransfer != null) {
             bankTransfer.setStatus(BankTransferStatus.COMPLETED);
             service.save(bankTransfer);
         } else {
 
-            log.warn("Bank Transfer not found {}", event.getIdentifier());
+            log.warn("Bank Transfer not found {}", event.getId());
         }
 
 

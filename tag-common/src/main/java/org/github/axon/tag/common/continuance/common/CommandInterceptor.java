@@ -24,7 +24,7 @@ public class CommandInterceptor implements MessageDispatchInterceptor {
     public BiFunction<Integer, GenericCommandMessage<AbstractCommand>, GenericCommandMessage<AbstractCommand>> handle(
             List messages) {
         return (index, message) -> {
-            log.info("command interceptor {} {}", index, message);
+            log.debug("command interceptor {} {}", index, message);
             // create command 自动生成 ID
             if (message.getPayload() instanceof AbstractCommand) {
                 AbstractCommand payload = (AbstractCommand) message.getPayload();

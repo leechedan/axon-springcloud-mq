@@ -10,9 +10,7 @@ import org.axonframework.modelling.command.TargetAggregateIdentifier;
 @AllArgsConstructor
 @Builder
 @ToString
-public class CompleteTransferCommand {
+public class CompleteTransferCommand extends AbstractCommand {
 
-    @TargetAggregateIdentifier
-    private Long identifier;
 
 }

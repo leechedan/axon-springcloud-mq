@@ -29,7 +29,7 @@ public class CustomEmbeddedEventStore extends EmbeddedEventStore {
     }
 
     public DomainEventStream readEvents(String aggregateIdentifier, Instant timestamp) {
-        log.info("aggregateIdentifier {}", aggregateIdentifier);
+        log.debug("aggregateIdentifier {}", aggregateIdentifier);
         Optional<DomainEventMessage<?>> optionalSnapshot;
         try {
             optionalSnapshot = storageEngine().readSnapshot(aggregateIdentifier);

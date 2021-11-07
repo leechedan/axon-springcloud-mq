@@ -15,11 +15,11 @@ public class UserPublisher {
 
     public void sendEvent(DomainEvent event) {
 
-        log.info(MessageFormat.format("prepare to send message : {0}]", event));
+        log.debug(MessageFormat.format("prepare to send message : {0}]", event));
     }
 
     public void sendEvent(CustomDomainEventEntry event) {
-        log.info("send Event:{} fake", event);
+        log.debug("send Event:{} fake", event);
         // use stream to send message here
         ObjectMapper mapper = new ObjectMapper();
 

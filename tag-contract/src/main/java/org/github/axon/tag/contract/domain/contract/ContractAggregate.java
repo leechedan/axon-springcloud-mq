@@ -6,6 +6,7 @@ import org.github.axon.tag.api.domain.contract.command.UpdateContractCommand;
 import org.github.axon.tag.api.domain.contract.event.ContractCreatedEvent;
 import org.github.axon.tag.api.domain.contract.event.ContractDeletedEvent;
 import org.github.axon.tag.api.domain.contract.event.ContractUpdatedEvent;
+import org.github.axon.tag.base.domain.common.BaseAggregate;
 import org.github.axon.tag.common.helper.UIDGenerator;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -26,10 +27,7 @@ import org.axonframework.spring.stereotype.Aggregate;
 @NoArgsConstructor
 @Aggregate(snapshotTriggerDefinition = "snapshotTriggerDefinition")
 @Slf4j
-public class ContractAggregate implements ContractInterface {
-
-    @AggregateIdentifier
-    private Long identifier;
+public class ContractAggregate extends BaseAggregate implements ContractInterface {
 
     private String name;
 
@@ -72,7 +70,7 @@ public class ContractAggregate implements ContractInterface {
     @AllowReplay(false)
     private void on(ContractCreatedEvent event) {
         log.info("event {}", event);
-        this.setIdentifier(event.getId());
+        this.setId(event.getId());
         this.onUpdate(event);
     }
 

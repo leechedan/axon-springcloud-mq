@@ -7,7 +7,7 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>2.3.1.RELEASE</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <relativePath/>
     </parent>
     <groupId>org.github.axon</groupId>
     <artifactId>tag</artifactId>
@@ -27,6 +27,7 @@
     cloud 2.2.2 Hoxton.SR2 需要升级jackson 2.10.4-->
     <properties>
         <java.version>1.8</java.version>
+        <jmh.version>1.25.2</jmh.version>
         <lombok.version>1.18.2</lombok.version>
         <jackson.version>2.9.4</jackson.version>
         <kafka.version>2.8.0</kafka.version>
@@ -35,9 +36,11 @@
         <micrometer.version>1.5.1</micrometer.version>
         <spring-cloud.version>Hoxton.SR2</spring-cloud.version>
         <spring.kafka.version>2.2.4.RELEASE</spring.kafka.version>
+        <spring.boot.mongodb.version>2.2.6.RELEASE</spring.boot.mongodb.version>
         <spring.rabbit.version>2.2.8.RELEASE</spring.rabbit.version>
         <axon.extension-kafka.version>4.0-SNAPSHOT</axon.extension-kafka.version>
         <axon.extension.amqp.version>4.5</axon.extension.amqp.version>
+        <axon.extension-mongo.version>4.4</axon.extension-mongo.version>
         <axon.extension.springcloud.version>4.4</axon.extension.springcloud.version>
         <spring.boot.version>2.3.1.RELEASE</spring.boot.version>
         <springBoot.amqp.version>2.3.1.RELEASE</springBoot.amqp.version>
@@ -65,7 +68,6 @@
                 <scope>import</scope>
             </dependency>
 
-
             <dependency>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>tag-base</artifactId>
@@ -87,10 +89,22 @@
                 <artifactId>spring-boot-starter-actuator</artifactId>
                 <version>${spring.boot.version}</version>
             </dependency>
+
             <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-quartz</artifactId>
-                <version>${spring.boot.version}</version>
+                <groupId>org.openjdk.jmh</groupId>
+                <artifactId>jmh-core</artifactId>
+                <version>${jmh.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.openjdk.jmh</groupId>
+                <artifactId>jmh-generator-annprocess</artifactId>
+                <version>${jmh.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.quartz-scheduler</groupId>
+                <artifactId>quartz</artifactId>
+                <version>2.2.2</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework.boot</groupId>
@@ -101,11 +115,6 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-amqp</artifactId>
                 <version>${springBoot.amqp.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-data-jpa</artifactId>
-                <version>${spring.boot.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework.data</groupId>
@@ -123,36 +132,6 @@
                 <version>${spring.rabbit.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.axonframework.extensions.amqp</groupId>
-                <artifactId>axon-amqp-spring-boot-starter</artifactId>
-                <version>${axon.extension.amqp.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.axonframework.extensions.kafka</groupId>
-                <artifactId>axon-kafka-spring-boot-starter</artifactId>
-                <version>${axon.extension.amqp.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.axonframework.extensions.springcloud</groupId>
-                <artifactId>axon-springcloud-spring-boot-starter</artifactId>
-                <version>${axon.extension.springcloud.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.baomidou</groupId>
-                <artifactId>mybatis-plus-boot-starter</artifactId>
-                <version>${baomidou.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.baomidou</groupId>
-                <artifactId>mybatis-plus-extension</artifactId>
-                <version>${baomidou.version}</version>
-            </dependency>
-
-            <!--<dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-starter-zookeeper-discovery</artifactId>
-            </dependency>-->
-            <dependency>
                 <groupId>org.axonframework</groupId>
                 <artifactId>axon-spring-boot-starter</artifactId>
                 <version>${axon.version}</version>
@@ -165,9 +144,19 @@
             </dependency>
 
             <dependency>
+                <groupId>org.axonframework.extensions.kafka</groupId>
+                <artifactId>axon-kafka-spring-boot-starter</artifactId>
+                <version>${axon.extension-kafka.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>org.axonframework</groupId>
                 <artifactId>axon-messaging</artifactId>
                 <version>${axon.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.axonframework.extensions.mongo</groupId>
+                <artifactId>axon-mongo</artifactId>
+                <version>${axon.extension-mongo.version}</version>
             </dependency>
 
 
@@ -185,6 +174,18 @@
                 <groupId>io.micrometer</groupId>
                 <artifactId>micrometer-registry-prometheus</artifactId>
                 <version>${micrometer.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.axonframework.extensions.springcloud</groupId>
+                <artifactId>axon-springcloud-spring-boot-starter</artifactId>
+                <version>${axon.extension.springcloud.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.axonframework.extensions.amqp</groupId>
+                <artifactId>axon-amqp-spring-boot-starter</artifactId>
+                <version>${axon.extension.amqp.version}</version>
             </dependency>
 
             <dependency>
@@ -218,13 +219,6 @@
                 <scope>test</scope>
                 <version>${axon.version}</version>
             </dependency>
-            <dependency>
-                <groupId>mysql</groupId>
-                <artifactId>mysql-connector-java</artifactId>
-                <scope>runtime</scope>
-                <version>8.0.19</version>
-            </dependency>
-
             <dependency>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
@@ -260,10 +254,5 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-
-    <build>
-        <plugins>
-        </plugins>
-    </build>
 
 </project>
