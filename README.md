@@ -48,5 +48,5 @@ jdk 1.8
 13. - [ ] 用户端：stream聚合类复杂查询command处理
 14. - [ ] 组件端：使用cache类组件，加快相关event/replay的速度
 15. - [x] codeGenerator组件
-16. - [ ] metrics处理
+16. - [x] metrics处理
 17. - [ ] ideaPlugin(官方插件已经长久失修，无法使用)
