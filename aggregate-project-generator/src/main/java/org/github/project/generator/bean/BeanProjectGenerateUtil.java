@@ -1,9 +1,11 @@
 package org.github.project.generator.bean;
 
+import org.apache.commons.lang3.StringUtils;
 import org.github.project.generator.AbstractGenerate;
 import org.github.project.generator.Generator;
 import org.github.project.generator.jdbc.ClassInfo;
 import lombok.extern.slf4j.Slf4j;
+import org.github.project.generator.jdbc.GlobleConfig;
 
 import java.io.*;
 import java.util.HashMap;
@@ -75,17 +77,20 @@ public class BeanProjectGenerateUtil extends AbstractGenerate implements Generat
     }
 
     public void generateEntry(ClassInfo info) throws Exception {
-        String entityPkgName = process("/aggre/Entry.java.ftl", "query.entry", info.getClassName() + "Entry.java");
+        String type = StringUtils.lowerCase(GlobleConfig.getGlobleConfig().getJpaOrMongo().toString());
+        String entityPkgName = process("/rest/" + type + "/Entry.java.ftl", "query.entry", info.getClassName() + "Entry.java");
         putContext("entityPkgName", entityPkgName);
-    }
-    public void generateCommandListener(ClassInfo info) throws Exception {
-        String entityPkgName = process("/aggre/CommandListener.java.ftl", "command.listener", "I"+info.getClassName() + "Command.java");
-        putContext("iCommandPkgName", entityPkgName);
     }
 
     public void generateEntryRepository(ClassInfo info) throws Exception {
-        String requestPkgName = process("/aggre/EntryRepository.java.ftl",  "query.repository", info.getClassName() + "EntryRepository.java");
+        String type = StringUtils.lowerCase(GlobleConfig.getGlobleConfig().getJpaOrMongo().toString());
+        String requestPkgName = process("/rest/" + type + "/EntryRepository.java.ftl",  "query.repository", info.getClassName() + "EntryRepository.java");
         putContext("entryRepositoryPkgName", requestPkgName);
+    }
+
+    public void generateCommandListener(ClassInfo info) throws Exception {
+        String entityPkgName = process("/aggre/CommandListener.java.ftl", "command.listener", "I"+info.getClassName() + "Command.java");
+        putContext("iCommandPkgName", entityPkgName);
     }
 
     public void generateEventListener(ClassInfo info) throws Exception {

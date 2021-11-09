@@ -64,7 +64,7 @@ public class StructProjectGenerateUtil extends AbstractGenerate implements Gener
     }
 
     public void generateEntry(ClassInfo info) throws Exception {
-        String entityPkgName = process("/aggre/Entry.java.ftl", "query.entry", info.getClassName() + "Entry.java");
+        String entityPkgName = process("/rest/jpa/Entry.java.ftl", "query.entry", info.getClassName() + "Entry.java");
         putContext("entityPkgName", entityPkgName);
     }
     public void generateCommandListener(ClassInfo info) throws Exception {
@@ -73,7 +73,7 @@ public class StructProjectGenerateUtil extends AbstractGenerate implements Gener
     }
 
     public void generateEntryRepository(ClassInfo info) throws Exception {
-        String requestPkgName = process("/aggre/EntryRepository.java.ftl",  "query.repository", info.getClassName() + "EntryRepository.java");
+        String requestPkgName = process("/rest/jpa/EntryRepository.java.ftl",  "query.repository", info.getClassName() + "EntryRepository.java");
         putContext("entryRepositoryPkgName", requestPkgName);
     }
 

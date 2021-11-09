@@ -17,7 +17,6 @@ import org.axonframework.eventhandling.TrackingEventProcessor;
 
 import java.util.List;
 import java.util.Optional;
-import javax.persistence.EntityNotFoundException;
 import javax.validation.ValidationException;
 
 /**
@@ -62,7 +61,7 @@ public class ${className}ServiceImpl implements ${className}Service {
      */
     @Override
     public ${aggregate?cap_first}Entry findById(Long id) {
-        return  ${aggregate?uncap_first}EntryRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(String.format("cannot find entity by [%s]", id)));
+        return  ${aggregate?uncap_first}EntryRepository.findById(id).orElseThrow(() -> new RuntimeException(String.format("cannot find entity by [%s]", id)));
     }
 
     /**

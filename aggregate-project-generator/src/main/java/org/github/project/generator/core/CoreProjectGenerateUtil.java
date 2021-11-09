@@ -60,34 +60,13 @@ public class CoreProjectGenerateUtil extends AbstractGenerate implements Generat
         String cuRequest = process("/aggre/AdminController.java.ftl", "web.admin", info.getClassName()+ "AdminController.java");
         putContext("adminControllerPkgName", cuRequest);
     }
-    /**
-     * 生成pom.xml
-     * filePath = .......-core
-     */
-    public void generatePom(String filePath, String projectName) throws Exception {
-        File mapperFile = new File(filePath+"/pom.xml");
-        FileOutputStream fos = new FileOutputStream(mapperFile);
-        Writer out = new BufferedWriter(new OutputStreamWriter(fos, "utf-8"), 10240);
-        putContext("projectName", projectName);
-        process("/core/pom.ftl", out);
-    }
-
-    /**
-     * 生成 README.md
-     */
-    public void generateReadMe(String filePath, String projectName) throws Exception {
-        File readMeFile = new File(filePath+"/README.md");
-        FileOutputStream fos = new FileOutputStream(readMeFile);
-        Writer out = new BufferedWriter(new OutputStreamWriter(fos, "utf-8"), 10240);
-        process("/core/readme.ftl", out);
-    }
 
     /**
      * 生成 Service
      * filePath = .......-core
      */
     public void generateService(ClassInfo info) throws Exception {
-        String servicePkgName = process("/jpacore/service.ftl", "query.service", info.getClassName() + "Service.java");
+        String servicePkgName = process("/aggre/service.ftl", "query.service", info.getClassName() + "Service.java");
         putContext("servicePkgName", servicePkgName);
     }
 
@@ -96,7 +75,7 @@ public class CoreProjectGenerateUtil extends AbstractGenerate implements Generat
      * filePath = .......-core
      */
     public void generateServiceImpl(ClassInfo info) throws Exception {
-        String servicePkgName = process("/jpacore/serviceImpl.ftl", "query.service.impl",
+        String servicePkgName = process("/aggre/serviceImpl.ftl", "query.service.impl",
                 info.getClassName() + "ServiceImpl.java");
         putContext("serviceImplPkgName", servicePkgName);
     }

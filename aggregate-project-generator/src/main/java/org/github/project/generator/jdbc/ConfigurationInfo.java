@@ -55,6 +55,7 @@ public class ConfigurationInfo {
      */
     private String include;
 
+    private String jpaOrMongo;
     /***
      * 需要处理的表名Map
      */

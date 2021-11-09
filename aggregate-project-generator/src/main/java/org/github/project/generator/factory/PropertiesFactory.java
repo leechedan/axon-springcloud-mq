@@ -2,6 +2,7 @@ package org.github.project.generator.factory;
 
 import com.alibaba.fastjson.JSONObject;
 import org.github.project.generator.jdbc.ConfigurationInfo;
+import org.github.project.generator.jdbc.DbType;
 import org.github.project.generator.jdbc.GlobleConfig;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -65,6 +66,7 @@ public class PropertiesFactory {
 
         ConfigurationInfo configurationInfo = json.toJavaObject(ConfigurationInfo.class);
         configurationInfo.setIncludeMap(parseInclude(configurationInfo.getInclude()));
+        configurationInfo.setJpaOrMongo((String)prop.get("jpaOrMongo"));
         configurationInfo.setCustomHandleIncludeMap(parseInclude(configurationInfo.getCustomHandleInclude()));
 
         // 解析项目目录地址

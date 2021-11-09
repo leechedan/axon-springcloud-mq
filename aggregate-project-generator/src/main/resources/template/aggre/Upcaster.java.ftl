@@ -6,7 +6,7 @@ import org.axonframework.messaging.MetaData;
 import org.axonframework.serialization.upcasting.event.IntermediateEventRepresentation;
 import ${createdEventPkgName}.${aggregate?cap_first}CreatedEvent;
 import ${updatedEventPkgName}.${aggregate?cap_first}UpdatedEvent;
-import ${(commonPkgName)!}.SameEventUpcaster;
+import ${(commonPkgName)!}.continuance.common.SameEventUpcaster;
 
 import java.util.HashMap;
 
