@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 public class FailTransferCommand {
 
     @TargetAggregateIdentifier
-    Long identifier;
+    Long id;
 
     BigDecimal amount;
 }

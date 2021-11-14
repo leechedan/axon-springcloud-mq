@@ -13,6 +13,6 @@ import org.axonframework.modelling.command.TargetAggregateIdentifier;
 public class CompleteTransferCommand {
 
     @TargetAggregateIdentifier
-    private Long identifier;
+    private Long id;
 
 }
