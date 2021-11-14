@@ -22,6 +22,7 @@ import org.github.axon.tag.api.domain.account.event.MoneyDepositedEvent;
 import org.github.axon.tag.api.domain.account.event.MoneyWithdrawnEvent;
 import org.github.axon.tag.api.domain.account.event.TransactionCancelledEvent;
 import org.github.axon.tag.api.domain.account.event.TransactionCompletedEvent;
+import org.github.axon.tag.api.domain.activation.ExpireActivationCommand;
 import org.github.axon.tag.user.entity.BankTransferEntry;
 import org.springframework.util.Assert;
 
@@ -80,6 +81,11 @@ public class UserAggregate implements IUserEvent {
                                       cmd.getTransactionId(),
                                       cmd.getAmount(),
                                       balance.add(cmd.getAmount())));
+    }
+
+    @CommandHandler
+    public void on(ExpireActivationCommand cmd) {
+        log.info("too late to activation on {}", cmd.getId());
     }
 
     @CommandHandler

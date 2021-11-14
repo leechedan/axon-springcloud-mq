@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 @Data
+@ToString
 @NoArgsConstructor
 public class AccountCreatedEvent {
 
