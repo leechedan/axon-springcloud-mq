@@ -17,6 +17,7 @@ import org.github.axon.tag.common.continuance.common.SaveMongoEventListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.mongo.MongoProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -41,6 +42,7 @@ public class MongoAxonAutoConfiguration {
 
     @Bean
     @Primary
+    @ConditionalOnMissingBean
     public EventStorageEngine eventStorageEngine(Serializer defaultSerializer, MongoTemplate mongoTemplate,
                                                  @Qualifier("eventSerializer") Serializer eventSerializer,
                                                  EventUpcaster userUpCaster) {
@@ -52,23 +54,27 @@ public class MongoAxonAutoConfiguration {
     }
 
     @Bean
+    @ConditionalOnMissingBean
     public MongoTemplate axonMongoTemplate(){
-        return DefaultMongoTemplate.builder().mongoDatabase(mongo)
+        return DefaultMongoTemplate.builder().mongoDatabase(mongo, mongoProperties.getDatabase())
                                    .snapshotEventsCollectionName("snapshotEvents").sagasCollectionName("sagaEntry")
                                    .build();
     }
 
     @Bean
+    @ConditionalOnMissingBean
     public TokenStore getMongoTokenStore(MongoTemplate mongoTemplate, Serializer serializer){
         return  MongoTokenStore.builder().mongoTemplate(mongoTemplate).serializer(serializer).build();
     }
 
     @Bean
+    @ConditionalOnMissingBean
     public SaveMongoEventListener saveMongoEventListener() {
         return new SaveMongoEventListener();
     }
 
     @Bean
+    @ConditionalOnMissingBean
     public SagaStore mongoSagaStore(MongoTemplate mongoTemplate, Serializer serializer) {
         return MongoSagaStore.builder().mongoTemplate(mongoTemplate).serializer(serializer).build();
     }

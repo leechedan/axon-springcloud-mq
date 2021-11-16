@@ -1,4 +1,4 @@
-server.port: ${SERVER_PORT:8091}
+server.port: ${SERVER_PORT:8080}
 spring:
   profiles:
     active:
@@ -12,9 +12,10 @@ spring:
         password: nacos
         username: nacos
         file-extension: yaml
-        enabled: true
+        enabled: false
         server-addr: localhost:8848
       discovery:
+        enabled: false
         ip: localhost
         port: ${server.port}
         password: nacos

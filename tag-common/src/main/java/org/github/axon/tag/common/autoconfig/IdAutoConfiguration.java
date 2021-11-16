@@ -33,12 +33,4 @@ public class IdAutoConfiguration {
         return new UserPublisher();
     }
 
-    /*@Bean
-    @ConditionalOnMissingBean
-    public CustomDomainEventEntryListener customDomainEventEntryListener(
-            CustomDomainEventEntryRepository repository, UserPublisher userPublisher) {
-        log.debug("1 customDomainEventEntryListener");
-        return new CustomDomainEventEntryListener(repository, userPublisher);
-    }*/
-
 }

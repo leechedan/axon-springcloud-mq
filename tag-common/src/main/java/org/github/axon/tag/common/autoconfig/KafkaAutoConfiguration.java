@@ -4,14 +4,11 @@ import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.ser.std.StringSerializer;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.producer.ProducerConfig;
-import org.axonframework.eventhandling.EventBus;
-import org.axonframework.eventhandling.gateway.EventGateway;
 import org.axonframework.eventsourcing.eventstore.jdbc.EventSchema;
 import org.axonframework.extensions.kafka.eventhandling.DefaultKafkaMessageConverter;
 import org.axonframework.extensions.kafka.eventhandling.KafkaMessageConverter;
 import org.axonframework.serialization.Serializer;
 import org.axonframework.springboot.autoconfig.AxonAutoConfiguration;
-import org.github.axon.tag.common.continuance.common.GenericDomainEventGateway;
 import org.github.axon.tag.common.continuance.common.KafkaMessageSourceConfigurer;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -43,8 +40,8 @@ public class KafkaAutoConfiguration {
         return DefaultKafkaMessageConverter.builder().serializer(eventSerializer).build();
     }
 
-
     @Bean
+    @ConditionalOnMissingBean
     public DefaultKafkaProducerFactory<String, byte[]> paymentProducerFactory() {
         Map<String, Object> configProps = new HashMap<>();
         configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
@@ -54,16 +51,19 @@ public class KafkaAutoConfiguration {
     }
 
     @Bean
+    @ConditionalOnMissingBean
     public KafkaTemplate<String, byte[]> paymentKafkaTemplate() {
         return new KafkaTemplate<>(paymentProducerFactory());
     }
 
     @Bean
+    @ConditionalOnMissingBean
     public KafkaMessageSourceConfigurer kafkaMessageSourceConfigurer() {
         return new KafkaMessageSourceConfigurer();
     }
 
     @Bean
+    @ConditionalOnMissingBean
     public EventSchema eventSchema() {
         return EventSchema.builder()
                           .eventTable("DOMAIN_EVENT_ENTRY")
@@ -71,8 +71,4 @@ public class KafkaAutoConfiguration {
                           .build();
     }
 
-    @Bean
-    public EventGateway itemEventGateway(EventBus itemEventStore) {
-        return GenericDomainEventGateway.builder().eventBus(itemEventStore).build();
-    }
 }

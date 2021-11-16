@@ -16,6 +16,7 @@ import org.axonframework.micrometer.MessageTimerMonitor;
 import org.axonframework.micrometer.TagsUtil;
 import org.axonframework.monitoring.MultiMessageMonitor;
 import org.axonframework.queryhandling.QueryBus;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -25,6 +26,7 @@ import java.util.stream.Collectors;
 public class MetricConfig {
 
 	@Bean
+	@ConditionalOnMissingBean
 	ConfigurerModule metricConfigurer(MeterRegistry meterRegistry) {
 		return configurer -> {
 			instrumentEventStore(meterRegistry, configurer);
