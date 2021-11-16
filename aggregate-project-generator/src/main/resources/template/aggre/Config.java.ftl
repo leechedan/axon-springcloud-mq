@@ -54,12 +54,4 @@ public class ${aggregate?cap_first}Config {
                 .build();
     }
 
-    @Bean
-    @ConditionalOnMissingBean
-    public MetaDataGateway localCommandGateway(DistributedCommandBus commandBus) {
-        CommandGatewayFactory factory = CommandGatewayFactory.builder().commandBus(commandBus).build();
-        factory.registerCommandCallback(new LogCommandCallback(), ResponseTypes.instanceOf(String.class));
-        return factory.createGateway(MetaDataGateway.class);
-    }
-
 }

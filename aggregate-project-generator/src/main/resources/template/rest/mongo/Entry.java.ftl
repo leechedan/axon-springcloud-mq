@@ -26,9 +26,8 @@ import ${(basePkgName)!}.BaseEntry;
 public class ${aggregate?cap_first}Entry extends BaseEntry {
 
     <#if classInfo.fieldList?exists && classInfo.fieldList?size gt 0>
-    <#list classInfo.fieldList as fieldItem ><#if fieldItem.isPrimaryKey>@Id</#if><#if !fieldItem.isEntityField>
+    <#list classInfo.fieldList as fieldItem ><#if fieldItem.isPrimaryKey>@Id</#if>
     @ApiModelProperty(name = "${fieldItem.fieldName}", value = "${fieldItem.fieldComment}")
     private ${fieldItem.fieldClass} ${fieldItem.fieldName};
-
-    </#if></#list></#if>
+    </#list></#if>
 }
