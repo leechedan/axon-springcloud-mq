@@ -2,6 +2,7 @@ package org.github.axon.tag.user;
 
 //import org.github.axon.tag.common.autoconfig.KafkaAutoConfiguration;
 
+import org.axonframework.extensions.springcloud.autoconfig.SpringCloudAutoConfiguration;
 import org.axonframework.springboot.autoconfig.JdbcAutoConfiguration;
 import org.axonframework.springboot.autoconfig.JpaEventStoreAutoConfiguration;
 import org.springframework.boot.SpringApplication;
@@ -12,9 +13,11 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 import org.springframework.scheduling.annotation.EnableAsync;
 //import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
-@EnableDiscoveryClient
-@SpringBootApplication(exclude = {JpaEventStoreAutoConfiguration.class, JdbcAutoConfiguration.class})
-//@EntityScan("org.github.axon")
+
+//@EnableDiscoveryClient
+@SpringBootApplication(exclude = {
+        SpringCloudAutoConfiguration.class,
+        JpaEventStoreAutoConfiguration.class, JdbcAutoConfiguration.class})
 @EnableMongoRepositories(basePackages = {
         "org.github.axon.tag.user"
 })

@@ -29,7 +29,8 @@ public class UserViewServiceImpl implements UserViewService {
 
     @Override
     public UserView findById(Long id) {
-        return repository.findById(id).orElseThrow(EntityNotFoundException::new);
+        return repository.findById(id).orElse(null);
+                         //.orElseThrow(EntityNotFoundException::new);
     }
 
     @Override

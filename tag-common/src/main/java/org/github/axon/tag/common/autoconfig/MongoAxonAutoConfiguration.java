@@ -52,14 +52,14 @@ public class MongoAxonAutoConfiguration {
     }
 
     @Bean
-    MongoTemplate axonMongoTemplate(){
+    public MongoTemplate axonMongoTemplate(){
         return DefaultMongoTemplate.builder().mongoDatabase(mongo)
                                    .snapshotEventsCollectionName("snapshotEvents").sagasCollectionName("sagaEntry")
                                    .build();
     }
 
     @Bean
-    TokenStore getMongoTokenStore(MongoTemplate mongoTemplate, Serializer serializer){
+    public TokenStore getMongoTokenStore(MongoTemplate mongoTemplate, Serializer serializer){
         return  MongoTokenStore.builder().mongoTemplate(mongoTemplate).serializer(serializer).build();
     }
 

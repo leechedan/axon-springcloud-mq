@@ -72,11 +72,13 @@ public class UserListener implements IUserEvent {
     @EventHandler
     @Override
     public void on(MoneyWithdrawnEvent event) {
-        log.warn("MoneyWithdrawnEvent {}", event);
+        log.info("MoneyWithdrawnEvent {}", event);
         UserView userView = service.findById(event.getAccountId());
         if (userView != null) {
             userView.setAmount(userView.getAmount().subtract(event.getAmount()));
             service.save(userView);
+        } else {
+            log.warn("cannot find user view {}", event.getAccountId());
         }
     }
 

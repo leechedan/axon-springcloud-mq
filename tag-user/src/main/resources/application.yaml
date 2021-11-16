@@ -46,26 +46,26 @@ spring:
 
 logging:
   level:
-    - org:
-        github: warn
-        apache: warn
-        axonframework:
-          eventhandling: INFO
-        springframework:
-          web: INFO
-          cloud.sleuth: INFO
-        apache.ibatis: INFO
-        java.sql: INFO
-        hibernate:
-          SQL: INFO
-          #type.descriptor.sql: TRACE
+    org:
+      github: debug
+      apache: warn
+      axonframework:
+        eventhandling: INFO
+      springframework:
+        web: INFO
+        cloud.sleuth: INFO
+      apache.ibatis: INFO
+      java.sql: INFO
+      hibernate:
+        SQL: INFO
+        #type.descriptor.sql: TRACE
 
 axon:
   eventhandling:
     processors:
       user-processor:
-        initialSegmentCount: 128
-        threadCount: 128
+        initialSegmentCount: 16
+        threadCount: 16
         batchSize: 512
   metrics:
     auto-configuration:

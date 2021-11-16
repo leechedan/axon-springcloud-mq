@@ -5,6 +5,7 @@ import org.github.axon.tag.common.config.UserPublisher;
 import org.github.axon.tag.common.helper.UIDGenerator;
 import org.github.axon.tag.common.helper.WorkerIdService;
 import org.github.axon.tag.common.repository.WorkerIdRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.cloud.client.serviceregistry.Registration;
 import org.springframework.context.annotation.Bean;
@@ -22,7 +23,7 @@ public class IdAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public WorkerIdService idService(Registration registration, WorkerIdRepository workerIdRepository) {
+    public WorkerIdService idService(@Autowired(required = false)Registration registration, WorkerIdRepository workerIdRepository) {
         return new WorkerIdService(workerIdRepository, registration);
     }
 

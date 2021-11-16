@@ -9,7 +9,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 
-@Document(collation = "DomainEventEntry")
+@Document(collection = "domainevents")
 @Getter
 @Setter
 //@Table(indexes = @Index(columnList = "aggregateIdentifier,sequenceNumber", unique = true))

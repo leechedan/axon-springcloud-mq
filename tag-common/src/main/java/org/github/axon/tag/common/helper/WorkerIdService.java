@@ -21,7 +21,8 @@ public class WorkerIdService {
 
     Long getWorkerId() {
 
-        String serviceKey = getServiceKey();
+        String serviceKey = registration != null ?
+                registration.getInstanceId() : getServiceKey();
 
         WorkerId workerId = workerIdRepository.findByServiceKey(serviceKey);
 
@@ -31,7 +32,6 @@ public class WorkerIdService {
 
         workerId = new WorkerId();
         // 如果你的 Spring Boot 版本 >= 2.1.0 并且使用的 Discovery 提供了该方法的实现则可以直接使用
-        // workerId.setServiceKey(registration.getInstanceId());
         workerId.setServiceKey(serviceKey);
         workerIdRepository.save(workerId);
         return workerId.getId() % (SnowFlake.MAX_MACHINE_NUM + 1);
