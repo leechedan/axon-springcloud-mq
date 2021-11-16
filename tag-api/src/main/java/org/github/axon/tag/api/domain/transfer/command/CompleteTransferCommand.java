@@ -12,5 +12,8 @@ import org.axonframework.modelling.command.TargetAggregateIdentifier;
 @ToString
 public class CompleteTransferCommand extends AbstractCommand {
 
+    public CompleteTransferCommand(Long id) {
+        super(id);
+    }
 
 }

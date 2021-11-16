@@ -13,6 +13,7 @@ import org.axonframework.spring.stereotype.Aggregate;
 import org.github.axon.tag.api.domain.account.command.CancelMoneyTransactionCommand;
 import org.github.axon.tag.api.domain.account.command.CompleteMoneyTransactionCommand;
 import org.github.axon.tag.api.domain.account.event.TransactionCancelledEvent;
+import org.github.axon.tag.api.domain.account.event.TransactionCompletedEvent;
 import org.github.axon.tag.api.domain.common.enums.BankTransferStatus;
 import org.github.axon.tag.api.domain.transfer.command.CompleteTransferCommand;
 import org.github.axon.tag.api.domain.transfer.command.FailTransferCommand;
@@ -83,7 +84,7 @@ public class BankTransferAggregate {
 
     @CommandHandler
     public void handle(CompleteMoneyTransactionCommand cmd) {
-        apply(new TransferCompletedEvent(cmd.getTransactionId()));
+        apply(new TransactionCompletedEvent(cmd.getTransactionId()));
     }
 
     @EventSourcingHandler

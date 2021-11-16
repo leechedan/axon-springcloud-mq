@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
+import io.micrometer.core.instrument.Timer;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.axonframework.deadline.DeadlineManager;
 import org.axonframework.deadline.annotation.DeadlineHandler;
@@ -21,10 +22,15 @@ import org.github.axon.tag.api.domain.account.event.MoneyDepositedEvent;
 import org.github.axon.tag.api.domain.account.event.MoneyWithdrawnEvent;
 import org.github.axon.tag.api.domain.account.event.TransactionCancelledEvent;
 import org.github.axon.tag.api.domain.account.event.TransactionCompletedEvent;
+import org.github.axon.tag.api.domain.transfer.command.CompleteTransferCommand;
+import org.github.axon.tag.api.domain.transfer.command.FailTransferCommand;
 import org.github.axon.tag.api.domain.transfer.event.saga.TransferRequestedEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.Duration;
+import java.util.concurrent.TimeUnit;
+
+import javax.annotation.Resource;
 
 import static org.axonframework.common.BuilderUtils.assertNonNull;
 import static org.axonframework.modelling.saga.SagaLifecycle.end;
@@ -52,11 +58,18 @@ public class BankTransferSaga {
     @Getter
     @Setter
     private String deadlineId;
+    @Getter
+    @Setter
+    private Long start;
+    @Resource(name = "completeTimer")
+    private transient Timer completeTimer;
 
+    @Resource(name = "cancelTimer")
+    private transient Timer cancelTimer;
     @StartSaga
     @SagaEventHandler(associationProperty = "transactionId")
     public void on(TransferRequestedEvent event) {
-
+        start = System.currentTimeMillis();
         log.info("In TransactionInitiatedEvent 启动转账 {}", event);
         assertNonNull(event.getSourceId(), "source not null in saga");
         assertNonNull(event.getDestinationId(), "target not null in saga");
@@ -64,7 +77,7 @@ public class BankTransferSaga {
         this.targetAccountId = event.getDestinationId();
         this.transactionId = event.getTransactionId();
 
-        this.deadlineId = deadlineManager.schedule(Duration.ofSeconds(5), "transferDeadline");
+        this.deadlineId = deadlineManager.schedule(Duration.ofSeconds(25), "transferDeadline");
 
 
         SagaLifecycle.associateWith("transactionId", transactionId);
@@ -88,7 +101,9 @@ public class BankTransferSaga {
     @EndSaga
     @SagaEventHandler(associationProperty = "transactionId")
     public void on(TransactionCompletedEvent event) {
-        log.info("In TransactionCompletedEvent");
+        log.info("In TransactionCompletedEvent deadId:{}", deadlineId);
+        deadlineManager.cancelSchedule("transferDeadline", deadlineId);
+        completeTimer.record(System.currentTimeMillis() - start, TimeUnit.MILLISECONDS);
     }
 
     @SagaEventHandler(associationProperty = "transactionId")
@@ -100,12 +115,15 @@ public class BankTransferSaga {
                                                              event.getTransactionId(),
                                                              event.getAmount()));
         }
+        cancelTimer.record(System.currentTimeMillis() - start, TimeUnit.MILLISECONDS);
         end();
     }
 
     @DeadlineHandler(deadlineName = "transferDeadline")
     public void on() {
         // handle the Deadline
+        commandGateway.send(new FailTransferCommand(this.transactionId, null, "timeout 25s"));
         log.info("In the deadline - deadlineId [{}] ", deadlineId);
+        cancelTimer.record(System.currentTimeMillis() - start, TimeUnit.MILLISECONDS);
     }
 }

@@ -32,7 +32,7 @@
         <jackson.version>2.9.4</jackson.version>
         <kafka.version>2.8.0</kafka.version>
         <baomidou.version>3.4.1</baomidou.version>
-        <axon.version>4.5.2</axon.version>
+        <axon.version>4.5.4</axon.version>
         <micrometer.version>1.5.1</micrometer.version>
         <spring-cloud.version>Hoxton.SR2</spring-cloud.version>
         <spring.kafka.version>2.2.4.RELEASE</spring.kafka.version>
@@ -40,7 +40,7 @@
         <spring.rabbit.version>2.2.8.RELEASE</spring.rabbit.version>
         <axon.extension-kafka.version>4.0-SNAPSHOT</axon.extension-kafka.version>
         <axon.extension.amqp.version>4.5</axon.extension.amqp.version>
-        <axon.extension-mongo.version>4.4</axon.extension-mongo.version>
+        <axon.extension-mongo.version>4.5</axon.extension-mongo.version>
         <axon.extension.springcloud.version>4.4</axon.extension.springcloud.version>
         <spring.boot.version>2.3.1.RELEASE</spring.boot.version>
         <springBoot.amqp.version>2.3.1.RELEASE</springBoot.amqp.version>

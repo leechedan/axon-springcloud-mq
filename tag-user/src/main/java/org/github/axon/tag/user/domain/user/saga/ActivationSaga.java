@@ -29,11 +29,11 @@ import java.time.Duration;
 import static org.axonframework.modelling.saga.SagaLifecycle.associateWith;
 
 @Slf4j
-@Saga
+//@Saga
 @Getter
 @Setter
 @NoArgsConstructor
-@ProcessingGroup("BankAccountMongoListener")
+//@ProcessingGroup("BankAccountMongoListener")
 public class ActivationSaga {
 
 	private static final String ASSOCIATION_PROPERTY_ACCOUNT_ID = "accountId";

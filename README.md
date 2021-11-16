@@ -1,7 +1,7 @@
 ## axonframework可能的最佳实现
 
 ### 版本介绍
-axon 4.5.2
+axon 4.5.4
 jdk 1.8
 
 ### 关于序列化

@@ -12,5 +12,12 @@ import java.math.BigDecimal;
 @Getter
 public class FailTransferCommand extends AbstractCommand {
 
-    BigDecimal amount;
+    final BigDecimal amount;
+    final String reason;
+
+    public FailTransferCommand(Long id, BigDecimal amount, String reason) {
+        super(id);
+        this.amount = amount;
+        this.reason = reason;
+    }
 }
