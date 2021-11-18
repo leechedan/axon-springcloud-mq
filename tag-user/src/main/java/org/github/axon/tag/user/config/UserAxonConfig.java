@@ -5,6 +5,7 @@ import io.micrometer.core.instrument.Timer;
 import lombok.extern.slf4j.Slf4j;
 import org.axonframework.commandhandling.SimpleCommandBus;
 import org.axonframework.commandhandling.gateway.CommandGatewayFactory;
+import org.axonframework.common.caching.WeakReferenceCache;
 import org.axonframework.eventsourcing.AggregateSnapshotter;
 import org.axonframework.eventsourcing.GenericAggregateFactory;
 import org.axonframework.eventsourcing.SnapshotTriggerDefinition;
@@ -35,6 +36,7 @@ public class UserAxonConfig {
             ParameterResolverFactory parameterResolverFactory) {
         return CustomEventSourcingRepository.builder(BankTransferAggregate.class)
                                             .eventStore(eventStore)
+                                            .cache(new WeakReferenceCache())
                                             .snapshotTriggerDefinition(snapshotTriggerDefinition)
                                             .parameterResolverFactory(parameterResolverFactory)
                                             .build();
@@ -46,6 +48,7 @@ public class UserAxonConfig {
             SnapshotTriggerDefinition snapshotTriggerDefinition,
             ParameterResolverFactory parameterResolverFactory) {
         return CustomEventSourcingRepository.builder(UserAggregate.class)
+                                            .cache(new WeakReferenceCache())
                                             .eventStore(eventStore)
                                             .snapshotTriggerDefinition(snapshotTriggerDefinition)
                                             .parameterResolverFactory(parameterResolverFactory)
@@ -83,7 +86,7 @@ public class UserAxonConfig {
 
     @Bean("completeTimer")
     public Timer completeTimer(MeterRegistry meterRegistry) {
-        Timer timer = Timer.builder("sage.timer")
+        Timer timer = Timer.builder("saga.timer")
                            .tag("type", "complete")
                            .tag("payloadType", BankTransferSaga.class.getSimpleName())
                            .publishPercentiles(0.5, 0.95, 0.99) // median and 95th percentile
@@ -94,7 +97,7 @@ public class UserAxonConfig {
 
     @Bean("cancelTimer")
     public Timer getCancelTimer(MeterRegistry meterRegistry) {
-        Timer timer = Timer.builder("sage.timer")
+        Timer timer = Timer.builder("saga.timer")
                            .tag("type", "cancel")
                            .tag("payloadType", BankTransferSaga.class.getSimpleName())
                            .publishPercentiles(0.5, 0.95, 0.99) // median and 95th percentile

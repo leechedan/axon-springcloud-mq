@@ -61,7 +61,7 @@ public class UserListener implements IUserEvent {
     @EventHandler
     @Override
     public void on(MoneyDepositedEvent event) {
-        log.warn("MoneyDepositedEvent {}", event);
+        log.info("MoneyDepositedEvent {}", event);
         UserView userView = service.findById(event.getAccountId());
         if (userView != null) {
             userView.setAmount(userView.getAmount().add(event.getAmount()));

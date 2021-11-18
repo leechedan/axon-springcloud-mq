@@ -4,6 +4,7 @@ package org.github.axon.tag.common.autoconfig;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Tag;
 import io.micrometer.core.instrument.Tags;
+import lombok.extern.slf4j.Slf4j;
 import org.axonframework.commandhandling.CommandBus;
 import org.axonframework.config.Configurer;
 import org.axonframework.config.ConfigurerModule;
@@ -22,11 +23,12 @@ import org.springframework.context.annotation.Configuration;
 
 import java.util.stream.Collectors;
 
+@Slf4j
 @Configuration
 public class MetricConfig {
 
 	@Bean
-	@ConditionalOnMissingBean
+//	@ConditionalOnMissingBean
 	ConfigurerModule metricConfigurer(MeterRegistry meterRegistry) {
 		return configurer -> {
 			instrumentEventStore(meterRegistry, configurer);
@@ -38,16 +40,19 @@ public class MetricConfig {
 
 	private void instrumentEventStore(MeterRegistry meterRegistry, Configurer configurer) {
 		MessageMonitorFactory messageMonitorFactory = (configuration, componentType, componentName) -> {
+			log.info("eventStore type:{} name:{} ", componentType, componentName);
 			MessageCountingMonitor messageCounter = MessageCountingMonitor.buildMonitor(
-					componentName, meterRegistry,
-					message -> Tags.of(TagsUtil.PAYLOAD_TYPE_TAG, message.getPayloadType().getSimpleName())
+					"EventStoreCount", meterRegistry,
+					message -> Tags.of(TagsUtil.PAYLOAD_TYPE_TAG, message.getPayloadType().getSimpleName(),
+									   TagsUtil.PROCESSOR_NAME_TAG, componentName)
 							.and(message.getMetaData().entrySet().stream().filter(i->!i.getKey().contains("Id"))
 									.map(s -> Tag.of(s.getKey(), s.getValue().toString()))
 									.collect(Collectors.toList()))
 			);
 			MessageTimerMonitor messageTimer = MessageTimerMonitor.buildMonitor(
-					componentName, meterRegistry,
-					message -> Tags.of(TagsUtil.PAYLOAD_TYPE_TAG, message.getPayloadType().getSimpleName())
+					"EventStoreTimer", meterRegistry,
+					message -> Tags.of(TagsUtil.PAYLOAD_TYPE_TAG, message.getPayloadType().getSimpleName(),
+									   TagsUtil.PROCESSOR_NAME_TAG, componentName)
 							.and(message.getMetaData().entrySet().stream().filter(i->!i.getKey().contains("Id"))
 									.map(s -> Tag.of(s.getKey(), s.getValue().toString()))
 									.collect(Collectors.toList()))
@@ -59,8 +64,9 @@ public class MetricConfig {
 
 	private void instrumentEventProcessors(MeterRegistry meterRegistry, Configurer configurer) {
 		MessageMonitorFactory messageMonitorFactory = (configuration, componentType, componentName) -> {
+			log.info("eventProcessor type:{} name:{} ", componentType, componentName);
 			MessageCountingMonitor messageCounter = MessageCountingMonitor.buildMonitor(
-					"eventProcessor", meterRegistry,
+					"eventProcessorCount", meterRegistry,
 					message -> Tags.of(
 							TagsUtil.PAYLOAD_TYPE_TAG, message.getPayloadType().getSimpleName(),
 							TagsUtil.PROCESSOR_NAME_TAG, componentName)
@@ -69,7 +75,7 @@ public class MetricConfig {
 									.collect(Collectors.toList()))
 			);
 			MessageTimerMonitor messageTimer = MessageTimerMonitor.buildMonitor(
-					"eventProcessor", meterRegistry,
+					"eventProcessorTimer", meterRegistry,
 					message -> Tags.of(
 							TagsUtil.PAYLOAD_TYPE_TAG, message.getPayloadType().getSimpleName(),
 							TagsUtil.PROCESSOR_NAME_TAG, componentName)
@@ -78,7 +84,7 @@ public class MetricConfig {
 									.collect(Collectors.toList()))
 			);
 			CapacityMonitor capacityMonitor1Minute = CapacityMonitor.buildMonitor(
-					"eventProcessor", meterRegistry,
+					"eventProcessorCapacity", meterRegistry,
 					message -> Tags.of(
 							TagsUtil.PAYLOAD_TYPE_TAG, message.getPayloadType().getSimpleName(),
 							TagsUtil.PROCESSOR_NAME_TAG, componentName)
@@ -94,24 +100,28 @@ public class MetricConfig {
 
 	private void instrumentCommandBus(MeterRegistry meterRegistry, Configurer configurer) {
 		MessageMonitorFactory messageMonitorFactory = (configuration, componentType, componentName) -> {
+			log.info("command_bus type:{} name:{} ", componentType, componentName);
 			MessageCountingMonitor messageCounter = MessageCountingMonitor.buildMonitor(
-					componentName, meterRegistry,
-					message -> Tags.of(TagsUtil.PAYLOAD_TYPE_TAG, message.getPayloadType().getSimpleName())
+					"CommandBusCount", meterRegistry,
+					message -> Tags.of(TagsUtil.PAYLOAD_TYPE_TAG, message.getPayloadType().getSimpleName(),
+									   TagsUtil.PROCESSOR_NAME_TAG, componentName)
 							.and(message.getMetaData().entrySet().stream().filter(i->!i.getKey().contains("Id"))
 									.map(s -> Tag.of(s.getKey(), s.getValue().toString()))
 									.collect(Collectors.toList()))
 			);
 			MessageTimerMonitor messageTimer = MessageTimerMonitor.buildMonitor(
-					componentName, meterRegistry,
-					message -> Tags.of(TagsUtil.PAYLOAD_TYPE_TAG, message.getPayloadType().getSimpleName())
+					"CommandBusTimer", meterRegistry,
+					message -> Tags.of(TagsUtil.PAYLOAD_TYPE_TAG, message.getPayloadType().getSimpleName(),
+									   TagsUtil.PROCESSOR_NAME_TAG, componentName)
 							.and(message.getMetaData().entrySet().stream().filter(i->!i.getKey().contains("Id"))
 									.map(s -> Tag.of(s.getKey(), s.getValue().toString()))
 									.collect(Collectors.toList()))
 			);
 
 			CapacityMonitor capacityMonitor1Minute = CapacityMonitor.buildMonitor(
-					componentName, meterRegistry,
-					message -> Tags.of(TagsUtil.PAYLOAD_TYPE_TAG, message.getPayloadType().getSimpleName())
+					"CommandBusCapacity", meterRegistry,
+					message -> Tags.of(TagsUtil.PAYLOAD_TYPE_TAG, message.getPayloadType().getSimpleName(),
+									   TagsUtil.PROCESSOR_NAME_TAG, componentName)
 							.and(message.getMetaData().entrySet().stream().filter(i->!i.getKey().contains("Id"))
 									.map(s -> Tag.of(s.getKey(), s.getValue().toString()))
 									.collect(Collectors.toList()))
@@ -124,23 +134,27 @@ public class MetricConfig {
 
 	private void instrumentQueryBus(MeterRegistry meterRegistry, Configurer configurer) {
 		MessageMonitorFactory messageMonitorFactory = (configuration, componentType, componentName) -> {
+			log.info("query bus type:{} name:{} ", componentType, componentName);
 			MessageCountingMonitor messageCounter = MessageCountingMonitor.buildMonitor(
-					componentName, meterRegistry,
-					message -> Tags.of(TagsUtil.PAYLOAD_TYPE_TAG, message.getPayloadType().getSimpleName())
+					"QueryBusCount", meterRegistry,
+					message -> Tags.of(TagsUtil.PAYLOAD_TYPE_TAG, message.getPayloadType().getSimpleName(),
+									   TagsUtil.PROCESSOR_NAME_TAG, componentName)
 							.and(message.getMetaData().entrySet().stream().filter(i->!i.getKey().contains("Id"))
 									.map(s -> Tag.of(s.getKey(), s.getValue().toString()))
 									.collect(Collectors.toList()))
 			);
 			MessageTimerMonitor messageTimer = MessageTimerMonitor.buildMonitor(
-					componentName, meterRegistry,
-					message -> Tags.of(TagsUtil.PAYLOAD_TYPE_TAG, message.getPayloadType().getSimpleName())
+					"QueryBusTimer", meterRegistry,
+					message -> Tags.of(TagsUtil.PAYLOAD_TYPE_TAG, message.getPayloadType().getSimpleName(),
+									   TagsUtil.PROCESSOR_NAME_TAG, componentName)
 							.and(message.getMetaData().entrySet().stream().filter(i->!i.getKey().contains("Id"))
 									.map(s -> Tag.of(s.getKey(), s.getValue().toString()))
 									.collect(Collectors.toList()))
 			);
 			CapacityMonitor capacityMonitor1Minute = CapacityMonitor.buildMonitor(
-					componentName, meterRegistry,
-					message -> Tags.of(TagsUtil.PAYLOAD_TYPE_TAG, message.getPayloadType().getSimpleName())
+					"QueryBusCapacity", meterRegistry,
+					message -> Tags.of(TagsUtil.PAYLOAD_TYPE_TAG, message.getPayloadType().getSimpleName(),
+									   TagsUtil.PROCESSOR_NAME_TAG, componentName)
 							.and(message.getMetaData().entrySet().stream().filter(i->!i.getKey().contains("Id"))
 									.map(s -> Tag.of(s.getKey(), s.getValue().toString()))
 									.collect(Collectors.toList()))

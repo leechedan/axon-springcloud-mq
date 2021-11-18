@@ -21,9 +21,8 @@ import org.github.axon.tag.api.domain.account.command.WithdrawMoneyCommand;
 import org.github.axon.tag.api.domain.account.event.MoneyDepositedEvent;
 import org.github.axon.tag.api.domain.account.event.MoneyWithdrawnEvent;
 import org.github.axon.tag.api.domain.account.event.TransactionCancelledEvent;
-import org.github.axon.tag.api.domain.account.event.TransactionCompletedEvent;
-import org.github.axon.tag.api.domain.transfer.command.CompleteTransferCommand;
 import org.github.axon.tag.api.domain.transfer.command.FailTransferCommand;
+import org.github.axon.tag.api.domain.transfer.event.TransferCompletedEvent;
 import org.github.axon.tag.api.domain.transfer.event.saga.TransferRequestedEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -77,9 +76,9 @@ public class BankTransferSaga {
         this.targetAccountId = event.getDestinationId();
         this.transactionId = event.getTransactionId();
 
-        this.deadlineId = deadlineManager.schedule(Duration.ofSeconds(25), "transferDeadline");
+        this.deadlineId = deadlineManager.schedule(Duration.ofSeconds(90), "transferDeadline");
 
-
+        SagaLifecycle.associateWith("id", transactionId);
         SagaLifecycle.associateWith("transactionId", transactionId);
 
         commandGateway.send(new WithdrawMoneyCommand(event.getSourceId(), transactionId, event.getAmount()));
@@ -99,16 +98,16 @@ public class BankTransferSaga {
     }
 
     @EndSaga
-    @SagaEventHandler(associationProperty = "transactionId")
-    public void on(TransactionCompletedEvent event) {
-        log.info("In TransactionCompletedEvent deadId:{}", deadlineId);
+    @SagaEventHandler(associationProperty = "id")
+    public void on(TransferCompletedEvent event) {
+        log.warn("In TransactionCompletedEvent deadId:{} {}ms", deadlineId, System.currentTimeMillis() - start);
         deadlineManager.cancelSchedule("transferDeadline", deadlineId);
         completeTimer.record(System.currentTimeMillis() - start, TimeUnit.MILLISECONDS);
     }
 
     @SagaEventHandler(associationProperty = "transactionId")
     public void on(TransactionCancelledEvent event) {
-        log.info("In TransactionCancelledEvent  转账失败");
+        log.warn("In TransactionCancelledEvent  转账失败");
         if (event.getErrorCode().equals("E2")) {
             // Generate Compensatory action
             commandGateway.send(new BalanceCorrectionCommand(sourceAccountId,
@@ -123,7 +122,7 @@ public class BankTransferSaga {
     public void on() {
         // handle the Deadline
         commandGateway.send(new FailTransferCommand(this.transactionId, null, "timeout 25s"));
-        log.info("In the deadline - deadlineId [{}] ", deadlineId);
+        log.warn("In the deadline - deadlineId [{}] ", deadlineId);
         cancelTimer.record(System.currentTimeMillis() - start, TimeUnit.MILLISECONDS);
     }
 }

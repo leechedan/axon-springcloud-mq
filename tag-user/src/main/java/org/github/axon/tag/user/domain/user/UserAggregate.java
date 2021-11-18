@@ -21,8 +21,8 @@ import org.github.axon.tag.api.domain.account.event.IUserEvent;
 import org.github.axon.tag.api.domain.account.event.MoneyDepositedEvent;
 import org.github.axon.tag.api.domain.account.event.MoneyWithdrawnEvent;
 import org.github.axon.tag.api.domain.account.event.TransactionCancelledEvent;
-import org.github.axon.tag.api.domain.account.event.TransactionCompletedEvent;
 import org.github.axon.tag.api.domain.activation.ExpireActivationCommand;
+import org.github.axon.tag.api.domain.transfer.event.TransferCompletedEvent;
 import org.github.axon.tag.user.entity.BankTransferEntry;
 import org.springframework.util.Assert;
 
@@ -138,10 +138,10 @@ public class UserAggregate implements IUserEvent {
     }
 
     @EventSourcingHandler
-    public void on(TransactionCompletedEvent event) {
+    public void on(TransferCompletedEvent event) {
         log.info("{}", event);
-        incompleteFrom.remove(event.getTransactionId());
-        incompleteTo.remove(event.getTransactionId());
+        incompleteFrom.remove(event.getId());
+        incompleteTo.remove(event.getId());
     }
 }
 

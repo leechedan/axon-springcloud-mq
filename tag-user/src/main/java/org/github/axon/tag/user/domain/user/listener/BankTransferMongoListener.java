@@ -2,7 +2,6 @@ package org.github.axon.tag.user.domain.user.listener;
 
 
 import lombok.extern.slf4j.Slf4j;
-import org.axonframework.config.ProcessingGroup;
 import org.axonframework.eventhandling.EventHandler;
 import org.github.axon.tag.api.domain.common.enums.BankTransferStatus;
 import org.github.axon.tag.api.domain.transfer.event.TransferCompletedEvent;
@@ -13,9 +12,11 @@ import org.github.axon.tag.user.service.BankTransferService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
+
 @Component
 @Slf4j
-@ProcessingGroup("user-processor")
+//@ProcessingGroup("user-processor")
 public class BankTransferMongoListener {
 
     @Autowired
@@ -31,6 +32,7 @@ public class BankTransferMongoListener {
                                       .amount(ev.getAmount())
                                       .sourceId(ev.getSourceId())
                                       .destinationId(ev.getDestinationId())
+                                      .createDate(LocalDateTime.now())
                                       .status(BankTransferStatus.STARTED)
                                       .build()
         );
