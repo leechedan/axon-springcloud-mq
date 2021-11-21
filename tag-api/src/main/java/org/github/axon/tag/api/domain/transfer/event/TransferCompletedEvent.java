@@ -8,9 +8,8 @@ import org.github.axon.tag.base.domain.common.AbstractEvent;
 
 @Data
 @NoArgsConstructor
-public class TransferCompletedEvent extends AbstractEvent {
+@AllArgsConstructor
+public class TransferCompletedEvent implements AbstractEvent {
 
-    public TransferCompletedEvent(Long id) {
-        super(id);
-    }
+    private Long id;
 }

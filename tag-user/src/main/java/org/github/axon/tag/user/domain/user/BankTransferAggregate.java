@@ -20,6 +20,7 @@ import org.github.axon.tag.api.domain.transfer.command.RequestTransferCommand;
 import org.github.axon.tag.api.domain.transfer.event.TransferCompletedEvent;
 import org.github.axon.tag.api.domain.transfer.event.TransferFailedEvent;
 import org.github.axon.tag.api.domain.transfer.event.saga.TransferRequestedEvent;
+import org.github.axon.tag.user.service.UserViewService;
 import org.springframework.util.Assert;
 
 import java.math.BigDecimal;

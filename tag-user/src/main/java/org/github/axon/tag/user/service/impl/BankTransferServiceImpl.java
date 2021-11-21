@@ -20,8 +20,8 @@ public class BankTransferServiceImpl implements BankTransferService {
     @Autowired
     private BankTransferRepository repository;
 
-    @Autowired
-    private EventProcessingConfiguration epc;
+//    @Autowired
+//    private EventProcessingConfiguration epc;
 
     public BankTransferEntry save(BankTransferEntry bankTransfer) {
         return repository.save(bankTransfer);
@@ -44,7 +44,7 @@ public class BankTransferServiceImpl implements BankTransferService {
         repository.deleteById(id);
     }
 
-    public void replay() {
+    /*public void replay() {
 
         Optional<TrackingEventProcessor> ret =
                 epc.eventProcessor("BankTransferMongoListener", TrackingEventProcessor.class);
@@ -66,5 +66,5 @@ public class BankTransferServiceImpl implements BankTransferService {
         } else {
             throw new ValidationException("Process not found.");
         }
-    }
+    }*/
 }

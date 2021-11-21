@@ -10,14 +10,10 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @Builder
 @Getter
-public class FailTransferCommand extends AbstractCommand {
+public class FailTransferCommand implements AbstractCommand {
 
+    private Long id;
     final BigDecimal amount;
     final String reason;
 
-    public FailTransferCommand(Long id, BigDecimal amount, String reason) {
-        super(id);
-        this.amount = amount;
-        this.reason = reason;
-    }
 }

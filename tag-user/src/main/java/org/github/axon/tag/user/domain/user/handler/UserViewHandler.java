@@ -22,9 +22,9 @@ import java.text.MessageFormat;
 @AllArgsConstructor
 public class UserViewHandler {
 
-    private final CustomEventSourcingRepository<UserAggregate> customEventSourcingRepository;
+    private CustomEventSourcingRepository<UserAggregate> customEventSourcingRepository;
 
-    private final UserViewRepository userViewRepository;
+    private UserViewRepository userViewRepository;
 
 
     /**

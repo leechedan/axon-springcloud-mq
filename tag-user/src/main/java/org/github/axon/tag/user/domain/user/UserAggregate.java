@@ -24,6 +24,7 @@ import org.github.axon.tag.api.domain.account.event.TransactionCancelledEvent;
 import org.github.axon.tag.api.domain.activation.ExpireActivationCommand;
 import org.github.axon.tag.api.domain.transfer.event.TransferCompletedEvent;
 import org.github.axon.tag.user.entity.BankTransferEntry;
+import org.github.axon.tag.user.service.BankTransferService;
 import org.springframework.util.Assert;
 
 import java.math.BigDecimal;

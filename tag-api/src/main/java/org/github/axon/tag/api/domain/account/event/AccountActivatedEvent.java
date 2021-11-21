@@ -7,11 +7,13 @@ import org.github.axon.tag.base.domain.common.AbstractEvent;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 @ToString
-public class AccountActivatedEvent extends AbstractEvent {
+public class AccountActivatedEvent implements AbstractEvent {
 
     private Long accountId;
 
     private AccountStatus status;
+
+    private Long id;
+
 }

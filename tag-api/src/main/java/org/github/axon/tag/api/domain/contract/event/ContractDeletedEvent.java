@@ -8,9 +8,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class ContractDeletedEvent extends AbstractEvent {
+public class ContractDeletedEvent implements AbstractEvent {
 
-    public ContractDeletedEvent(Long  identifier) {
-        super(identifier);
-    }
+    private Long id;
+
 }

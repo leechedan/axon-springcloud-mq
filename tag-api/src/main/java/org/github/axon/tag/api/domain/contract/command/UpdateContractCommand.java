@@ -9,7 +9,9 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class UpdateContractCommand extends AbstractCommand implements ContractInterface {
+public class UpdateContractCommand implements AbstractCommand, ContractInterface {
+
+    private Long id;
 
     private String name;
 
@@ -20,7 +22,7 @@ public class UpdateContractCommand extends AbstractCommand implements ContractIn
     private String industryName;
 
     public UpdateContractCommand(Long identifier, String name, String partyA, String partyB, String industryName) {
-        super(identifier);
+        this.id = identifier;
         this.name = name;
         this.partyA = partyA;
         this.partyB = partyB;

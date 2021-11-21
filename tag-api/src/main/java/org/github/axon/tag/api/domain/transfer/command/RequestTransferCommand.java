@@ -12,9 +12,9 @@ import java.math.BigDecimal;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-public class RequestTransferCommand extends AbstractCommand {
+public class RequestTransferCommand implements AbstractCommand {
 
+    private Long id;
     private Long sourceId;
     private Long destinationId;
     private BigDecimal amount;

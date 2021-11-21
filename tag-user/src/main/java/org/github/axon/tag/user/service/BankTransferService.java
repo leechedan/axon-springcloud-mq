@@ -14,5 +14,5 @@ public interface BankTransferService {
 
     void deleteById(Long id);
 
-    void replay();
+//    void replay();
 }

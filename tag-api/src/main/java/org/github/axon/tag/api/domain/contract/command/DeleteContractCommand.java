@@ -8,8 +8,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class DeleteContractCommand extends AbstractCommand {
-    public DeleteContractCommand(Long  identifier) {
-        super(identifier);
-    }
+public class DeleteContractCommand implements AbstractCommand {
+
+    private Long id;
 }

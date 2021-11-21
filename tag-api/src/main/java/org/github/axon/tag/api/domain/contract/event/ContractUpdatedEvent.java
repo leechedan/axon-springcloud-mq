@@ -9,7 +9,9 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class ContractUpdatedEvent extends AbstractEvent implements ContractInterface {
+public class ContractUpdatedEvent implements AbstractEvent, ContractInterface {
+
+    private Long id;
 
     private String name;
 
@@ -20,7 +22,7 @@ public class ContractUpdatedEvent extends AbstractEvent implements ContractInter
     private String industryName;
 
     public ContractUpdatedEvent(Long  identifier, String name, String partyA, String partyB, String industryName) {
-        super(identifier);
+        setId(identifier);
         this.name = name;
         this.partyA = partyA;
         this.partyB = partyB;

@@ -9,7 +9,11 @@ import org.github.axon.tag.base.domain.common.AbstractCommand;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CreateAccountCommand extends AbstractCommand {
+public class CreateAccountCommand implements AbstractCommand {
+
+    @TargetAggregateIdentifier
+    Long id;
 
     private String accountHolderName;
+
 }

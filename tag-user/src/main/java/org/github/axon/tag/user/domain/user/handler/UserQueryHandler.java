@@ -10,7 +10,7 @@ import org.github.axon.tag.common.continuance.common.CustomEventSourcingReposito
 import org.github.axon.tag.user.domain.user.UserAggregate;
 import org.springframework.stereotype.Component;
 
-@Component
+//@Component
 @AllArgsConstructor
 @Slf4j
 public class UserQueryHandler {

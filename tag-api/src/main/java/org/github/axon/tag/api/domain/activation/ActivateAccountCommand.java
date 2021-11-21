@@ -1,10 +1,15 @@
 package org.github.axon.tag.api.domain.activation;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.github.axon.tag.base.domain.common.AbstractCommand;
 
-public class ActivateAccountCommand extends AbstractCommand {
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
+public class ActivateAccountCommand implements AbstractCommand {
 
-	public ActivateAccountCommand(Long accountId) {
-		super(accountId);
-	}
+	private Long id;
+
 }

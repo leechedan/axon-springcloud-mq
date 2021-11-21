@@ -7,13 +7,11 @@ import org.axonframework.commandhandling.RoutingKey;
 import org.axonframework.modelling.command.TargetAggregateIdentifier;
 
 @Data
-@AllArgsConstructor
-@Builder
+@NoArgsConstructor
 @ToString
-public class CompleteTransferCommand extends AbstractCommand {
+public class CompleteTransferCommand implements AbstractCommand {
 
-    public CompleteTransferCommand(Long id) {
-        super(id);
-    }
+    @TargetAggregateIdentifier
+    private Long id;
 
 }

@@ -7,12 +7,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
+@NoArgsConstructor
 @Builder
-public class BankAccountRemovedEvent extends AbstractEvent {
+public class BankAccountRemovedEvent implements AbstractEvent {
+
+    private Long id;
 
     public BankAccountRemovedEvent(Long identifier) {
-        super(identifier);
+        this.id = id;
     }
+
 }
 

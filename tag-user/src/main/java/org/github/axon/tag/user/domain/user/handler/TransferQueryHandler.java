@@ -13,11 +13,10 @@ import org.github.axon.tag.user.domain.user.UserAggregate;
 import org.springframework.stereotype.Component;
 
 @Component
-@AllArgsConstructor
 @Slf4j
 public class TransferQueryHandler {
 
-    private final CustomEventSourcingRepository<BankTransferAggregate> userAggregateRepository;
+    private CustomEventSourcingRepository<BankTransferAggregate> userAggregateRepository;
 
     @QueryHandler
     public BankTransferAggregate on(QueryTransferCommand command) {
